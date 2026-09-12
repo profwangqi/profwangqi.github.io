@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="ebC7Bj03iZX2VhASRwmnHr">
+<head data-page-node-id="HXFSTY0I7i8vYxMvHD2m9w">
+<meta charset="UTF-8" data-page-node-id="pP45AWYNJHXKC6t7n6wcEG">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="GqcPjdsOxjCPhYlTgSmeGf">
+<title>数据驱动决策（ACCA先修课）· 网页课件</title>
+<link rel="icon" href="../../../静态资源/favicon.svg" type="image/svg+xml" data-page-node-id="6hqj2XMJEptcF6UYO912Yd">
+<style>
+  :root {
+    --navy: #1b3a5f; --navy-light: #2d5a8e; --accent: #b08d4f;
+    --ink: #22303e; --gray: #5b6b7b; --line: #dfe5ec;
+    --serif: Georgia, "Songti SC", serif;
+    --sans: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--sans); color: var(--ink); background: #f6f8fa; min-height: 100vh; }
+
+  /* ===== 密码门 ===== */
+  #gate {
+    position: fixed; inset: 0; z-index: 100; display: flex;
+    align-items: center; justify-content: center;
+    background: linear-gradient(180deg, #f2f6fa 0%, #e8eef5 100%);
+    padding: 24px;
+  }
+  .gate-box {
+    background: #ffffff; border: 1px solid var(--line); border-radius: 16px;
+    padding: 40px 44px 36px; width: 100%; max-width: 400px;
+    box-shadow: 0 24px 60px rgba(27,58,95,0.14); text-align: center;
+  }
+  .gate-box .ico {
+    width: 54px; height: 54px; border-radius: 13px; margin: 0 auto 18px;
+    background: linear-gradient(145deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif); font-size: 22px; font-weight: 700;
+  }
+  .gate-box h1 { font-family: var(--serif); font-size: 21px; color: var(--navy); margin-bottom: 4px; }
+  .gate-box .sub { font-size: 13px; color: var(--gray); margin-bottom: 24px; }
+  .gate-box input {
+    width: 100%; font-size: 16px; letter-spacing: 0.15em; text-align: center;
+    border: 1px solid #c8d4e0; border-radius: 9px; padding: 11px 14px; outline: none;
+  }
+  .gate-box input:focus { border-color: var(--navy-light); box-shadow: 0 0 0 3px rgba(45,90,142,0.12); }
+  .gate-box .err { display: none; font-size: 13px; color: #b03a2e; margin-top: 8px; }
+  .gate-box .err.show { display: block; }
+  .gate-box button {
+    width: 100%; margin-top: 18px; font-size: 15.5px; font-weight: 600; cursor: pointer;
+    background: var(--navy); color: #fff; border: none; border-radius: 9px; padding: 12px 0;
+  }
+  .gate-box button:hover { background: var(--navy-light); }
+  .gate-box .hint { font-size: 12px; color: var(--gray); margin-top: 16px; font-style: italic; }
+
+  /* ===== 课程门户 ===== */
+  #portal { display: none; max-width: 1000px; margin: 0 auto; padding: 44px 26px 60px; }
+  .portal-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+  .portal-head h1 { font-family: var(--serif); font-size: 27px; color: var(--navy); }
+  .portal-head .en { font-size: 12.5px; color: var(--gray); letter-spacing: 0.08em; }
+  .portal-desc { font-size: 14.5px; color: var(--gray); margin-bottom: 30px; }
+  .week-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+  .week-card {
+    background: #ffffff; border: 1px solid var(--line); border-radius: 12px;
+    padding: 20px 22px; text-decoration: none; display: block;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .week-card:hover { border-color: var(--navy-light); box-shadow: 0 4px 14px rgba(27,58,95,0.08); }
+  .week-card .wk {
+    font-family: var(--serif); font-style: italic; font-weight: 700;
+    color: var(--accent); font-size: 14px; margin-bottom: 6px;
+  }
+  .week-card h2 { font-size: 16.5px; color: var(--ink); line-height: 1.45; margin-bottom: 8px; }
+  .week-card p { font-size: 13px; color: var(--gray); line-height: 1.6; }
+  .portal-foot { margin-top: 34px; font-size: 12.5px; color: var(--gray); }
+  .portal-foot a { color: var(--navy-light); text-decoration: none; }
+</style>
+</head>
+<body data-page-node-id="6eGoGwdcR01d3hEHsGFLob">
+
+<!-- 密码门 -->
+<div id="gate" data-page-node-id="238P7g41tYf3ILQbEYVbLU">
+  <div class="gate-box" data-page-node-id="fRp9StJWIO5d5FA54KCNbq">
+    <div class="ico" data-page-node-id="UuYOBrGKUHDZb3K25cchNz">AC</div>
+    <h1 data-page-node-id="ef926jOGtiRB2T44I8RokV">数据驱动决策（ACCA先修课）</h1>
+    <div class="sub" data-page-node-id="XTKbnjt5jLTehLm1AE2CmY">Data-Driven Decision Making · 网页课件</div>
+    <input type="password" id="pwInput" placeholder="请输入课件密码" autocomplete="off" data-page-node-id="UPA7cHh0DCnJyNOXwu2vy4">
+    <div class="err" id="pwErr" data-page-node-id="VpSfFmDHzQ7Rl2PvSMG7OJ">密码不正确，请重试</div>
+    <button id="pwBtn" data-page-node-id="T6EmSQDCFiDKItjJp05tB6">进入课件</button>
+    <div class="hint" data-page-node-id="m8MDvwcEmGJNMNCiDvQACQ">密码由任课教师在课堂上公布</div>
+  </div>
+</div>
+
+<!-- 课程门户（密码通过后显示） -->
+<div id="portal" data-page-node-id="tHEN8kLfxrcg7qDrzGOoZE">
+  <div class="portal-head" data-page-node-id="6qx71YBF4aVtBaqvcxm2d8">
+    <h1 data-page-node-id="95UdHT467NSZXS5OPmpkmP">数据驱动决策（ACCA先修课）</h1>
+    <span class="en" data-page-node-id="m7YqyWAKLHjO45PxZ55O2M">DATA-DRIVEN DECISION MAKING</span>
+  </div>
+  <div class="portal-desc" data-page-node-id="8L25D3AMuyk7RqfgstHDCC">共 8 周课程 · 点击卡片进入每周讲义（含公式推导与 Notebook 代码入口）</div>
+  <div class="week-grid" data-page-node-id="v9Q1DmtdzZnBxO5f7oPtg6">
+    <a class="week-card" href="week1.html" data-page-node-id="pE1rg0l6hsRwFxSdIGvZrw"><div class="wk" data-page-node-id="S9gD37LUFbNBVtMsY0I5NW">Week 1</div><h2 data-page-node-id="3tPPPaIjNWWGutiWAOjg83">数据基础与抽样方法</h2><p data-page-node-id="3bfToE37rZzqYMzrcIO6u6">数据类型、总体与样本、抽样设计与数据质量。</p></a>
+    <a class="week-card" href="week2.html" data-page-node-id="wuCQ8MXisPfAfDZh6CQ6yC"><div class="wk" data-page-node-id="tcMZq5gxW8NyMBPFOgPLVl">Week 2</div><h2 data-page-node-id="ya9MkIpUsHgWYeL9vb9I3n">描述性统计与数据汇总</h2><p data-page-node-id="kjD3VFRiXbegGGmvd1czAt">集中趋势、离散程度、分布形态与图表呈现。</p></a>
+    <a class="week-card" href="week3.html" data-page-node-id="L9lS6alsoy7xDXshKuyybI"><div class="wk" data-page-node-id="4RL0Ad34269nhTbeJhXFTK">Week 3</div><h2 data-page-node-id="PRSDEqBP2Kkbz9bkp6vjaM">线性函数与成本分析</h2><p data-page-node-id="F0wvzwHNvelUXMc7DttIJB">线性函数建模、固定与变动成本、成本性态分析。</p></a>
+    <a class="week-card" href="week4.html" data-page-node-id="kCGhs6pYJ6jsijXZbOmN2I"><div class="wk" data-page-node-id="8GzHuAvG7rQLiaKLbH8uj7">Week 4</div><h2 data-page-node-id="PYfgoGuAQsOV1MR2BgFQuw">线性回归分析</h2><p data-page-node-id="rjqWdHdPVrBXO5Bmz8n6G9">最小二乘法、拟合优度、预测应用与回归诊断。</p></a>
+    <a class="week-card" href="week5.html" data-page-node-id="3oT4imgawtZVl0YpYzuNBJ"><div class="wk" data-page-node-id="gJH8AcHltmBuaNc3XMy35Q">Week 5</div><h2 data-page-node-id="dBOOLJSB4H1IaVp9VTH0oG">时间序列分析</h2><p data-page-node-id="1MJ9dNBXXLM5CDUcKLrgRC">趋势、季节性与平滑预测方法。</p></a>
+    <a class="week-card" href="week6.html" data-page-node-id="jD8hPzGrYy0hYeYWMO6tvx"><div class="wk" data-page-node-id="KboH2PnWCMB5D8Ue7DH2Ax">Week 6</div><h2 data-page-node-id="Ueugrq0A6UCR7IVP4OwLdn">大数据与短期决策基础</h2><p data-page-node-id="QUA1OnWqtUHQpYvUHEkhul">大数据思维、相关数据在短期经营决策中的应用。</p></a>
+    <a class="week-card" href="week7.html" data-page-node-id="ZhYvTEq1rqnBGWnsEJ9uPT"><div class="wk" data-page-node-id="ZvNc2uGZyF91pRN8fgVe7Z">Week 7</div><h2 data-page-node-id="f9mXUKpKcQMWcgXAOlklLr">本量利分析与存货管理</h2><p data-page-node-id="6R7ljtREtD9QVTOzH18zDf">盈亏平衡、目标利润与经济订货批量模型。</p></a>
+    <a class="week-card" href="week8.html" data-page-node-id="gAeyzsF6JCStrObLJCD15W"><div class="wk" data-page-node-id="CB1brEkUzsCZr1US3WX5Pr">Week 8</div><h2 data-page-node-id="4KzrgthM81aX4vFsOhVXwc">长期决策与投资评估</h2><p data-page-node-id="NDo5V2TIjArZcvufd6npC7">货币时间价值、NPV 与 IRR 投资评价方法。</p></a>
+  </div>
+  <div class="portal-foot" data-page-node-id="FDn3uqjt7kgFYJcAjNefxO">
+    <a href="../../../teaching.html" data-page-node-id="gWiNkcNR8A3Q9OO1p7leTA">← 返回课程主页 Teaching</a>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = 'acca_f3_pass';
+  var EXPECT = 'c2pxZGpjMjAyNg=='; // sjqdjc2026
+  var gate = document.getElementById('gate'),
+      portal = document.getElementById('portal'),
+      input = document.getElementById('pwInput'),
+      err = document.getElementById('pwErr');
+
+  function unlock() {
+    gate.style.display = 'none';
+    portal.style.display = 'block';
+    try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+  }
+  function tryPass() {
+    if (btoa(input.value) === EXPECT) {
+      unlock();
+    } else {
+      err.classList.add('show');
+      input.select();
+    }
+  }
+  document.getElementById('pwBtn').addEventListener('click', tryPass);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') tryPass(); });
+
+  // 本次浏览器会话内已通过则直接放行（关浏览器后需重输）
+  try { if (sessionStorage.getItem(KEY) === '1') unlock(); } catch (e) {}
+})();
+</script>
+</body>
+</html>

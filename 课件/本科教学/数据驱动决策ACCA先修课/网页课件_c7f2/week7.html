@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7周：本量利分析与存货管理 | 商业数据分析</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root {
+    --bg-main: #F5F0E8;
+    --bg-card: #FFFFFF;
+    --bg-derivation: #FFF8E7;
+    --bg-code: #2D2D2D;
+    --color-light: #E8D5C4;
+    --color-medium: #C49A6C;
+    --color-dark: #8B6F4E;
+    --text-main: #3D3D3D;
+    --text-light: #6B6B6B;
+    --border: #DDD5C7;
+    --code-text: #F8F8F2;
+    --shadow: rgba(0,0,0,0.06);
+    --success: #7A9E7E;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.75;
+  }
+  header {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-medium) 100%);
+    color: white;
+    padding: 3rem 1.5rem 2.5rem;
+    text-align: center;
+  }
+  header h1 { font-size: 1.9rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.5px; }
+  header .subtitle { font-size: 1rem; opacity: 0.92; font-family: Georgia, serif; }
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .week-overview {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px var(--shadow);
+    border-left: 5px solid var(--color-medium);
+  }
+  .week-overview h2 { color: var(--color-dark); font-size: 1.25rem; margin-bottom: 0.8rem; }
+  .week-overview ul { list-style: none; padding-left: 0; }
+  .week-overview li { padding: 0.3rem 0; padding-left: 1.5rem; position: relative; color: var(--text-light); }
+  .week-overview li::before { content: "◆"; position: absolute; left: 0; color: var(--color-medium); font-size: 0.7rem; top: 0.55rem; }
+
+  .lesson {
+    background: var(--bg-card);
+    border-radius: 12px;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 20px var(--shadow);
+    overflow: hidden;
+  }
+  .lesson-header {
+    background: linear-gradient(90deg, var(--color-light), #FDF8F2);
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .lesson-header .lesson-num {
+    display: inline-block;
+    background: var(--color-medium);
+    color: white;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+  .lesson-header h3 { color: var(--color-dark); font-size: 1.3rem; font-weight: 600; }
+
+  .lesson-body { padding: 2rem; }
+  .section-title {
+    color: var(--color-dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 1.8rem 0 0.8rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--color-light);
+  }
+  .section-title:first-of-type { margin-top: 0; }
+
+  .objectives {
+    background: #F9F5EF;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .objectives strong { color: var(--color-dark); }
+  .objectives ul { margin-top: 0.5rem; padding-left: 1.2rem; }
+  .objectives li { color: var(--text-light); font-size: 0.95rem; padding: 0.15rem 0; }
+
+  .concept-box {
+    background: #FAFAFA;
+    border-left: 4px solid var(--color-medium);
+    padding: 1rem 1.5rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1rem 0;
+  }
+  .concept-box strong { color: var(--color-dark); }
+
+  .derivation {
+    background: var(--bg-derivation);
+    border: 1px solid #F0E0C0;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    margin: 1.2rem 0;
+  }
+  .derivation-title {
+    color: var(--color-dark);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .derivation-title::before { content: "📐"; font-size: 1.2rem; }
+  .step {
+    margin: 0.8rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--color-light);
+  }
+  .step-num {
+    color: var(--color-medium);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  .step-note {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+
+  .example {
+    background: #F0F7F0;
+    border: 1px solid #C8E0C8;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    margin: 1.2rem 0;
+  }
+  .example-title {
+    color: var(--success);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .example-title::before { content: "📝"; font-size: 1.2rem; }
+  .solution { margin-top: 1rem; }
+  .solution strong { color: var(--color-dark); }
+  .highlight {
+    background: #FFF3CD;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-weight: 600;
+    color: var(--color-dark);
+  }
+
+  pre {
+    background: var(--bg-code);
+    color: var(--code-text);
+    padding: 1.2rem 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 1rem 0;
+  }
+  code {
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    background: #F0EDE8;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--color-dark);
+  }
+  pre code { background: transparent; padding: 0; color: var(--code-text); }
+
+  .summary {
+    background: linear-gradient(135deg, #F9F5EF, #FFF8E7);
+    border-radius: 10px;
+    padding: 1.2rem 1.8rem;
+    margin-top: 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .summary strong { color: var(--color-dark); }
+
+  .notebook-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.8rem;
+    background: var(--color-medium);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.3s;
+    box-shadow: 0 4px 12px rgba(196,154,108,0.3);
+  }
+  .notebook-link:hover { background: var(--color-dark); }
+
+  .formula-inline {
+    display: inline-block;
+    background: #FFF8E7;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-family: Georgia, serif;
+    font-weight: 600;
+    color: var(--color-dark);
+    border: 1px solid #F0E0C0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--color-light);
+    color: var(--color-dark);
+    font-weight: 600;
+  }
+  tr:hover { background: #FAFAFA; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.4rem; }
+    .container { padding: 1rem; }
+    .lesson-body { padding: 1.2rem; }
+    .derivation, .example { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>第7周：本量利分析与存货管理</h1>
+  <p class="subtitle">Cost-Volume-Profit Analysis &amp; Inventory Management</p>
+</header>
+
+<div class="container">
+
+<!-- 周概述 -->
+<div class="week-overview">
+  <h2>本周学习目标</h2>
+  <ul>
+    <li>理解成本习性：区分固定成本与变动成本，掌握贡献毛益概念</li>
+    <li>掌握盈亏平衡点（Break-even Point）的推导与计算，能进行多产品CVP分析</li>
+    <li>理解安全边际与目标利润分析，能进行敏感性分析</li>
+    <li>掌握EOQ经济订货量模型的数学推导，理解存货水平管理指标</li>
+    <li>能用Python实现CVP计算、EOQ求解和存货监控可视化</li>
+  </ul>
+</div>
+
+<!-- ========== 第1节课 ========== -->
+<div class="lesson">
+  <div class="lesson-header">
+    <span class="lesson-num">第1课</span>
+    <h3>CVP分析基础：从利润方程到盈亏平衡</h3>
+  </div>
+  <div class="lesson-body">
+
+    <div class="objectives">
+      <strong>学习目标</strong>
+      <ul>
+        <li>理解固定成本与变动成本的区别及实际案例</li>
+        <li>掌握贡献毛益（Contribution Margin）和C/S ratio的计算</li>
+        <li>能从利润方程出发，逐步推导出盈亏平衡点公式</li>
+        <li>理解边际利润图（P/V Chart）的经济含义</li>
+        <li>能用Python计算并可视化盈亏平衡点</li>
+      </ul>
+    </div>
+
+    <div class="section-title">1.1 成本分类：固定成本 vs 变动成本</div>
+    <p>在经营决策中，成本按<strong>与产量的关系</strong>分为两类：</p>
+
+    <table>
+      <tr><th>类型</th><th>定义</th><th>例子</th><th>特性</th></tr>
+      <tr><td><strong>固定成本 (Fixed Cost, F)</strong></td><td>不随产量变化而变化的成本</td><td>厂房租金、管理人员工资、设备折旧</td><td>总固定成本不变，单位固定成本随产量增加而下降</td></tr>
+      <tr><td><strong>变动成本 (Variable Cost, V)</strong></td><td>随产量成正比例变化的成本</td><td>原材料、直接人工、计件工资</td><td>单位变动成本不变，总变动成本随产量增加而上升</td></tr>
+    </table>
+
+    <div class="concept-box">
+      <strong>总成本方程：</strong><br>
+      设产量为 \( Q \)，单位变动成本为 \( v \)，总固定成本为 \( F \)<br>
+      $$\text{总成本 } TC = F + v \cdot Q$$
+    </div>
+
+    <div class="section-title">1.2 贡献毛益（Contribution Margin）</div>
+    <p>每卖出一单位产品，收入扣除变动成本后"贡献"给覆盖固定成本的部分，叫做<strong>贡献毛益</strong>。</p>
+
+    <div class="concept-box">
+      <strong>贡献毛益公式：</strong><br>
+      设单价为 \( P \)，单位变动成本为 \( v \)
+      $$\text{单位贡献毛益 } CM = P - v$$
+      <br>
+      <strong>贡献毛益率（C/S ratio）：</strong>
+      $$\text{C/S ratio} = \frac{CM}{P} = \frac{P - v}{P} = 1 - \frac{v}{P}$$
+    </div>
+
+    <p>贡献毛益率告诉我们：每1元销售收入中，有多少比例可以用来覆盖固定成本和创造利润。</p>
+
+    <div class="section-title">1.3 盈亏平衡点的推导</div>
+    <p>盈亏平衡点（Break-even Point, BEP）是<strong>利润为零</strong>时的销售量——此时总收入恰好等于总成本。</p>
+
+    <div class="derivation">
+      <div class="derivation-title">公式推导：从利润方程到盈亏平衡</div>
+
+      <div class="step">
+        <div class="step-num">第1步：写出利润方程</div>
+        <p>利润 = 总收入 − 总成本</p>
+        $$\pi = P \cdot Q - (F + v \cdot Q)$$
+        <p class="step-note">总收入 = 单价 × 销量；总成本 = 固定成本 + 变动成本总额</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第2步：整理利润方程</div>
+        <p>将含 \( Q \) 的项合并：</p>
+        $$\pi = P \cdot Q - v \cdot Q - F = (P - v) \cdot Q - F$$
+        <p class="step-note">注意到 \( (P-v) \) 正是单位贡献毛益 \( CM \)</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第3步：令利润为0，求解Q</div>
+        <p>盈亏平衡时，\( \pi = 0 \)：</p>
+        $$(P - v) \cdot Q_{BE} - F = 0$$
+        $$(P - v) \cdot Q_{BE} = F$$
+        $$\boxed{Q_{BE} = \frac{F}{P - v} = \frac{F}{CM}}$$
+      </div>
+
+      <div class="step">
+        <div class="step-num">第4步：推导金额形式的盈亏平衡点</div>
+        <p>盈亏平衡销售额 = 盈亏平衡数量 × 单价：</p>
+        $$S_{BE} = Q_{BE} \cdot P = \frac{F}{P - v} \cdot P = \frac{F}{(P-v)/P}$$
+        $$\boxed{S_{BE} = \frac{F}{\text{C/S ratio}}$$
+      </div>
+    </div>
+
+    <div class="section-title">1.4 边际利润图（Profit-Volume Chart）</div>
+    <p>边际利润图直观展示了<strong>利润随销量变化的线性关系</strong>：</p>
+    <ul>
+      <li>横轴：销售量 \( Q \)</li>
+      <li>纵轴：利润 \( \pi \)</li>
+      <li>直线起点：\( (0, -F) \) —— 销量为0时，亏损等于全部固定成本</li>
+      <li>直线斜率：\( CM \) —— 每多卖一单位，利润增加 \( CM \)</li>
+      <li>与横轴交点：\( (Q_{BE}, 0) \) —— 盈亏平衡点</li>
+    </ul>
+    <p>这个图清楚地告诉我们：只要知道固定成本和单位贡献毛益，就能画出整条利润线，一眼看出任意销量下的利润水平。</p>
+
+    <div class="section-title">1.5 例题演示</div>
+    <div class="example">
+      <div class="example-title">例题：咖啡馆盈亏平衡分析</div>
+      <p>某咖啡馆销售一款特调咖啡，数据如下：</p>
+      <ul>
+        <li>单价 \( P = 35 \) 元/杯</li>
+        <li>单位变动成本 \( v = 15 \) 元/杯（原材料+包装）</li>
+        <li>每月固定成本 \( F = 8,000 \) 元（租金+工资）</li>
+      </ul>
+      <p><strong>要求：</strong>计算盈亏平衡销量和盈亏平衡销售额。</p>
+      <div class="solution">
+        <strong>解答：</strong><br>
+        单位贡献毛益 \( CM = 35 - 15 = 20 \) 元/杯<br><br>
+        盈亏平衡销量：
+        $$Q_{BE} = \frac{F}{CM} = \frac{8,000}{20} = 400 \text{ 杯}$$
+        <br>
+        贡献毛益率：
+        $$\text{C/S ratio} = \frac{20}{35} = 57.14\%$$
+        <br>
+        盈亏平衡销售额：
+        $$S_{BE} = \frac{8,000}{0.5714} = 14,000 \text{ 元}$$
+        <br>
+        <span class="highlight">结论：每月卖出400杯（或销售额14,000元）即可保本。</span>
+      </div>
+    </div>
+
+    <div class="section-title">1.6 Python实现与可视化</div>
+    <pre><code># CVP基础计算与可视化
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ===== 步骤1：定义参数 =====
+P = 35          # 单价（元/杯）
+v = 15          # 单位变动成本（元/杯）
+F = 8000        # 固定成本（元/月）
+
+# ===== 步骤2：计算关键指标 =====
+CM = P - v                          # 单位贡献毛益
+CS_ratio = CM / P                   # 贡献毛益率
+Q_BE = F / CM                       # 盈亏平衡销量
+S_BE = F / CS_ratio                 # 盈亏平衡销售额
+
+print(f"单位贡献毛益: {CM} 元/杯")
+print(f"贡献毛益率: {CS_ratio:.2%}")
+print(f"盈亏平衡销量: {Q_BE:.0f} 杯")
+print(f"盈亏平衡销售额: {S_BE:.0f} 元")
+
+# ===== 步骤3：绘制CVP图 =====
+Q = np.linspace(0, 800, 200)        # 销量范围 0~800杯
+TR = P * Q                          # 总收入线
+TC = F + v * Q                      # 总成本线
+profit = TR - TC                    # 利润线
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# 左图：总成本-总收入图
+ax1 = axes[0]
+ax1.plot(Q, TR, label='总收入 TR', color='#C49A6C', linewidth=2.5)
+ax1.plot(Q, TC, label='总成本 TC', color='#8B6F4E', linewidth=2.5)
+ax1.axvline(Q_BE, color='#E74C3C', linestyle='--', alpha=0.7, label=f'盈亏平衡 Q={Q_BE:.0f}')
+ax1.fill_between(Q, TC, TR, where=(TR >= TC), alpha=0.15, color='green', label='盈利区')
+ax1.fill_between(Q, TC, TR, where=(TR < TC), alpha=0.15, color='red', label='亏损区')
+ax1.set_xlabel('销量 Q（杯）', fontsize=12)
+ax1.set_ylabel('金额（元）', fontsize=12)
+ax1.set_title('本量利分析图', fontsize=14, fontweight='bold')
+ax1.legend(loc='upper left')
+ax1.grid(True, alpha=0.3)
+
+# 右图：边际利润图
+ax2 = axes[1]
+ax2.plot(Q, profit, color='#2E86AB', linewidth=2.5, label='利润')
+ax2.axhline(0, color='gray', linestyle='-', alpha=0.5)
+ax2.axvline(Q_BE, color='#E74C3C', linestyle='--', alpha=0.7, label=f'盈亏平衡 Q={Q_BE:.0f}')
+ax2.fill_between(Q, 0, profit, where=(profit >= 0), alpha=0.15, color='green')
+ax2.fill_between(Q, 0, profit, where=(profit < 0), alpha=0.15, color='red')
+ax2.set_xlabel('销量 Q（杯）', fontsize=12)
+ax2.set_ylabel('利润（元）', fontsize=12)
+ax2.set_title('边际利润图 (P/V Chart)', fontsize=14, fontweight='bold')
+ax2.legend(loc='upper left')
+ax2.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()</code></pre>
+
+    <div class="summary">
+      <strong>第1课小结</strong>
+      <ul>
+        <li>固定成本不随产量变化，变动成本与产量成正比</li>
+        <li>贡献毛益 \( CM = P - v \) 是覆盖固定成本和创造利润的核心</li>
+        <li>盈亏平衡销量 \( Q_{BE} = F / CM \)；盈亏平衡销售额 \( S_{BE} = F / \text{C/S ratio} \)</li>
+        <li>利润方程 \( \pi = CM \cdot Q - F \) 是一切CVP分析的起点</li>
+      </ul>
+    </div>
+    <a class="notebook-link" href="../03-Notebook代码/week7-本量利分析与存货管理.html" target="_blank">前往Notebook练习 →</a>
+  </div>
+</div>
+
+<!-- ========== 第2节课 ========== -->
+<div class="lesson">
+  <div class="lesson-header">
+    <span class="lesson-num">第2课</span>
+    <h3>安全边际与目标利润分析</h3>
+  </div>
+  <div class="lesson-body">
+
+    <div class="objectives">
+      <strong>学习目标</strong>
+      <ul>
+        <li>理解安全边际（Margin of Safety）的含义和三种表达形式</li>
+        <li>能从利润方程推导目标利润所需销量</li>
+        <li>分析价格、成本变动对盈亏平衡点的影响（敏感性分析）</li>
+        <li>掌握多产品CVP分析的加权平均贡献毛益率法</li>
+        <li>能用Python实现各种CVP计算和敏感性分析</li>
+      </ul>
+    </div>
+
+    <div class="section-title">2.1 安全边际（Margin of Safety）</div>
+    <p>安全边际衡量的是<strong>实际销售离盈亏平衡有多远</strong>——距离越远，经营越安全。</p>
+
+    <div class="derivation">
+      <div class="derivation-title">安全边际的三种表达</div>
+      <p>设实际销量为 \( Q_{actual} \)，实际销售额为 \( S_{actual} \)</p>
+
+      <div class="step">
+        <div class="step-num">数量形式</div>
+        $$\text{MS}_{\text{units}} = Q_{\text{actual}} - Q_{BE}$$
+      </div>
+      <div class="step">
+        <div class="step-num">金额形式</div>
+        $$\text{MS}_{\$} = S_{\text{actual}} - S_{BE} = (Q_{\text{actual}} - Q_{BE}) \times P$$
+      </div>
+      <div class="step">
+        <div class="step-num">比率形式（最常用）</div>
+        $$\text{MS}\% = \frac{\text{MS}_{\$}}{S_{\text{actual}}} \times 100\% = \frac{Q_{\text{actual}} - Q_{BE}}{Q_{\text{actual}}} \times 100\%$$
+      </div>
+    </div>
+
+    <div class="concept-box">
+      <strong>直观理解：</strong>安全边际比率告诉你，销量最多可以下滑多少百分比才会开始亏损。例如 MS% = 30% 意味着销量下滑不超过30%都是安全的。
+    </div>
+
+    <div class="section-title">2.2 实现目标利润所需销量</div>
+    <p>企业不仅要保本，还要实现目标利润。从利润方程出发：</p>
+
+    <div class="derivation">
+      <div class="derivation-title">目标销量公式推导</div>
+      <div class="step">
+        <div class="step-num">第1步：写出含目标利润的利润方程</div>
+        $$\text{Target Profit} = CM \times Q_{\text{target}} - F$$
+      </div>
+      <div class="step">
+        <div class="step-num">第2步：移项求解 Q_target</div>
+        $$CM \times Q_{\text{target}} = F + \text{Target Profit}$$
+        $$\boxed{Q_{\text{target}} = \frac{F + \text{Target Profit}}{CM} = \frac{F + \text{Target Profit}}{P - v}}$$
+      </div>
+      <p class="step-note">对比盈亏平衡公式：分子多了"目标利润"，其余结构完全相同。保本就是目标利润为0的特殊情况。</p>
+    </div>
+
+    <div class="section-title">2.3 价格/成本变动的影响分析</div>
+    <p>通过<strong>敏感性分析</strong>，我们可以回答：如果涨价10%，盈亏平衡点怎么变？如果原材料涨价，利润会下降多少？</p>
+
+    <table>
+      <tr><th>因素变动</th><th>对盈亏平衡的影响</th><th>直观解释</th></tr>
+      <tr><td>单价 \( P \) 上升</td><td>\( Q_{BE} \) 下降</td><td>每单位贡献更多了，需要更少的销量就能保本</td></tr>
+      <tr><td>单位变动成本 \( v \) 上升</td><td>\( Q_{BE} \) 上升</td><td>每单位贡献减少，需要卖更多才能保本</td></tr>
+      <tr><td>固定成本 \( F \) 上升</td><td>\( Q_{BE} \) 上升</td><td>需要覆盖的"坑"变大了</td></tr>
+      <tr><td>单价和变动成本同比例上升</td><td>\( Q_{BE} \) 取决于具体变动</td><td>需具体分析对 \( CM \) 的影响</td></tr>
+    </table>
+
+    <div class="section-title">2.4 多产品CVP分析</div>
+    <p>当企业销售多种产品时，不同产品的贡献毛益率不同，需要用<strong>加权平均贡献毛益率</strong>来计算综合盈亏平衡。</p>
+
+    <div class="derivation">
+      <div class="derivation-title">多产品CVP推导</div>
+      <p>假设有两种产品 A 和 B，销售比例为 \( w_A : w_B \)（金额比例）</p>
+      <div class="step">
+        <div class="step-num">第1步：计算加权平均C/S ratio</div>
+        $$\text{Weighted C/S ratio} = w_A \times \frac{CM_A}{P_A} + w_B \times \frac{CM_B}{P_B}$$
+      </div>
+      <div class="step">
+        <div class="step-num">第2步：计算综合盈亏平衡销售额</div>
+        $$S_{BE}^{\text{total}} = \frac{F}{\text{Weighted C/S ratio}}$$
+      </div>
+      <div class="step">
+        <div class="step-num">第3步：按销售比例分配</div>
+        $$S_{BE}^{(A)} = S_{BE}^{\text{total}} \times w_A, \quad S_{BE}^{(B)} = S_{BE}^{\text{total}} \times w_B$$
+      </div>
+    </div>
+
+    <div class="section-title">2.5 例题演示</div>
+    <div class="example">
+      <div class="example-title">例题：安全边际与目标利润</div>
+      <p>延续咖啡馆案例：\( P = 35 \)，\( v = 15 \)，\( F = 8,000 \)，盈亏平衡 \( Q_{BE} = 400 \) 杯。</p>
+      <p>假设该店<strong>实际月销量为600杯</strong>。</p>
+      <p><strong>要求：</strong></p>
+      <ol>
+        <li>计算安全边际（数量、金额、比率）</li>
+        <li>若目标月利润为4,000元，计算目标销量</li>
+      </ol>
+      <div class="solution">
+        <strong>解答：</strong><br><br>
+        (1) 安全边际：<br>
+        \( \text{MS}_{\text{units}} = 600 - 400 = 200 \) 杯<br>
+        \( \text{MS}_{\$} = 200 \times 35 = 7,000 \) 元<br>
+        \( \text{MS}\% = 200 / 600 = 33.33\% \)<br><br>
+        销量最多可下滑33.33%（即降至400杯）才会亏损。<br><br>
+        (2) 目标利润4,000元：<br>
+        $$Q_{\text{target}} = \frac{8,000 + 4,000}{20} = \frac{12,000}{20} = 600 \text{ 杯}$$
+        <br>
+        <span class="highlight">要实现4,000元月利润，需要月销量达到600杯——恰好就是实际销量！</span>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-title">例题：多产品CVP</div>
+      <p>某文具店销售两种笔记本：</p>
+      <ul>
+        <li>精装本：单价50元，变动成本30元，销售额占比60%</li>
+        <li>简装本：单价20元，变动成本12元，销售额占比40%</li>
+        <li>月固定成本：10,000元</li>
+      </ul>
+      <p><strong>要求：</strong>计算综合盈亏平衡销售额及每种产品的保本销售额。</p>
+      <div class="solution">
+        <strong>解答：</strong><br><br>
+        精装本 C/S ratio = \( (50-30)/50 = 40\% \)<br>
+        简装本 C/S ratio = \( (20-12)/20 = 40\% \)<br><br>
+        加权平均 C/S ratio = \( 0.6 \times 0.4 + 0.4 \times 0.4 = 40\% \)<br><br>
+        综合盈亏平衡销售额 = \( 10,000 / 0.4 = 25,000 \) 元<br><br>
+        精装本保本销售额 = \( 25,000 \times 60\% = 15,000 \) 元<br>
+        简装本保本销售额 = \( 25,000 \times 40\% = 10,000 \) 元<br><br>
+        <span class="highlight">验证：精装本贡献 = 15,000 × 40% = 6,000元；简装本贡献 = 10,000 × 40% = 4,000元；合计10,000元 = 固定成本 ✓</span>
+      </div>
+    </div>
+
+    <div class="section-title">2.6 Python：敏感性分析</div>
+    <pre><code># 敏感性分析：价格、成本变动对盈亏平衡的影响
+import numpy as np
+import matplotlib.pyplot as plt
+
+P, v, F = 35, 15, 8000          # 基准参数
+CM = P - v
+Q_BE_base = F / CM
+
+# ===== 分析：单价变动对盈亏平衡的影响 =====
+price_changes = np.linspace(-20, 20, 41)   # 单价变动 ±20%
+Q_BE_prices = []
+for pct in price_changes:
+    P_new = P * (1 + pct/100)
+    CM_new = P_new - v
+    Q_BE_new = F / CM_new
+    Q_BE_prices.append(Q_BE_new)
+
+# ===== 分析：变动成本变动对盈亏平衡的影响 =====
+vc_changes = np.linspace(-20, 20, 41)
+Q_BE_vcs = []
+for pct in vc_changes:
+    v_new = v * (1 + pct/100)
+    CM_new = P - v_new
+    Q_BE_vcs.append(F / CM_new)
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+ax1 = axes[0]
+ax1.plot(price_changes, Q_BE_prices, color='#C49A6C', linewidth=2.5)
+ax1.axvline(0, color='gray', linestyle='--', alpha=0.5)
+ax1.axhline(Q_BE_base, color='#E74C3C', linestyle='--', alpha=0.5, label=f'基准 Q_BE={Q_BE_base:.0f}')
+ax1.set_xlabel('单价变动（%）', fontsize=12)
+ax1.set_ylabel('盈亏平衡销量（杯）', fontsize=12)
+ax1.set_title('单价变动对盈亏平衡的影响', fontsize=14, fontweight='bold')
+ax1.legend()
+ax1.grid(True, alpha=0.3)
+
+ax2 = axes[1]
+ax2.plot(vc_changes, Q_BE_vcs, color='#8B6F4E', linewidth=2.5)
+ax2.axvline(0, color='gray', linestyle='--', alpha=0.5)
+ax2.axhline(Q_BE_base, color='#E74C3C', linestyle='--', alpha=0.5, label=f'基准 Q_BE={Q_BE_base:.0f}')
+ax2.set_xlabel('变动成本变动（%）', fontsize=12)
+ax2.set_ylabel('盈亏平衡销量（杯）', fontsize=12)
+ax2.set_title('变动成本变动对盈亏平衡的影响', fontsize=14, fontweight='bold')
+ax2.legend()
+ax2.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+# 打印关键数据点
+print("=== 敏感性分析关键结果 ===")
+print(f"基准盈亏平衡: {Q_BE_base:.0f} 杯")
+print(f"单价下降20%时, 盈亏平衡: {Q_BE_prices[0]:.0f} 杯")
+print(f"单价上升20%时, 盈亏平衡: {Q_BE_prices[-1]:.0f} 杯")
+print(f"变动成本上升20%时, 盈亏平衡: {Q_BE_vcs[-1]:.0f} 杯")</code></pre>
+
+    <div class="summary">
+      <strong>第2课小结</strong>
+      <ul>
+        <li>安全边际 MS% = (实际销量 − 盈亏平衡销量) / 实际销量，反映经营安全程度</li>
+        <li>目标销量公式：\( Q_{target} = (F + \text{目标利润}) / CM \)</li>
+        <li>价格↑或成本↓ → 盈亏平衡点↓，经营更安全</li>
+        <li>多产品CVP用加权平均C/S ratio计算综合盈亏平衡，再按比例分配</li>
+      </ul>
+    </div>
+    <a class="notebook-link" href="../03-Notebook代码/week7-本量利分析与存货管理.html" target="_blank">前往Notebook练习 →</a>
+  </div>
+</div>
+
+<!-- ========== 第3节课 ========== -->
+<div class="lesson">
+  <div class="lesson-header">
+    <span class="lesson-num">第3课</span>
+    <h3>存货管理与EOQ模型</h3>
+  </div>
+  <div class="lesson-body">
+
+    <div class="objectives">
+      <strong>学习目标</strong>
+      <ul>
+        <li>理解存货成本的两大组成部分：订货成本与持有成本</li>
+        <li>能从总成本方程出发，通过求导推导出EOQ公式</li>
+        <li>掌握再订货点、最低库存、最高库存的计算</li>
+        <li>能用Python实现EOQ计算和存货水平监控可视化</li>
+      </ul>
+    </div>
+
+    <div class="section-title">3.1 存货成本的构成</div>
+    <p>存货管理的总成本由两大部分组成，它们之间存在<strong>此消彼长</strong>的关系：</p>
+
+    <table>
+      <tr><th>成本类型</th><th>定义</th><th>与订货量的关系</th><th>例子</th></tr>
+      <tr><td><strong>订货成本 (Ordering Cost)</strong></td><td>每次订货发生的固定费用</td><td>订货量越大，订货次数越少，总订货成本越低</td><td>下单手续费、运输费、验收费</td></tr>
+      <tr><td><strong>持有成本 (Holding/Carrying Cost)</strong></td><td>持有存货期间发生的费用</td><td>订货量越大，平均库存越高，总持有成本越高</td><td>仓储费、保险费、资金占用利息、损耗</td></tr>
+    </table>
+
+    <div class="section-title">3.2 EOQ模型的建立与推导</div>
+    <p>EOQ（Economic Order Quantity，经济订货量）的目标是找到<strong>使总存货成本最小</strong>的订货量。</p>
+
+    <div class="derivation">
+      <div class="derivation-title">EOQ模型推导（核心！）</div>
+
+      <div class="step">
+        <div class="step-num">第1步：定义变量</div>
+        <ul>
+          <li>\( D \) = 年需求量（单位/年）</li>
+          <li>\( Q \) = 每次订货量（单位）</li>
+          <li>\( S \) = 每次订货成本（元/次）</li>
+          <li>\( H \) = 单位年持有成本（元/单位/年）</li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第2步：建立总成本方程</div>
+        <p>年订货次数 = \( D/Q \)，平均库存 = \( Q/2 \)（假设均匀消耗）</p>
+        $$\text{总成本 } TC = \underbrace{\frac{D}{Q} \cdot S}_{\text{年订货成本}} + \underbrace{\frac{Q}{2} \cdot H}_{\text{年持有成本}}$$
+        <p class="step-note">订货成本随Q增大而减小，持有成本随Q增大而增大</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第3步：对Q求导</div>
+        <p>为找到最小值，对 \( TC \) 关于 \( Q \) 求导：</p>
+        $$\frac{d(TC)}{dQ} = -\frac{D \cdot S}{Q^2} + \frac{H}{2}$$
+        <p class="step-note">\( \frac{D}{Q} \cdot S \) 的导数是 \( -\frac{DS}{Q^2} \)；\( \frac{Q}{2} \cdot H \) 的导数是 \( \frac{H}{2} \)</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第4步：令导数为0，求解EOQ</div>
+        $$-\frac{D \cdot S}{Q^2} + \frac{H}{2} = 0$$
+        $$\frac{D \cdot S}{Q^2} = \frac{H}{2}$$
+        $$Q^2 = \frac{2DS}{H}$$
+        $$\boxed{EOQ = Q^* = \sqrt{\frac{2DS}{H}}}$$
+      </div>
+
+      <div class="step">
+        <div class="step-num">第5步：验证是最小值（二阶导数）</div>
+        $$\frac{d^2(TC)}{dQ^2} = \frac{2DS}{Q^3} > 0 \quad (\text{因为 } D, S, Q > 0)$$
+        <p class="step-note">二阶导数为正，说明该临界点确实是最小值点，而非最大值</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第6步：计算最小总成本</div>
+        <p>将 \( EOQ = \sqrt{2DS/H} \) 代回总成本公式：</p>
+        $$TC_{\min} = \frac{D \cdot S}{\sqrt{2DS/H}} + \frac{\sqrt{2DS/H}}{2} \cdot H$$
+        <p>化简后（两项相等时总成本最小）：</p>
+        $$\boxed{TC_{\min} = \sqrt{2DSH}}$$
+      </div>
+    </div>
+
+    <div class="concept-box">
+      <strong>经济意义：</strong>在最优订货量EOQ处，年订货成本恰好等于年持有成本。这一性质常被用来快速验证计算是否正确。
+    </div>
+
+    <div class="section-title">3.3 存货水平管理指标</div>
+    <p>除了确定"每次订多少"，还要确定"何时订"以及库存的上下限：</p>
+
+    <div class="derivation">
+      <div class="derivation-title">关键存货水平公式</div>
+      <div class="step">
+        <div class="step-num">再订货点 (Reorder Level, RL)</div>
+        <p>当库存降到这个水平时，应该立即发出新订单。</p>
+        $$RL = \text{最大日用量} \times \text{最长提前期}$$
+        <p class="step-note">用"最大"和"最长"是为了保守估计，避免缺货</p>
+      </div>
+      <div class="step">
+        <div class="step-num">最低库存 (Minimum Level)</div>
+        <p>正常情况下不应低于的库存水平。</p>
+        $$\text{Minimum Level} = RL - (\text{平均日用量} \times \text{平均提前期})$$
+        <p class="step-note">即：再订货点减去正常提前期内的消耗量</p>
+      </div>
+      <div class="step">
+        <div class="step-num">最高库存 (Maximum Level)</div>
+        <p>新货到达时库存可能达到的最高水平。</p>
+        $$\text{Maximum Level} = RL + EOQ - (\text{最小日用量} \times \text{最短提前期})$$
+        <p class="step-note">假设订货到达时库存刚好降到再订货点，然后加上新订的EOQ</p>
+      </div>
+    </div>
+
+    <div class="section-title">3.4 例题演示</div>
+    <div class="example">
+      <div class="example-title">例题：书店EOQ计算</div>
+      <p>某书店销售一种畅销小说，数据如下：</p>
+      <ul>
+        <li>年需求量 \( D = 2,400 \) 本/年</li>
+        <li>每次订货成本 \( S = 100 \) 元/次（含物流、验货）</li>
+        <li>单位年持有成本 \( H = 6 \) 元/本/年（仓储+资金占用）</li>
+      </ul>
+      <p><strong>要求：</strong>计算EOQ、最优订货次数、最小总成本。</p>
+      <div class="solution">
+        <strong>解答：</strong><br><br>
+        $$EOQ = \sqrt{\frac{2 \times 2,400 \times 100}{6}} = \sqrt{\frac{480,000}{6}} = \sqrt{80,000} = 283 \text{ 本}$$
+        <br>
+        最优订货次数 = \( 2,400 / 283 = 8.48 \approx 9 \) 次/年<br>
+        最小总成本 = \( \sqrt{2 \times 2,400 \times 100 \times 6} = \sqrt{2,880,000} = 1,697 \) 元/年<br><br>
+        <span class="highlight">验证：订货成本 = 8.48 × 100 = 848元；持有成本 = (283/2) × 6 = 849元。两者近似相等 ✓</span>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-title">例题：存货水平计算</div>
+      <p>接上例，补充以下数据：</p>
+      <ul>
+        <li>年工作日：300天</li>
+        <li>平均日用量：8本/天；最大日用量：12本/天；最小日用量：6本/天</li>
+        <li>平均提前期：5天；最长提前期：8天；最短提前期：3天</li>
+      </ul>
+      <div class="solution">
+        <strong>解答：</strong><br><br>
+        再订货点 \( RL = 12 \times 8 = 96 \) 本<br><br>
+        最低库存 = \( 96 - (8 \times 5) = 96 - 40 = 56 \) 本<br><br>
+        最高库存 = \( 96 + 283 - (6 \times 3) = 96 + 283 - 18 = 361 \) 本<br><br>
+        <span class="highlight">管理含义：当库存降至96本时发出新订单283本；正常库存应在56~361本之间波动。</span>
+      </div>
+    </div>
+
+    <div class="section-title">3.5 Python实现：EOQ与存货监控</div>
+    <pre><code># EOQ计算与存货水平监控
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ===== 参数设定 =====
+D = 2400            # 年需求量
+S = 100             # 每次订货成本
+H = 6               # 单位年持有成本
+
+# ===== EOQ计算 =====
+EOQ = np.sqrt(2 * D * S / H)
+order_times = D / EOQ
+total_cost = np.sqrt(2 * D * S * H)
+
+print(f"EOQ = {EOQ:.1f} 本")
+print(f"年订货次数 = {order_times:.1f} 次")
+print(f"最小总成本 = {total_cost:.1f} 元/年")
+
+# ===== 验证：订货成本 ≈ 持有成本 =====
+order_cost = (D / EOQ) * S
+holding_cost = (EOQ / 2) * H
+print(f"\n验证：订货成本={order_cost:.1f}元, 持有成本={holding_cost:.1f}元")
+
+# ===== 绘制总成本曲线 =====
+Q_range = np.linspace(50, 800, 300)
+TC = (D / Q_range) * S + (Q_range / 2) * H
+
+plt.figure(figsize=(10, 6))
+plt.plot(Q_range, TC, color='#C49A6C', linewidth=2.5, label='总成本 TC')
+plt.axvline(EOQ, color='#E74C3C', linestyle='--', label=f'EOQ = {EOQ:.1f}')
+plt.scatter([EOQ], [total_cost], color='#E74C3C', s=100, zorder=5)
+plt.xlabel('订货量 Q（本）', fontsize=12)
+plt.ylabel('年总成本（元）', fontsize=12)
+plt.title('EOQ总成本曲线', fontsize=14, fontweight='bold')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# ===== 存货水平模拟（锯齿图）=====
+working_days = 300
+daily_demand = D / working_days  # 8本/天
+lead_time = 5                    # 提前期5天
+RL = daily_demand * lead_time * 1.5  # 再订货点（带安全库存）
+
+# 模拟一个订货周期内的库存变化
+cycle_days = int(EOQ / daily_demand)
+days = np.arange(0, cycle_days + 20)
+inventory = []
+inv = EOQ  # 期初库存
+for day in days:
+    inventory.append(inv)
+    inv -= daily_demand
+    if inv <= RL and day < cycle_days:  # 到达再订货点时补货
+        inv += EOQ
+
+plt.figure(figsize=(12, 5))
+plt.plot(days[:len(inventory)], inventory, color='#2E86AB', linewidth=2.5)
+plt.axhline(RL, color='#E74C3C', linestyle='--', label=f'再订货点={RL:.0f}')
+plt.axhline(0, color='gray', linestyle='-', alpha=0.3)
+plt.xlabel('天数', fontsize=12)
+plt.ylabel('库存水平（本）', fontsize=12)
+plt.title('存货水平波动（锯齿图）', fontsize=14, fontweight='bold')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()</code></pre>
+
+    <div class="summary">
+      <strong>第3课小结</strong>
+      <ul>
+        <li>存货总成本 = 订货成本 + 持有成本，两者此消彼长</li>
+        <li>EOQ = \( \sqrt{2DS/H} \)，通过求导令总成本最小化得出</li>
+        <li>最优时，年订货成本 = 年持有成本（重要验证）</li>
+        <li>再订货点、最低库存、最高库存构成存货管理的"红绿灯"系统</li>
+      </ul>
+    </div>
+    <a class="notebook-link" href="../03-Notebook代码/week7-本量利分析与存货管理.html" target="_blank">前往Notebook练习 →</a>
+  </div>
+</div>
+
+<footer>
+  <p>商业数据分析 · 第7周：本量利分析与存货管理</p>
+  <p style="font-size:0.8rem; margin-top:0.5rem; opacity:0.7;">© 教学内容仅供学习使用</p>
+</footer>
+
+</div>
+
+<div style="position:fixed;left:18px;bottom:18px;z-index:999;">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;background:#1b3a5f;color:#fff;text-decoration:none;font-size:13px;padding:8px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(27,58,95,0.3);font-family:-apple-system,'PingFang SC',sans-serif;">← 课件目录</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第3周：线性函数与成本分析 | 商业数据分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --bg-primary: #F5F0E8;
+            --bg-secondary: #E8D5C4;
+            --bg-formula: #FFF8E7;
+            --accent: #C49A6C;
+            --accent-dark: #8B6F4E;
+            --text-primary: #3D3D3D;
+            --text-secondary: #666;
+            --code-bg: #2D2D2D;
+            --code-text: #F8F8F2;
+            --white: #FFFFFF;
+            --shadow: rgba(139,111,78,0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+        /* Header */
+        header {
+            background-color: var(--accent-dark);
+            color: var(--white);
+            padding: 48px 0;
+            text-align: center;
+        }
+        header h1 { font-size: 2.2rem; font-weight: 500; margin-bottom: 12px; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; font-family: Georgia, serif; }
+        header .week-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--white);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+        /* Week Overview */
+        .week-overview {
+            background: var(--white);
+            margin: 32px 0;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+        .week-overview h2 { color: var(--accent-dark); margin-bottom: 16px; font-size: 1.4rem; }
+        .week-overview ul { margin-left: 24px; }
+        .week-overview li { margin: 8px 0; color: var(--text-secondary); }
+        /* Lesson Card */
+        .lesson { background: var(--white); margin: 32px 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px var(--shadow); }
+        .lesson-header {
+            background: var(--bg-secondary);
+            padding: 24px 32px;
+            border-left: 5px solid var(--accent);
+        }
+        .lesson-header h3 { color: var(--accent-dark); font-size: 1.3rem; }
+        .lesson-header .lesson-num { color: var(--accent); font-weight: 600; }
+        .lesson-body { padding: 32px; }
+        .lesson-body h4 { color: var(--accent-dark); margin: 28px 0 12px; font-size: 1.15rem; }
+        .lesson-body p { margin: 12px 0; color: var(--text-secondary); }
+        /* Formula Box */
+        .formula-box {
+            background: var(--bg-formula);
+            border-left: 4px solid var(--accent);
+            padding: 24px 28px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .formula-box .formula-title {
+            color: var(--accent-dark);
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+        /* Example Box */
+        .example-box {
+            background: #FAFAFA;
+            border: 1px solid var(--bg-secondary);
+            padding: 24px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .example-box .example-title {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        /* Code Block */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+        code {
+            font-family: "Consolas", "Monaco", monospace;
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre code { background: none; padding: 0; }
+        /* Button */
+        .btn-notebook {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 16px;
+            transition: background 0.3s;
+        }
+        .btn-notebook:hover { background: var(--accent-dark); }
+        .lesson-footer { padding: 0 32px 32px; }
+        /* Summary */
+        .summary {
+            background: #F0F7EE;
+            border-left: 4px solid #7BAE7F;
+            padding: 20px 24px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .summary strong { color: #5A8F5E; }
+        /* MathJax */
+        mjx-container { font-size: 1.05em !important; }
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.6rem; }
+            .container { padding: 0 16px; }
+            .lesson-body, .week-overview { padding: 20px; }
+            pre { padding: 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="week-badge">Week 3</div>
+        <h1>线性函数与成本分析</h1>
+        <p class="subtitle">Linear Functions & Cost Analysis</p>
+    </div>
+</header>
+
+<div class="container">
+
+<!-- Week Overview -->
+<div class="week-overview">
+    <h2>本周学习目标</h2>
+    <ul>
+        <li>理解线性函数 <code>y = a + bx</code> 在成本分析中的经济含义</li>
+        <li>掌握从实际数据中识别固定成本和变动成本的能力</li>
+        <li>学会用高低点法分解半变动成本</li>
+        <li>能用散点图直观判断变量间的线性关系</li>
+        <li>熟练使用 Python 绘制成本相关图表</li>
+    </ul>
+</div>
+
+<!-- Lesson 1 -->
+<div class="lesson" id="lesson1">
+    <div class="lesson-header">
+        <h3><span class="lesson-num">第1节课</span> 线性函数结构</h3>
+    </div>
+    <div class="lesson-body">
+        <h4>学习目标</h4>
+        <p>理解线性函数的基本结构，掌握斜率和截距的经济含义，能够根据两个成本数据点求出成本方程。</p>
+
+        <h4>核心概念：从成本场景引入线性函数</h4>
+        <p>假设你经营一家小型工厂，每月的<strong>总成本</strong>由两部分组成：</p>
+        <ul style="margin-left:24px;color:var(--text-secondary);">
+            <li><strong>固定成本</strong>：无论生产多少，都要支付的租金、管理人员工资等，比如每月 ¥10,000</li>
+            <li><strong>变动成本</strong>：每生产一件产品需要原材料和人工，比如每件 ¥50</li>
+        </ul>
+        <p>如果本月生产了 <code>x</code> 件产品，那么总成本 <code>y</code> 可以写成：</p>
+
+        <div class="formula-box">
+            <div class="formula-title">成本方程（线性函数）</div>
+            $$ y = a + bx $$
+            <p>其中：<br>
+            \( a \) = 固定成本（截距）= ¥10,000<br>
+            \( b \) = 单位变动成本（斜率）= ¥50/件<br>
+            \( x \) = 产量（自变量）<br>
+            \( y \) = 总成本（因变量）</p>
+        </div>
+
+        <p>例如，生产 200 件时：</p>
+        <pre><code>y = 10,000 + 50 * 200 = 10,000 + 10,000 = 20,000 元</code></pre>
+
+        <h4>斜率 \( b \) 的经济含义</h4>
+        <p>斜率 \( b \) 表示：<strong>当 \( x \) 增加 1 个单位时，\( y \) 增加多少</strong>。</p>
+        <p>在成本分析中，这就是<strong>单位变动成本</strong>——每多生产一件产品，总成本增加多少钱。</p>
+
+        <h4>截距 \( a \) 的经济含义</h4>
+        <p>截距 \( a \) 表示：<strong>当 \( x = 0 \) 时，\( y \) 的值</strong>。</p>
+        <p>在成本分析中，这就是<strong>固定成本</strong>——即使不生产任何产品，也必须支出的费用。</p>
+
+        <h4>公式推导：从两点式推导斜率</h4>
+        <p>假设我们只知道两个月的成本数据：</p>
+        <ul style="margin-left:24px;color:var(--text-secondary);">
+            <li>1月：产量 \( x_1 = 100 \)，总成本 \( y_1 = 15,000 \)</li>
+            <li>2月：产量 \( x_2 = 300 \)，总成本 \( y_2 = 25,000 \)</li>
+        </ul>
+
+        <div class="formula-box">
+            <div class="formula-title">推导过程</div>
+            <p>假设成本方程为 \( y = a + bx \)，两个点都满足这个方程：</p>
+            $$ y_1 = a + bx_1 	ag{1} $$
+            $$ y_2 = a + bx_2 	ag{2} $$
+            <p><strong>第1步：</strong>用方程 (2) 减方程 (1)</p>
+            $$ y_2 - y_1 = (a + bx_2) - (a + bx_1) $$
+            $$ y_2 - y_1 = bx_2 - bx_1 $$
+            $$ y_2 - y_1 = b(x_2 - x_1) $$
+            <p><strong>第2步：</strong>两边同除以 \( (x_2 - x_1) \)</p>
+            $$ b = \frac{y_2 - y_1}{x_2 - x_1} $$
+            <p><strong>第3步：</strong>代入任一点求 \( a \)</p>
+            $$ a = y_1 - bx_1 $$
+        </div>
+
+        <div class="example-box">
+            <div class="example-title">例题演示</div>
+            <p>数据：\((x_1, y_1) = (100, 15000)\)，\((x_2, y_2) = (300, 25000)\)</p>
+            <p><strong>求斜率：</strong></p>
+            $$ b = \frac{25000 - 15000}{300 - 100} = \frac{10000}{200} = 50 $$
+            <p><strong>求截距：</strong></p>
+            $$ a = 15000 - 50 * 100 = 15000 - 5000 = 10000 $$
+            <p><strong>成本方程：</strong>\( y = 10000 + 50x \)</p>
+        </div>
+
+        <h4>Python 绘制不同斜率和截距的直线</h4>
+        <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+# 设置中文字体
+plt.rcParams['font.size'] = 12
+
+# 创建数据
+x = np.linspace(0, 400, 100)
+
+# 不同参数的线性函数
+y1 = 10000 + 50 * x   # 原始成本线
+y2 = 8000 + 60 * x    # 较低的固定成本，较高的变动成本
+y3 = 12000 + 40 * x   # 较高的固定成本，较低的变动成本
+
+plt.figure(figsize=(10, 6))
+plt.plot(x, y1, label='a=10000, b=50', color='#C49A6C', linewidth=2)
+plt.plot(x, y2, label='a=8000, b=60', color='#8B6F4E', linewidth=2)
+plt.plot(x, y3, label='a=12000, b=40', color='#E8A87C', linewidth=2)
+plt.xlabel('产量 x')
+plt.ylabel('总成本 y')
+plt.title('不同成本结构下的总成本曲线')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()</code></pre>
+
+        <div class="summary">
+            <strong>本节课小结</strong><br>
+            - 线性函数 \( y = a + bx \) 完美刻画了"固定 + 变动"的成本结构<br>
+            - 截距 \( a \) = 固定成本；斜率 \( b \) = 单位变动成本<br>
+            - 已知两点即可用 \( b = \Delta y / \Delta x \) 求出完整方程
+        </div>
+    </div>
+    <div class="lesson-footer">
+        <a href="../03-Notebook代码/week3-线性函数与成本分析.html" class="btn-notebook">前往 Notebook 练习 →</a>
+    </div>
+</div>
+
+<!-- Lesson 2 -->
+<div class="lesson" id="lesson2">
+    <div class="lesson-header">
+        <h3><span class="lesson-num">第2节课</span> 高低点法</h3>
+    </div>
+    <div class="lesson-body">
+        <h4>学习目标</h4>
+        <p>掌握高低点法分解半变动成本的原理和计算步骤，理解其优缺点。</p>
+
+        <h4>核心概念：半变动成本</h4>
+        <p>在实际经营中，很多成本既不是纯固定的，也不是纯变动的，而是<strong>半变动成本</strong>（Semi-variable cost）。例如电费：有一个基本月租费（固定部分），再加上按用电量计费的部分（变动部分）。</p>
+        <p>半变动成本同样可以用线性函数表示：</p>
+        $$ y = a + bx $$
+        <p>但这里的 \( a \) 和 \( b \) 隐藏在混合数据中，需要通过方法把它们"分离"出来。</p>
+
+        <h4>高低点法原理</h4>
+        <p>高低点法的核心思想是：<strong>选取数据集中活动量最高和最低的两个点</strong>，用这两个极端点来确定成本线。</p>
+        <p>为什么只用两点？因为在最高点与最低点之间，成本变化不受中间波动的干扰，能最清晰地反映变动成本率。</p>
+
+        <h4>公式推导</h4>
+        <div class="formula-box">
+            <div class="formula-title">高低点法推导</div>
+            <p>设：</p>
+            <p>最高点：\((x_h, y_h)\) —— 最高活动量及其对应成本<br>
+            最低点：\((x_l, y_l)\) —— 最低活动量及其对应成本</p>
+            <p><strong>第1步：求单位变动成本 \( b \)</strong></p>
+            <p>由于两点都在同一条成本线上：</p>
+            $$ y_h = a + bx_h \quad	ext{和}\quad y_l = a + bx_l $$
+            <p>两式相减：</p>
+            $$ y_h - y_l = b(x_h - x_l) $$
+            <p>因此：</p>
+            $$ b = \frac{y_h - y_l}{x_h - x_l} = \frac{\Delta y}{\Delta x} $$
+            <p><strong>第2步：求固定成本 \( a \)</strong></p>
+            <p>将 \( b \) 代入任一点：</p>
+            $$ a = y_h - b \cdot x_h \quad	ext{或}\quad a = y_l - b \cdot x_l $$
+        </div>
+
+        <div class="example-box">
+            <div class="example-title">例题演示</div>
+            <p>某工厂过去6个月的产量和电费数据：</p>
+            <table style="width:100%;border-collapse:collapse;margin:12px 0;">
+                <tr style="background:var(--bg-secondary);">
+                    <th style="padding:8px;border:1px solid #ccc;">月份</th>
+                    <th style="padding:8px;border:1px solid #ccc;">产量 x（件）</th>
+                    <th style="padding:8px;border:1px solid #ccc;">电费 y（元）</th>
+                </tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">1月</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">200</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">5,800</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">2月</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">250</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">6,500</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">3月</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">180</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">5,500</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">4月</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">320</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">7,600</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">5月</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">280</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">6,900</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">6月</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">150</td><td style="padding:8px;border:1px solid #ddd;text-align:center;">5,100</td></tr>
+            </table>
+            <p><strong>最高点</strong>：4月，\( x_h = 320, y_h = 7600 \)<br>
+            <strong>最低点</strong>：6月，\( x_l = 150, y_l = 5100 \)</p>
+            <p><strong>计算：</strong></p>
+            $$ b = \frac{7600 - 5100}{320 - 150} = \frac{2500}{170} = 14.71 \text{ 元/件} $$
+            $$ a = 7600 - 14.71 * 320 = 7600 - 4707 = 2893 \text{ 元} $$
+            <p><strong>电费方程</strong>：\( y = 2893 + 14.71x \)</p>
+        </div>
+
+        <h4>阶梯式固定成本的处理</h4>
+        <p>有些成本呈"阶梯式"跳跃：在一定产量范围内固定不变，超过阈值后跃升到一个新水平。高低点法对此不适用——需要<strong>回归分析</strong>（下周内容）或分段处理。</p>
+
+        <h4>高低点法的优缺点</h4>
+        <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+            <tr style="background:var(--accent-dark);color:white;">
+                <th style="padding:10px;border:1px solid #ccc;">优点</th>
+                <th style="padding:10px;border:1px solid #ccc;">缺点</th>
+            </tr>
+            <tr>
+                <td style="padding:10px;border:1px solid #ddd;vertical-align:top;">✓ 计算简单，只需两个数据点<br>✓ 快速估算，适合初步分析</td>
+                <td style="padding:10px;border:1px solid #ddd;vertical-align:top;">✗ 只用到两个极端点，忽略其他数据<br>✗ 极端点可能异常，导致偏差大<br>✗ 不考虑随机误差</td>
+            </tr>
+        </table>
+
+        <h4>Python 实现高低点法</h4>
+        <pre><code>import numpy as np
+
+# 数据
+months = ['1月', '2月', '3月', '4月', '5月', '6月']
+x = np.array([200, 250, 180, 320, 280, 150])  # 产量
+y = np.array([5800, 6500, 5500, 7600, 6900, 5100])  # 电费
+
+# 高低点法
+def high_low_method(x, y):
+    # 找最高点和最低点的索引
+    h_idx = np.argmax(x)  # 最高活动量
+    l_idx = np.argmin(x)  # 最低活动量
+
+    x_h, y_h = x[h_idx], y[h_idx]
+    x_l, y_l = x[l_idx], y[l_idx]
+
+    # 计算 b 和 a
+    b = (y_h - y_l) / (x_h - x_l)
+    a = y_h - b * x_h  # 也可用 y_l - b * x_l
+
+    return a, b, x_h, y_h, x_l, y_l
+
+a, b, xh, yh, xl, yl = high_low_method(x, y)
+print(f"最高点: ({xh}, {yh})")
+print(f"最低点: ({xl}, {yl})")
+print(f"变动成本率 b = {b:.2f} 元/件")
+print(f"固定成本 a = {a:.2f} 元")
+print(f"成本方程: y = {a:.2f} + {b:.2f}x")</code></pre>
+
+        <div class="summary">
+            <strong>本节课小结</strong><br>
+            - 半变动成本 = 固定部分 + 变动部分<br>
+            - 高低点法用两个极端点分离 \( a \) 和 \( b \)：\( b = \Delta y / \Delta x \)，\( a = y_h - bx_h \)<br>
+            - 优点：简单快捷；缺点：只用两点，易受异常值影响
+        </div>
+    </div>
+    <div class="lesson-footer">
+        <a href="../03-Notebook代码/week3-线性函数与成本分析.html" class="btn-notebook">前往 Notebook 练习 →</a>
+    </div>
+</div>
+
+<!-- Lesson 3 -->
+<div class="lesson" id="lesson3">
+    <div class="lesson-header">
+        <h3><span class="lesson-num">第3节课</span> 散点图与最佳拟合线</h3>
+    </div>
+    <div class="lesson-body">
+        <h4>学习目标</h4>
+        <p>学会用散点图直观展示变量关系，理解最佳拟合线的概念，能用 Python 绘制包含拟合线的散点图。</p>
+
+        <h4>核心概念：散点图</h4>
+        <p>散点图（Scatter diagram）是将每一对数据 \( (x_i, y_i) \) 画成坐标系中的一个点。它是<strong>观察两个变量关系的第一个工具</strong>。</p>
+        <p>通过散点图，我们可以直观判断：</p>
+        <ul style="margin-left:24px;color:var(--text-secondary);">
+            <li>两个变量是否有线性关系？</li>
+            <li>关系是正相关（x增大y增大）还是负相关？</li>
+            <li>关系的强弱程度如何？</li>
+            <li>是否存在异常值？</li>
+        </ul>
+
+        <h4>最佳拟合线的直观概念</h4>
+        <p>当散点大致呈线性分布时，我们可以画一条<strong>最佳拟合线</strong>（Line of best fit）来概括这种关系。</p>
+        <p>"最佳"的含义是：这条线到所有数据点的距离（误差）总体最小。在下一周，我们将用<strong>最小二乘法</strong>严格定义并计算这条线。</p>
+
+        <div class="formula-box">
+            <div class="formula-title">最佳拟合线的视觉标准</div>
+            <p>1. 线应该穿过数据的"中心"<br>
+            2. 线两侧的点的数量大致相等<br>
+            3. 所有点到线的垂直距离之和尽可能小</p>
+        </div>
+
+        <h4>用 matplotlib 绘制散点图和拟合线</h4>
+        <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+# 示例数据：产量 vs 总成本
+x = np.array([100, 150, 200, 250, 300, 350, 400])
+y = np.array([12000, 14000, 16500, 19000, 21000, 24000, 26000])
+
+# 简单拟合线（用numpy的polyfit做1次多项式拟合）
+coef = np.polyfit(x, y, 1)  # 1表示线性
+a, b = coef[1], coef[0]  # polyfit返回 [b, a]
+x_line = np.linspace(x.min(), x.max(), 100)
+y_line = a + b * x_line
+
+plt.figure(figsize=(10, 6))
+plt.scatter(x, y, color='#C49A6C', s=80, zorder=3, label='实际数据')
+plt.plot(x_line, y_line, color='#8B6F4E', linewidth=2, label=f'拟合线: y={a:.0f}+{b:.2f}x')
+plt.xlabel('产量（件）')
+plt.ylabel('总成本（元）')
+plt.title('产量与总成本散点图')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()</code></pre>
+
+        <h4>从散点图判断线性关系强弱</h4>
+        <p>观察散点图时，可以从以下角度判断线性关系：</p>
+        <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+            <tr style="background:var(--accent-dark);color:white;">
+                <th style="padding:10px;border:1px solid #ccc;">散点图特征</th>
+                <th style="padding:10px;border:1px solid #ccc;">关系判断</th>
+            </tr>
+            <tr><td style="padding:10px;border:1px solid #ddd;">点紧密分布在一条直线附近</td><td style="padding:10px;border:1px solid #ddd;">强线性关系</td></tr>
+            <tr><td style="padding:10px;border:1px solid #ddd;">点大致沿某个方向分散</td><td style="padding:10px;border:1px solid #ddd;">中等线性关系</td></tr>
+            <tr><td style="padding:10px;border:1px solid #ddd;">点随机分布，无明显方向</td><td style="padding:10px;border:1px solid #ddd;">无线性关系</td></tr>
+            <tr><td style="padding:10px;border:1px solid #ddd;">点呈曲线趋势</td><td style="padding:10px;border:1px solid #ddd;">非线性关系</td></tr>
+        </table>
+
+        <h4>实际案例：广告费 vs 销售额</h4>
+        <pre><code># 广告费 vs 销售额数据
+ad_spend = np.array([5, 8, 12, 15, 18, 22, 25, 30, 35, 40])  # 千元
+sales = np.array([50, 70, 90, 110, 125, 150, 165, 190, 210, 240])  # 千元
+
+# 拟合
+coef2 = np.polyfit(ad_spend, sales, 1)
+a2, b2 = coef2[1], coef2[0]
+x2_line = np.linspace(ad_spend.min(), ad_spend.max(), 100)
+y2_line = a2 + b2 * x2_line
+
+plt.figure(figsize=(10, 6))
+plt.scatter(ad_spend, sales, color='#C49A6C', s=80, zorder=3, label='月度数据')
+plt.plot(x2_line, y2_line, color='#8B6F4E', linewidth=2, label=f'拟合线')
+plt.xlabel('广告费（千元）')
+plt.ylabel('销售额（千元）')
+plt.title('广告费与销售额关系')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# 预测：如果投入50千元广告费
+predicted = a2 + b2 * 50
+print(f"预测销售额: {predicted:.1f} 千元")</code></pre>
+
+        <div class="summary">
+            <strong>本节课小结</strong><br>
+            - 散点图是观察变量关系的可视化第一工具<br>
+            - 最佳拟合线概括了数据的线性趋势<br>
+            - 从点的分布紧密程度可初步判断关系强弱<br>
+            - 下一周我们将学习如何<strong>严格计算</strong>最佳拟合线
+        </div>
+    </div>
+    <div class="lesson-footer">
+        <a href="../03-Notebook代码/week3-线性函数与成本分析.html" class="btn-notebook">前往 Notebook 练习 →</a>
+    </div>
+</div>
+
+</div>
+
+<footer style="background:var(--accent-dark);color:var(--white);text-align:center;padding:24px;margin-top:48px;">
+    <p>商业数据分析 · 第3周</p>
+    <p style="font-size:0.9rem;opacity:0.7;">ACCA F3 Decision Making with Data</p>
+</footer>
+
+
+<div style="position:fixed;left:18px;bottom:18px;z-index:999;">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;background:#1b3a5f;color:#fff;text-decoration:none;font-size:13px;padding:8px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(27,58,95,0.3);font-family:-apple-system,'PingFang SC',sans-serif;">← 课件目录</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="PfA2cnGatEgOxEkWlWK8Sh">
+<head data-page-node-id="gPECFu8bcz1GFHhiLABMfV">
+    <meta charset="UTF-8" data-page-node-id="qywSyGyQSvw9DSGfig5b18">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="3hsui8OYkCCB8bqubC8qOD">
+    <title>数据驱动决策 | Decision Making with Data | 8周本科课程</title>
+    <style>
+        :root {
+            --bg-primary: #F5F0E8;
+            --bg-secondary: #E8D5C4;
+            --bg-card: #FFFFFF;
+            --accent: #C49A6C;
+            --accent-dark: #8B6F4E;
+            --text-primary: #3D3D3D;
+            --text-secondary: #6B6B6B;
+            --code-bg: #2D2D2D;
+            --code-text: #F8F8F2;
+            --border: #DDD5C7;
+            --shadow: rgba(139,111,78,0.12);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 100%);
+            color: white;
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+        .hero .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.92;
+            font-family: Georgia, serif;
+            margin-bottom: 12px;
+        }
+        .hero .tagline {
+            font-size: 1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .hero .badge-group {
+            margin-top: 28px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Info Bar */
+        .info-bar {
+            background: var(--bg-card);
+            padding: 24px;
+            margin: -30px auto 40px;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px var(--shadow);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            text-align: center;
+        }
+        .info-item .num {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+        }
+        .info-item .label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            margin: 48px 0 32px;
+        }
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: var(--accent-dark);
+            margin-bottom: 8px;
+        }
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Course Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+        .course-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+        .card-header {
+            background: linear-gradient(90deg, var(--bg-secondary), #FDF8F2);
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .card-header .week-num {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .card-header h3 {
+            font-size: 1.15rem;
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 20px 24px;
+        }
+        .card-body p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+        .topic-list {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+        .topic-list li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding: 4px 0;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+        .topic-list li::before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.6rem;
+            top: 0.55rem;
+        }
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .btn-primary {
+            background: var(--accent-dark);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #6B5238;
+        }
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--accent-dark);
+        }
+        .btn-secondary:hover {
+            background: #DCC4B0;
+        }
+
+        /* Features */
+        .features {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 40px 32px;
+            margin-bottom: 60px;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+        }
+        .feature-item {
+            text-align: center;
+        }
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 1.5rem;
+        }
+        .feature-item h4 {
+            font-size: 1rem;
+            color: var(--accent-dark);
+            margin-bottom: 8px;
+        }
+        .feature-item p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: var(--accent-dark);
+            text-decoration: none;
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 2rem; }
+            .hero .subtitle { font-size: 1rem; }
+            .course-grid { grid-template-columns: 1fr; }
+            .info-bar { margin: -20px 12px 30px; }
+        }
+    </style>
+</head>
+<body data-page-node-id="fDYyNogve71pQd9uawHTER">
+    <div class="hero" data-page-node-id="7Y598tc7LeG1clm0YEc5B3">
+        <div class="container" data-page-node-id="3MbCNViAbY8kOLOadagqQz">
+            <h1 data-page-node-id="DbmIxuO2DOJgCuJYDCA7N3">数据驱动决策</h1>
+            <p class="subtitle" data-page-node-id="1reHI2gjVQXqtasfe3ASAn">Decision Making with Data</p>
+            <p class="tagline" data-page-node-id="bjCvYIbzeeNp9vRSFK6ok4">面向本科大一学生的商业数据分析与决策课程 —— 从统计基础到投资评估，手把手带你用数据做决策</p>
+            <div class="badge-group" data-page-node-id="B0LDUTNRmdr3ORoxgyLYhs">
+                <span class="badge" data-page-node-id="LHHGq7mwJbunxLWXHqWsId">8 周课程</span>
+                <span class="badge" data-page-node-id="vG1e6MBq3luKrM05AIXL68">24 节课</span>
+                <span class="badge" data-page-node-id="JhmJCCslCFsF7UcTHOVEEV">8 个编程实践</span>
+                <span class="badge" data-page-node-id="vGMBlRCpIVkBFMCQBsE0Jp">零基础友好</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-bar" data-page-node-id="MzN7dDh7gM1TWWPly3VTXi">
+        <div class="info-item" data-page-node-id="H5yN2PTAPAylugdNrBqyJw">
+            <div class="num" data-page-node-id="GXaJxLMir1fSfSaluiFKOq">8</div>
+            <div class="label" data-page-node-id="roHTzDewRoE9lZ3FMnz9nk">教学周</div>
+        </div>
+        <div class="info-item" data-page-node-id="kBgc2O7hJoUtkZXRrYPedk">
+            <div class="num" data-page-node-id="fs5GIkjKi9yeqLiulm0rv4">3</div>
+            <div class="label" data-page-node-id="UFg740xdlFvY0xy3BeDOsn">节课/周</div>
+        </div>
+        <div class="info-item" data-page-node-id="pFqv7aDn3kNdSOgkRLbzEA">
+            <div class="num" data-page-node-id="X9Xs1t7ivD37FjIJxFv5B8">8</div>
+            <div class="label" data-page-node-id="2h1gFVq3XHakvGwn2p48na">Jupyter Notebook</div>
+        </div>
+        <div class="info-item" data-page-node-id="MxlJYxlrDlOnk1W3AY3631">
+            <div class="num" data-page-node-id="URZ2bhSKLBTVhdnaU16pSA">∞</div>
+            <div class="label" data-page-node-id="JhxcUVdoZoC2Cahc3wLT3L">公式推导</div>
+        </div>
+    </div>
+
+    <div class="container" data-page-node-id="NbPZmtAAQpVbsasb9K0EAI">
+        <div class="section-title" data-page-node-id="u45Wkt1y4RXIQ7pA0tDyXL">
+            <h2 data-page-node-id="IfztRCjRaBN4luk36szKor">课程内容</h2>
+            <p data-page-node-id="K3pOe5fZ8dRNBZA6HA2AzK">三大模块循序渐进：数据分析与统计 → 短期决策 → 长期决策</p>
+        </div>
+
+        <div class="course-grid" data-page-node-id="IGXIrj6zPxuiLoOBzq5LxS">
+            <!-- Week 1 -->
+            <div class="course-card" data-page-node-id="YsFc1RVhru70itMIGXDg3U">
+                <div class="card-header" data-page-node-id="H567ZJkprQI12f29JGwLz2">
+                    <span class="week-num" data-page-node-id="j8V2dPJgiHYqwpSVyfOM4h">第 1 周</span>
+                    <h3 data-page-node-id="UECFsSwi4fDFAS0bhTONN5">数据基础与抽样方法</h3>
+                </div>
+                <div class="card-body" data-page-node-id="WiogJ38Bz5H3H7PhalTLxC">
+                    <p data-page-node-id="EzoNQDd0nhBf3wI94rX8ka">了解数据的不同类型，学习如何从总体中科学抽取样本，掌握概率抽样与非概率抽样的适用场景。</p>
+                    <ul class="topic-list" data-page-node-id="ayFaGEHqnkTFmBlN9nuGp6">
+                        <li data-page-node-id="lot1lYJtG1O1fY5EUGTTUV">分类数据与数值数据</li>
+                        <li data-page-node-id="iMVZKotwMAAy1u5csWqAPL">6种抽样方法</li>
+                        <li data-page-node-id="xpUcunz4qShf7lp7sytwsg">NumPy数据基础</li>
+                    </ul>
+                    <div class="card-actions" data-page-node-id="Rmhhh1EEsoZ4rEg40KCfOm">
+                        <a href="week1.html" class="btn btn-primary" data-page-node-id="xvLoJoU8PguZwJL1uErl6B">📖 课程讲义</a>
+                        <a href="../03-Notebook代码/week1-数据基础与抽样方法.html" class="btn btn-secondary" data-page-node-id="omIXGwJnMOPs4bDLWaBRmm">💻 Notebook</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 2 -->
+            <div class="course-card" data-page-node-id="xKGyzT967eNM4IYM8EYeQx">
+                <div class="card-header" data-page-node-id="QUETe8W4qegPBkCwB43WbG">
+                    <span class="week-num" data-page-node-id="6ickSbnmD69zWpdTg4yZ6s">第 2 周</span>
+                    <h3 data-page-node-id="I8GDXBy36HVijJgrFHgHPn">描述性统计与数据汇总</h3>
+                </div>
+                <div class="card-body" data-page-node-id="CuADppE9D2QmV7KrfwR8Z5">
+                    <p data-page-node-id="4Ygv2IjbCef6h3er22O6oW">用均值、中位数、众数描述数据中心，用方差、标准差、变异系数度量数据离散程度。</p>
+                    <ul class="topic-list" data-page-node-id="C9aAYY6d8A4nlr1uSWNMG8">
+                        <li data-page-node-id="jyQi8zB0nuE30ifYZ7FHc0">集中趋势度量（含推导）</li>
+                        <li data-page-node-id="SX7aDOTBlrghg1YFYSYJdK">离散程度度量（含推导）</li>
+                        <li data-page-node-id="FAyHkuAIeLiBNehB8VDxRq">Python统计可视化</li>
+                    </ul>
+                    <div class="card-actions" data-page-node-id="DV90uVrhVHBlN0OH4N1q1t">
+                        <a href="week2.html" class="btn btn-primary" data-page-node-id="60AYROmlWnoEEV91eNxfSI">📖 课程讲义</a>
+                        <a href="../03-Notebook代码/week2-描述性统计与数据汇总.html" class="btn btn-secondary" data-page-node-id="bBBUT5riDeLnIGHqH5Ms34">💻 Notebook</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 3 -->
+            <div class="course-card" data-page-node-id="z5idyzrxuf1gj1hKxyQzV6">
+                <div class="card-header" data-page-node-id="lRh3dqM8D3a7QXciqqsi3h">
+                    <span class="week-num" data-page-node-id="swfP5hW43CdZbAX8B1Yfjo">第 3 周</span>
+                    <h3 data-page-node-id="Vm8TsnDbDaKOnePVypb1Hj">线性函数与成本分析</h3>
+                </div>
+                <div class="card-body" data-page-node-id="EH24zMQi2p8mmXAHRaaSqb">
+                    <p data-page-node-id="eaPRkYJvnssSUE4k8ae2vZ">从成本会计视角理解线性函数 y = a + bx，用高低点法分解混合成本，绘制散点图寻找规律。</p>
+                    <ul class="topic-list" data-page-node-id="6dA0oAdVpBp3joUsI9gRij">
+                        <li data-page-node-id="cCSGcpyv9Zt5PjyVQqphQA">线性函数结构与推导</li>
+                        <li data-page-node-id="0VDfMlXJC1OUxpOkqKiRN6">高低点法成本分解</li>
+                        <li data-page-node-id="mVCl840neUcJ6BYfVAkNHV">散点图与最佳拟合线</li>
+                    </ul>
+                    <div class="card-actions" data-page-node-id="vlqbfoONZwaUR6BmBh0QqV">
+                        <a href="week3.html" class="btn btn-primary" data-page-node-id="2RtoNCOBGW4ElCACJx79nD">📖 课程讲义</a>
+                        <a href="../03-Notebook代码/week3-线性函数与成本分析.html" class="btn btn-secondary" data-page-node-id="LnlkTIQJRtFcx2yJozk9Zs">💻 Notebook</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 4 -->
+            <div class="course-card" data-page-node-id="BNvfcvpu8DM9WlLmlKPhZr">
+                <div class="card-header" data-page-node-id="E3hf3POmv4oYyyrkDy0OiC">
+                    <span class="week-num" data-page-node-id="9jiBA1B27Xe4C37KSEU9CK">第 4 周</span>
+                    <h3 data-page-node-id="ad07UvllNuW0h016Ax2kdu">线性回归分析</h3>
+                </div>
+                <div class="card-body" data-page-node-id="BA0VZMp1FHSD1CYrUrBbpt">
+                    <p data-page-node-id="6x8zjHHBNQ8rCqfeNCjHYf">深入推导最小二乘法原理，从正规方程求解回归系数，理解相关系数与决定系数的经济含义。</p>
+                    <ul class="topic-list" data-page-node-id="l5gkkfLDQmUyCPYkrDtQMe">
+                        <li data-page-node-id="jpbGwa33P0vecum0iAOR2i">最小二乘法完整推导</li>
+                        <li data-page-node-id="pdCaPAUk6pDNGCMtrAsFHC">相关系数 r 与 R²</li>
+                        <li data-page-node-id="ejiBl3xq8X65egKmPHXji8">Python回归预测实践</li>
+                    </ul>
+                    <div class="card-actions" data-page-node-id="9LoAb7CTo0H4F8vAXOuOdN">
+                        <a href="week4.html" class="btn btn-primary" data-page-node-id="BmzFnSLpPSGcDg2NrQ7fPQ">📖 课程讲义</a>
+                        <a href="../03-Notebook代码/week4-线性回归分析.html" class="btn btn-secondary" data-page-node-id="QMxeGYIfkAY1WZR2W1AgMx">💻 Notebook</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 5 -->
+            <div class="course-card" data-page-node-id="Hg2bSxCcg7VO9P4pgc1Gwb">
+                <div class="card-header" data-page-node-id="Wiwjua53vuCdWgYI3raItU">
+                    <span class="week-num" data-page-node-id="tsMopWYXUJYqXTmI85QyQp">第 5 周</span>
+                    <h3 data-page-node-id="G49Nq85UAXAGRPMH2XQLg0">时间序列分析</h3>
+                </div>
+                <div class="card-body" data-page-node-id="uMAhXNTo7eOEMRNGeOcOPq">
+                    <p data-page-node-id="3PUc8SJgt9mCNjJTtGRJ3t">拆解时间序列的四大成分，用移动平均法提取趋势，计算季节指数并进行未来预测。</p>
+                    <ul class="topic-list" data-page-node-id="9hKjcahRurcEsETIg1iRB5">
+                        <li data-page-node-id="07reUjKFqDwyw1zNuXFj7H">趋势/季节/周期/随机</li>
+                        <li data-page-node-id="X3YYME2A9XvwUebWqh6CsR">移动平均与中心化</li>
+                        <li data-page-node-id="EN5ReOCnSSLYsn2p3Aws8W">季节指数预测模型</li>
+                    </ul>
+                    <div class="card-actions" data-page-node-id="Dxo2ez6GWGJvC3lhxptKJA">
+                        <a href="week5.html" class="btn btn-primary" data-page-node-id="Dy5V9Wfa7tQ1pyNCBB6kJg">📖 课程讲义</a>
+                        <a href="../03-Notebook代码/week5-时间序列分析.html" class="btn btn-secondary" data-page-node-id="y8A79MjP6hR6xGzGsTfTln">💻 Notebook</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 6 -->
+            <div class="course-card" data-page-node-id="nlQxibFOAGKvjt2hWtBf3Z">
+                <div class="card-header" data-page-node-id="sy57IRGaJGTu17nxj84Ysr">
+                    <span class="week-num" data-page-node-id="d02x8xUElUvALgE0gDPgEC">第 6 周</span>
+                    <h3 data-page-node-id="xZGkXesFldLAqVBmxdQwHt">大数据与短期决策基础</h3>
+                </div>
+                <div class="card-body" data-page-node-id="CO5qJGLD1qgEXdyJGQh630">
+                    <p data-page-node-id="HJ8we417SETf1Bb7O4Keuf">认识大数据5V特征，理解相关成本概念，学会在资源受限时做出最优生产决策。</p>
+                    <ul class="topic-list" data-page-node-id="d6Kh5rSIjljMYQEUpWOMZ0">
+                        <li data-page-node-id="PTa1MNX6XHYL2ZXmaOwtCW">大数据概念与5V</li>
+                        <li data-page-node-id="FXVXdJmrMbUYIadh7m9T8q">相关成本与沉没成本</li>
+                        <li data-page-node-id="etlEa6Hkfz2oVv8i721VFh">限制因素最优分配</li>
+                    </ul>
+                    <div class="card-actions" data-page-node-id="uf5UlLq1HSWG3gpXYDOE1t">
+                        <a href="week6.html" class="btn btn-primary" data-page-node-id="Nxp2Li1cZGrnvTNY1YGZhb">📖 课程讲义</a>
+                        <a href="../03-Notebook代码/week6-大数据与短期决策基础.html" class="btn btn-secondary" data-page-node-id="ifXMDxfsjYPdxah4Vr03WM">💻 Notebook</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 7 -->
+            <div class="course-card" data-page-node-id="PEyI0tifIAwy9zDLXENgFa">
+                <div class="card-header" data-page-node-id="oFIyUl7CAb1gxOf9bysw6w">
+                    <span class="week-num" data-page-node-id="Pdrg20bJT7dyO6nm5zOVUA">第 7 周</span>
+                    <h3 data-page-node-id="fCIUZfYsWx187AifXt6xaQ">本量利分析与存货管理</h3>
+                </div>
+                <div class="card-body" data-page-node-id="hCMWSKEt8RwIvn2Fk3cRey">
+                    <p data-page-node-id="h8PYU0RC8SmIkMGLIXweYj">从贡献毛益出发推导盈亏平衡点，分析安全边际，建立EOQ模型实现存货成本最小化。</p>
+                    <ul class="topic-list" data-page-node-id="EGXIyc73UyG8gDDNlBVlxT">
+                        <li data-page-node-id="Ipc2uBWedElCrIimPuywL9">CVP分析与盈亏平衡</li>
+                        <li data-page-node-id="kJrb2ASiA2gYW0a72mEd8g">安全边际与目标利润</li>
+                        <li data-page-node-id="x0VbqsuaQMjrCKbiUr0gzG">EOQ经济订货量推导</li>
+                    </ul>
+                    <div class="card-actions" data-page-node-id="jJVzxAuRva2ADOQY4szEn4">
+                        <a href="week7.html" class="btn btn-primary" data-page-node-id="cAv92mKTSZJT9sD2joVriU">📖 课程讲义</a>
+                        <a href="../03-Notebook代码/week7-本量利分析与存货管理.html" class="btn btn-secondary" data-page-node-id="LRaZrVfPwd1RMqta3Wly07">💻 Notebook</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 8 -->
+            <div class="course-card" data-page-node-id="3Yi9ZBhoWd9tkOKaOdJTZq">
+                <div class="card-header" data-page-node-id="aAcBNlKBqYCAu0COh6cNCb">
+                    <span class="week-num" data-page-node-id="jVzlQznfAeyz9JGuia9ACS">第 8 周</span>
+                    <h3 data-page-node-id="5RASXG7I2iiAosp0Hgc1EC">长期决策与投资评估</h3>
+                </div>
+                <div class="card-body" data-page-node-id="XC8YY4NVhjQFjDY3xASktR">
+                    <p data-page-node-id="acjErrw3UIPh7VCv2DurRo">理解货币时间价值，推导复利与折现公式，掌握NPV、IRR、ROCE、回收期四大投资评估工具。</p>
+                    <ul class="topic-list" data-page-node-id="CWWbOsLiQGEe5Dl4ZGQRdP">
+                        <li data-page-node-id="VGFAc3fVm1V18PBFLbliZH">复利与折现公式推导</li>
+                        <li data-page-node-id="UGQw4a8yxjaT83PcU6s5ji">NPV / IRR / ROCE / Payback</li>
+                        <li data-page-node-id="awFTP9HXvK97eYMuugiGqt">投资方案比较决策</li>
+                    </ul>
+                    <div class="card-actions" data-page-node-id="aPPhDEBydY61OTofTmuco7">
+                        <a href="week8.html" class="btn btn-primary" data-page-node-id="NaLrUtG3YAdZsxkrKg7SNq">📖 课程讲义</a>
+                        <a href="../03-Notebook代码/week8-长期决策与投资评估.html" class="btn btn-secondary" data-page-node-id="DhEAbevTeCCdzvOqSAP24X">💻 Notebook</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features" data-page-node-id="SnWcw6BQpaD1dKlFMYaRN3">
+            <div class="section-title" data-page-node-id="XaJqIdhkBTQn2P6yA6OOpF">
+                <h2 data-page-node-id="2k3kdkazGA28uBXlsRCev6">课程特色</h2>
+                <p data-page-node-id="1KUD5qcGknwaZErl9Tj2HG">专为本科大一学生设计，零基础也能跟上的数据分析课</p>
+            </div>
+            <div class="features-grid" data-page-node-id="5IIBhqJypCUhCDP4MffYFS">
+                <div class="feature-item" data-page-node-id="la5qD6HgJ5ay1kufpVTTz0">
+                    <div class="feature-icon" data-page-node-id="2U6TXrpqXRBEdpDEDObymE">📐</div>
+                    <h4 data-page-node-id="4wJWjMUR3uphpnKpCCXtLC">公式逐步推导</h4>
+                    <p data-page-node-id="L54xkrpxZheHsJHQ9BCP8K">从不跳步，从直观理解到数学严格性，每个公式都有完整的推导过程</p>
+                </div>
+                <div class="feature-item" data-page-node-id="8FzixD0dSgotrwKnJM9YjA">
+                    <div class="feature-icon" data-page-node-id="Bg2plCAV6FACd4WBR52x0Z">💻</div>
+                    <h4 data-page-node-id="9Xg8y6MvU9o5YQsWPVUMzk">Python 编程实践</h4>
+                    <p data-page-node-id="m7t1hGOM76s8ROli7WosmJ">8个Jupyter Notebook，代码含详细中文注释，边学边练</p>
+                </div>
+                <div class="feature-item" data-page-node-id="DEpf5gW981PpRT2exgJZF6">
+                    <div class="feature-icon" data-page-node-id="F7CAHUXez3clOyCjIBcJkR">🎯</div>
+                    <h4 data-page-node-id="c0zVfXFHkRLuu2zfWm9fNc">商业场景导向</h4>
+                    <p data-page-node-id="MBEBpX2uTSphZH8HE2TZhM">所有例题来自真实商业场景：成本预测、库存管理、投资决策</p>
+                </div>
+                <div class="feature-item" data-page-node-id="DmPvJQGS6RZtcptqaZ0451">
+                    <div class="feature-icon" data-page-node-id="mbIBk1BpOcXVQCsbkca3gk">📊</div>
+                    <h4 data-page-node-id="c5BJap0SxBxc3vABpNfWLi">可视化辅助理解</h4>
+                    <p data-page-node-id="jwp6EMcZmoGUVwS4uB8vC0">大量 Matplotlib/Seaborn 图表，让抽象概念变得直观可见</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer data-page-node-id="WmAr95vuKHOBntYRSoT6Df">
+        <p data-page-node-id="GV48pGRUejBzsGF9FO7lPR">Decision Making with Data (F3) · 本科教学资源</p>
+        <p style="margin-top:8px; font-size: 0.8rem; opacity: 0.7;" data-page-node-id="eCc4E307t0PwSxL6lRefoW">课程内容基于 ACCA F3 大纲设计 · 面向非商业用途教学使用</p>
+    </footer>
+
+<div style="position:fixed;left:18px;bottom:18px;z-index:999;">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;background:#1b3a5f;color:#fff;text-decoration:none;font-size:13px;padding:8px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(27,58,95,0.3);font-family:-apple-system,'PingFang SC',sans-serif;">← 课件目录</a>
+</div>
+
+</body>
+</html>
