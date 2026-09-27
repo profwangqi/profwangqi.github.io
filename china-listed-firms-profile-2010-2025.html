@@ -31,9 +31,78 @@ ul.tk li{padding-left:20px;position:relative;margin:3px 0;}
 ul.tk li::before{content:"";position:absolute;left:6px;top:.72em;width:7px;height:7px;border-radius:2px;background:var(--accent);}
 footer{margin-top:26px;color:var(--sub);font-size:12.5px;line-height:1.9;border-top:1px solid var(--line);padding-top:14px;}
 @media (max-width:640px){.wrap{padding:20px 12px 40px;}section{padding:16px 14px 10px;}.chart{height:280px;}.chart.tall{height:380px;}h1{font-size:22px;}}
+
+/* ============ 页面访问密码门（第二道） ============ */
+#gate{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px;}
+#gate .gbox{background:#fff;border:1px solid var(--line);border-radius:16px;max-width:400px;width:100%;padding:34px 32px 28px;box-shadow:0 12px 40px rgba(28,39,51,.10);animation:gIn .25s ease;}
+@keyframes gIn{from{transform:translateY(10px);opacity:0;}to{transform:none;opacity:1;}}
+#gate .gicon{width:46px;height:46px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
+#gate h2.gtitle{font-size:20px;border:none;padding-left:0;margin-bottom:4px;}
+#gate .gsub{font-size:13px;color:var(--sub);margin-bottom:18px;}
+#gate input{width:100%;font-size:16px;letter-spacing:.12em;border:1px solid #ccd6e2;border-radius:8px;padding:10px 14px;outline:none;}
+#gate input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(47,90,143,.12);}
+#gate .gerr{display:none;font-size:13px;color:#b03a2e;margin-top:8px;}
+#gate .gerr.show{display:block;}
+#gate .ghint{font-size:12.5px;color:var(--sub);margin-top:8px;font-style:italic;}
+#gate button{width:100%;margin-top:16px;border:none;border-radius:999px;padding:10px 0;font-size:14px;font-weight:600;color:#fff;background:var(--accent);cursor:pointer;transition:background .2s;}
+#gate button:hover{background:#254a77;}
 </style>
 </head>
 <body>
+
+<!-- ================= 页面访问密码门（第二道） ================= -->
+<div id="gate">
+  <div class="gbox" role="dialog" aria-modal="true" aria-label="页面访问密码">
+    <div class="gicon">🔒</div>
+    <h2 class="gtitle">中国上市公司宏观画像</h2>
+    <div class="gsub">Chinese Listed Firms · Macro Profile 2010–2025</div>
+    <input type="password" id="gInput" placeholder="请输入页面访问密码" autocomplete="off">
+    <div class="gerr" id="gErr">密码不正确，请重试</div>
+    <div class="ghint">访问密码由指导教师提供（与入口弹窗密码不同）</div>
+    <button id="gOk">进入页面</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var EXPECT = '265f25d3b8f6df2cb9b14eef19f842116c40c962a655d36f1047cbcbc98dbe60';
+  var KEY = 'clf_gate_unlocked';
+  var gate = document.getElementById('gate');
+  var input = document.getElementById('gInput');
+  var err = document.getElementById('gErr');
+
+  function sha256hex(text) {
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+        return ('0' + b.toString(16)).slice(-2);
+      }).join('');
+    });
+  }
+  function unlock() {
+    gate.style.display = 'none';
+    document.body.style.overflow = '';
+    window.dispatchEvent(new Event('resize'));
+  }
+  // 会话内已解锁则直接放行
+  if (sessionStorage.getItem(KEY) === EXPECT) { unlock(); return; }
+  document.body.style.overflow = 'hidden';
+  setTimeout(function () { input.focus(); }, 80);
+
+  function submit() {
+    sha256hex(input.value).then(function (hash) {
+      if (hash === EXPECT) {
+        sessionStorage.setItem(KEY, EXPECT);
+        unlock();
+      } else {
+        err.classList.add('show');
+        input.select();
+      }
+    });
+  }
+  document.getElementById('gOk').addEventListener('click', submit);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') submit(); });
+})();
+</script>
 <div class="wrap">
 <header>
   <h1>中国上市公司宏观画像 · 2010–2025</h1>

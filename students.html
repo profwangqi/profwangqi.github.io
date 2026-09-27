@@ -136,7 +136,8 @@
           <div class="rc-en" data-page-node-id="juJS3DxEuqjKDev4VZIH3p">Chinese Listed Firms</div>
           <p data-page-node-id="FPiAHVe4CuIlmi5xAOHfz3">上市公司财务、治理与市场表现数据，供实证研究使用。</p>
           <div class="rc-foot rc-grid" data-page-node-id="mbc0sLXgnBWxRHcnzi1mmA">
-            <a class="res-link" href="中国上市公司宏观画像_2010_2025.html">📊 数据画像</a>
+            <a class="res-link" href="china-listed-firms-profile-2010-2025.html"
+               data-pw="db28a4521304669994990f62ebb80bed2277893a5434119a92578ba90d616883" data-fname="中国上市公司宏观画像 2010–2025">📊 数据画像</a>
             <span class="res-soon">网盘链接即将开放</span>
           </div>
         </div>
@@ -265,6 +266,79 @@
   </section>
 
 </div>
+
+<!-- ================= 密码查看弹窗 ================= -->
+<div class="pw-mask" id="pwMask">
+  <div class="pw-box" role="dialog" aria-modal="true" aria-label="数据查看密码">
+    <button class="pw-close" id="pwClose" aria-label="关闭">×</button>
+    <h4>数据查看</h4>
+    <div class="pw-file" id="pwFile"></div>
+    <input type="password" id="pwInput" placeholder="请输入查看密码" autocomplete="off">
+    <div class="pw-err" id="pwErr">密码不正确，请重试</div>
+    <div class="pw-hint">查看密码由指导教师提供；进入页面后还有第二道密码</div>
+    <div class="pw-actions">
+      <button class="pw-btn-cancel" id="pwCancel">取消</button>
+      <button class="pw-btn-ok" id="pwOk">查看数据</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var mask = document.getElementById('pwMask');
+  if (!mask) return;
+  var input = document.getElementById('pwInput'),
+      err = document.getElementById('pwErr'),
+      fileEl = document.getElementById('pwFile'),
+      cur = null;
+
+  function open(link) {
+    cur = link;
+    fileEl.textContent = link.dataset.fname || '数据页面';
+    input.value = ''; err.classList.remove('show');
+    mask.classList.add('open');
+    setTimeout(function () { input.focus(); }, 60);
+  }
+  function close() { mask.classList.remove('open'); cur = null; }
+
+  document.querySelectorAll('a[data-pw]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      open(a);
+    });
+  });
+
+  // SHA-256 哈希验证（Web Crypto API，异步）
+  function sha256hex(text) {
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+        return ('0' + b.toString(16)).slice(-2);
+      }).join('');
+    });
+  }
+
+  function submit() {
+    if (!cur) return;
+    sha256hex(input.value).then(function (hash) {
+      if (hash === cur.dataset.pw) {
+        var href = cur.getAttribute('href');
+        close();
+        window.open(href, '_blank');
+      } else {
+        err.classList.add('show');
+        input.select();
+      }
+    });
+  }
+
+  document.getElementById('pwOk').addEventListener('click', submit);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') submit(); });
+  document.getElementById('pwCancel').addEventListener('click', close);
+  document.getElementById('pwClose').addEventListener('click', close);
+  mask.addEventListener('click', function (e) { if (e.target === mask) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+</script>
 
 <!-- ================= Footer ================= -->
 <footer data-page-node-id="wwOHx4aK5HGkvWCFEFFTZk">
