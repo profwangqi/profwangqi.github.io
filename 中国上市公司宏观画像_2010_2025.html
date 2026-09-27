@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>中国上市公司宏观画像 2010–2025</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+<style>
+:root{--ink:#1c2733;--sub:#5c6b7a;--line:#e4e8ee;--bg:#f5f6f8;--card:#ffffff;--accent:#2f5a8f;--red:#c0504d;--amber:#d9a441;--green:#4f9d69;--purple:#7b6ba8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 20px 60px;}
+header{margin-bottom:26px;}
+h1{font-size:27px;letter-spacing:.5px;}
+.sub{color:var(--sub);font-size:13.5px;margin-top:6px;}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.chip{background:#eef2f7;border:1px solid var(--line);border-radius:20px;padding:3px 12px;font-size:12.5px;color:var(--sub);}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:26px 0 8px;}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+.kpi .v{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;}
+.kpi .l{font-size:12.5px;color:var(--sub);margin-top:2px;}
+.kpi .d{font-size:12px;margin-top:4px;font-variant-numeric:tabular-nums;}
+.up{color:var(--green);} .dn{color:var(--red);} .nu{color:var(--sub);}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px 16px;margin-top:18px;}
+h2{font-size:19px;padding-left:11px;border-left:4px solid var(--accent);letter-spacing:.3px;}
+h3{font-size:15px;color:var(--sub);font-weight:600;margin:18px 0 2px;}
+.chart{width:100%;height:330px;margin-top:6px;}
+.chart.tall{height:430px;}
+ul.tk{margin:10px 0 6px 0;padding-left:0;list-style:none;font-size:14px;color:#33414f;}
+ul.tk li{padding-left:20px;position:relative;margin:3px 0;}
+ul.tk li::before{content:"";position:absolute;left:6px;top:.72em;width:7px;height:7px;border-radius:2px;background:var(--accent);}
+footer{margin-top:26px;color:var(--sub);font-size:12.5px;line-height:1.9;border-top:1px solid var(--line);padding-top:14px;}
+@media (max-width:640px){.wrap{padding:20px 12px 40px;}section{padding:16px 14px 10px;}.chart{height:280px;}.chart.tall{height:380px;}h1{font-size:22px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>中国上市公司宏观画像 · 2010–2025</h1>
+  <div class="sub">基于 CNRDS 原始数据自建通用控制变量面板的描述性分析 —— 六千余家上市公司十六年的规模、盈利、创新、治理、员工与地理变迁</div>
+  <div class="meta">
+    <span class="chip">样本：60,094 公司-年 · 6,074 家</span>
+    <span class="chip">口径：在市(listed=1)公司；财务/市场/员工指标剔除金融业(J)</span>
+    <span class="chip">连续变量已 1%/99% 缩尾；中位数为主</span>
+    <span class="chip">数据：通用控制变量库 77 列</span>
+  </div>
+</header>
+<div class="kpis" id="kpis"></div>
+
+<section>
+  <h2>一、市场扩容：从 2 千家到 5 千家</h2>
+  <h3>每年上市公司总数与当年新增（IPO）</h3>
+  <div class="chart" id="c1"></div>
+  <ul class="tk">
+    <li>上市公司从 2010 年 2,142 家增至 2025 年 <b id="f1"></b> 家，扩容 <b>1.6 倍</b>；IPO 节奏大起大落：2013 年停摆（仅 2 家）、2017 年 438 家、2020–21 注册制高峰（396/483 家）、2024–25 收紧（91/116 家）。</li>
+    <li>扩容的主力是非国企：民企与公众公司大量入市，彻底改变了中国资本市场的所有制结构（见下节）。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>二、产权与行业：国企占比腰斩，制造业回流</h2>
+  <h3>国有上市公司占比（%）</h3>
+  <div class="chart" id="c2"></div>
+  <h3>行业结构变迁（门类占比，%）</h3>
+  <div class="chart" id="c3"></div>
+  <ul class="tk">
+    <li>国企占比从 <b>50.2%</b>（2010）降至 <b id="f2"></b>（2025）——半壁江山变成四分之一，资本市场重心已转向民营经济。</li>
+    <li>制造业占比不降反升：<b>56.1% → 68.1%</b>，"制造回流"与科创板/创业板对硬科技的倾斜一致；信息软件业 6.1% → 8.0%，是占比升幅第二的行业。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>三、经营基本面：长得更大，赚得更薄</h2>
+  <h3>中位总资产（亿元）与中位营收增长率（%）</h3>
+  <div class="chart" id="c4"></div>
+  <h3>中位盈利能力（ROA / ROE，%）与中位资产负债率（%）</h3>
+  <div class="chart" id="c5"></div>
+  <ul class="tk">
+    <li>中位总资产 <b>21.6 亿 → 38.2 亿元</b>：十六年间上市公司体量接近翻倍，同时负债率从 46.2% 降至 40.6%，"做大"与"去杠杆"并行。</li>
+    <li>盈利中枢系统性下移：中位 ROA <b>4.4% → 2.2%</b>、ROE <b>8.0% → 4.0%</b>，接近腰斩；亏损公司占比从 6.0% 升至 <b id="f3"></b>——2024–25 年的经营压力肉眼可见。</li>
+    <li>账面现金比率 18.4% → 14.1%：现金储备变薄，与盈利下滑互为印证。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>四、创新投入：研发强度持续爬坡</h2>
+  <h3>中位研发强度（研发费用/营收，%）与管理费用率（%）</h3>
+  <div class="chart" id="c6"></div>
+  <ul class="tk">
+    <li>研发强度中位数从 2018 年 3.35% 升至 2025 年 <b>4.27%</b>，六年间抬升约 0.9 个百分点——是所有财务指标中方向最坚定的改善。</li>
+    <li>注：利润表「研发费用」科目 2018 年起才规范披露，此前年份缺失，故曲线自 2018 年始。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>五、估值与回报：泡沫消化，轮回到 2025</h2>
+  <h3>中位 Tobin Q 与账面市值比</h3>
+  <div class="chart" id="c7"></div>
+  <h3>中位年度个股收益率（%）</h3>
+  <div class="chart" id="c8"></div>
+  <ul class="tk">
+    <li>中位 Tobin Q 从 2.30 降至 1.70（账面市值比 0.44 → 0.59）：2015–16 与 2020–21 两轮估值高峰后均有消化，估值中枢总体回落。</li>
+    <li>年度回报中位数经历 2011/2018 两轮深跌（约 −20%）与 2019–20、2024–25 两轮牛市，2025 年中位收益 <b id="f4"></b>，为十六年最强劲的普遍性上涨之一。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>六、股权与治理：分散化、机构化、多元化</h2>
+  <h3>第一大股东持股与机构持股（中位，%）</h3>
+  <div class="chart" id="c9"></div>
+  <h3>两职合一、女性高管占比（%）</h3>
+  <div class="chart" id="c10"></div>
+  <ul class="tk">
+    <li>股权结构持续分散：第一大股东持股中位 34.3% → <b id="f5"></b>；机构持股中位 22.2% → 30.4%，机构化程度显著提高。</li>
+    <li>治理更趋多元：董事长兼任总经理比例 18.1% → 32.6%（两职合一回潮），女性高管占比 16.6% → 25.8%，管理层性别结构十六年间明显改善。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>七、审计市场：四大渗透缓慢，意见整体干净</h2>
+  <h3>国际四大审计占比、非标准意见率（%）与中位审计费用（对数）</h3>
+  <div class="chart" id="c11"></div>
+  <ul class="tk">
+    <li>国际四大审计的中国上市公司占比长期徘徊在 5–8%：本土大所主导的市场格局未变。</li>
+    <li>非标意见率从 5.8% 降至 4.0%，中位审计费用（对数）持续上升——审计投入加大、意见整体趋干净。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>八、地理分布：东密西疏，粤浙苏领跑</h2>
+  <h3>注册地上市公司数量 Top 10 省份（2025）</h3>
+  <div class="chart" id="c13"></div>
+  <ul class="tk">
+    <li>空间格局高度集中：东部沿海连成密集带，广东、浙江、江苏、上海、北京五省市合计占据 <b id="f6"></b>；<b><span id="f7"></span>%</b> 的上市公司位于胡焕庸线（黑河—腾冲）东南侧，线西北侧仅星点分布。城市层面看，北京（485）、上海（468）、深圳（443）三地即占全样本四分之一。</li>
+    <li>做区域研究时可用库中 regdistcd（区县代码）直接控制县级差异，或用经纬度计算空间距离。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>九、员工规模与结构：总雇佣近倍增，学历持续升级</h2>
+  <h3>上市公司雇佣总量（万人）与中位每公司员工数（人）</h3>
+  <div class="chart" id="c14"></div>
+  <h3>职能构成（中位占比，%）：技术/生产/销售/财务/行政</h3>
+  <div class="chart" id="c15"></div>
+  <h3>学历构成（中位占比，%）</h3>
+  <div class="chart" id="c16"></div>
+  <ul class="tk">
+    <li>雇佣总量从 2015 年 1,440 万人增至 2025 年 <b id="f8"></b> 万人，随市场扩容接近翻倍；但单家公司中位员工数从 1,910 人降至 1,650 人（2023 年 1,614 人触底后企稳）——新上市公司越来越"轻"，单体雇佣规模收缩。</li>
+    <li>职能结构以生产为绝对主体（中位约 52%）；技术人员是唯一持续上升的职能：<b>14.9% → 17.7%</b>；行政 10.6% → 10.0%、销售 7.3% → 7.0% 微幅收缩。银行业等金融业的行业自设类别（如「业务人员」）不归入六类，占比之和 &lt; 100%。</li>
+    <li>学历结构持续升级：硕士及以上（含博士）中位占比 <b>2.4% → 4.2%</b> 翻倍，本科 <b>21.1% → 30.8%</b>，高中及以下 44.1% → 39.7%。注：「本科及以上」等累计披露档不拆分，四档之和 &lt; 100%。</li>
+  </ul>
+</section>
+
+<footer>
+  <b>口径与说明</b><br>
+  ① 数据源：自建《上市公司通用控制变量库（2010–2025）》，基于 CNRDS 原始表，合并报表 + 年报口径；上市公司数、产权、行业含金融业，财务/市场/治理中位数剔除金融业（门类 J）。<br>
+  ② 连续变量按 1%/99% 全样本缩尾（图中以 _w 变量计算）；描述统计以中位数为主，不受个别极值影响。<br>
+  ③ 研发费用 2018 年前源表未披露；增长率 2010 年需 2009 年数据故缺失；地理为 2023-03-29 静态快照；员工总量与结构自 2015 年起（此前年报「员工情况」披露不全、覆盖率不足八成），占比为年报披露归并口径、不缩尾，之和小于 100% 属正常（归并口径见 42 号脚本）。<br>
+  ④ 生成脚本：通用控制变量/scripts/40_make_desc_html.py（数据沿用 scripts/_desc_stats.json，其中员工块每次重跑自 20_build_controls.py 产出的面板重算；其余图表数据由面板汇总缓存，重新出图直接重跑本脚本即可）。
+</footer>
+</div>
+
+<script>
+const D = {"years": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "n_firms": [2142, 2419, 2572, 2567, 2689, 2902, 3126, 3555, 3659, 3855, 4226, 4684, 4983, 5170, 5206, 5545], "n_ipo": [348, 282, 154, 2, 125, 223, 227, 438, 105, 203, 396, 483, 345, 236, 91, 116], "soe_share": [50.2, 44.2, 42.0, 41.8, 40.0, 37.1, 35.3, 31.4, 31.2, 31.5, 30.4, 29.3, 28.7, 28.7, 28.8, 28.4], "indmat": {"制造": [56.1, 57.8, 58.2, 58.2, 58.9, 59.8, 60.2, 62.1, 62.2, 62.5, 63.8, 64.8, 65.5, 66.4, 66.9, 68.1], "电热气水": [4.6, 4.1, 4.0, 4.0, 3.9, 3.7, 3.5, 3.2, 3.2, 3.1, 2.9, 2.8, 2.7, 2.6, 2.6, 2.5], "批发零售": [6.3, 6.0, 5.7, 5.7, 5.5, 5.3, 5.2, 4.8, 4.7, 4.5, 4.2, 4.1, 3.9, 3.9, 3.7, 3.5], "信息软件": [6.1, 6.7, 7.3, 7.2, 7.4, 7.5, 7.9, 7.7, 7.7, 8.0, 8.2, 7.9, 8.2, 8.0, 8.1, 8.0], "金融": [3.1, 3.0, 2.9, 2.9, 2.8, 2.7, 2.8, 2.6, 2.8, 3.0, 2.9, 2.7, 2.6, 2.4, 2.3, 2.2], "科研技术": [0.5, 0.5, 0.6, 0.6, 0.7, 0.9, 0.9, 1.2, 1.2, 1.3, 1.4, 1.8, 2.1, 2.1, 2.1, 2.3], "其他": [23.3, 21.9, 21.3, 21.4, 20.8, 20.1, 19.5, 18.4, 18.2, 17.6, 16.6, 15.9, 15.0, 14.6, 14.3, 13.4]}, "asset_yi": [21.6, 23.2, 25.0, 28.4, 31.6, 35.1, 39.3, 38.2, 40.0, 39.8, 38.4, 38.2, 39.4, 39.2, 40.0, 38.2], "lev_med": [0.4616, 0.4397, 0.4347, 0.4373, 0.4351, 0.4163, 0.3951, 0.3949, 0.4176, 0.4167, 0.4121, 0.4082, 0.4013, 0.3965, 0.4052, 0.4064], "roa_med": [0.0443, 0.0442, 0.0371, 0.0324, 0.0318, 0.0317, 0.036, 0.0415, 0.0354, 0.0355, 0.0374, 0.0403, 0.0326, 0.0279, 0.0226, 0.0217], "roe_med": [0.0802, 0.0783, 0.0702, 0.0647, 0.0618, 0.06, 0.0653, 0.0755, 0.067, 0.0669, 0.0678, 0.0718, 0.058, 0.0489, 0.0405, 0.0399], "cash_med": [0.1836, 0.1798, 0.1712, 0.1515, 0.136, 0.1439, 0.1482, 0.1412, 0.1361, 0.1361, 0.1565, 0.1545, 0.1609, 0.1602, 0.1443, 0.1414], "growth_med": [NaN, 0.1748, 0.0642, 0.1032, 0.0749, 0.0351, 0.1165, 0.1832, 0.1087, 0.062, 0.0327, 0.1885, 0.0391, 0.0309, 0.021, 0.0297], "rd_med": [0.1009, 0.0493, 0.0002, 0.0492, 0.1106, 0.1218, 0.0115, 0.0283, 0.0335, 0.0361, 0.038, 0.0391, 0.0413, 0.0432, 0.0426, 0.0427], "mfee_med": [0.0711, 0.0735, 0.0808, 0.0814, 0.0861, 0.0915, 0.0904, 0.0886, 0.0611, 0.0613, 0.0604, 0.0577, 0.0591, 0.062, 0.0634, 0.0639], "tobinq_med": [2.2975, 1.3962, 1.2353, 1.3654, 1.7257, 2.7793, 2.284, 1.819, 1.113, 1.3324, 1.4736, 1.7012, 1.413, 1.4274, 1.3014, 1.702], "bm_med": [0.4353, 0.7162, 0.8095, 0.7324, 0.5795, 0.3598, 0.4378, 0.5497, 0.8985, 0.7505, 0.6786, 0.5878, 0.7077, 0.7006, 0.7684, 0.5875], "ret_med": [0.1082, -0.324, -0.022, 0.1787, 0.369, 0.6529, -0.1235, -0.1597, -0.3309, 0.1714, 0.0696, 0.1441, -0.1622, 0.0263, -0.054, 0.2314], "inst_med": [0.2223, 0.2373, 0.2472, 0.3032, 0.3118, 0.2981, 0.2729, 0.2381, 0.2742, 0.2926, 0.2876, 0.2727, 0.284, 0.2936, 0.3028, 0.3036], "mhold_med": [0.0001, 0.0001, 0.0003, 0.0004, 0.001, 0.0044, 0.0098, 0.0101, 0.0204, 0.0023, 0.0011, 0.0217, 0.0231, 0.0321, 0.0153, 0.0321], "top1_med": [0.3425, 0.3438, 0.346, 0.3408, 0.3344, 0.3256, 0.316, 0.3163, 0.3118, 0.3043, 0.2999, 0.299, 0.2963, 0.295, 0.2941, 0.2924], "lnfee_med": [13.1993, 13.2621, 13.3047, 13.3847, 13.4588, 13.487, 13.5924, 13.5924, 13.7102, 13.7102, 13.723, 13.7642, 13.8155, 13.8155, 13.8155, 13.8155], "occupy_med": [0.0081, 0.0076, 0.0078, 0.0078, 0.008, 0.0079, 0.0077, 0.0072, 0.008, 0.0072, 0.0061, 0.0053, 0.0049, 0.0043, 0.0042, 0.0039], "dual_shr": [18.1, 20.8, 20.1, 20.0, 21.4, 21.4, 25.0, 26.9, 29.6, 28.4, 28.7, 32.1, 31.8, 32.9, 31.1, 32.6], "femexe_shr": [16.6, 17.4, 17.9, 18.3, 18.7, 19.5, 19.5, 20.6, 21.1, 21.7, 21.9, 22.7, 23.7, 25.0, 25.5, 25.8], "femchair_shr": [5.1, 5.3, 5.5, 5.9, 5.8, 5.5, 5.7, 6.0, 5.9, 6.2, 6.3, 6.3, 6.4, 6.7, 7.1, 7.1], "audit4_shr": [5.5, 5.4, 5.3, 5.1, 5.0, 5.1, 5.2, 5.0, 5.4, 6.2, 6.3, 6.4, 6.6, 6.7, 6.1, 6.2], "opinion_shr": [94.2, 95.1, 96.7, 96.7, 96.5, 96.5, 96.8, 96.7, 94.0, 94.5, 93.7, 94.6, 95.1, 95.9, 96.4, 96.0], "loss_shr": [6.0, 7.3, 9.7, 9.4, 9.8, 12.9, 7.9, 6.6, 13.2, 13.0, 15.1, 16.4, 21.7, 22.4, 26.7, 26.7], "n_geo": 4878, "prov_top": [["广东省", 810], ["浙江省", 638], ["江苏省", 607], ["上海市", 440], ["北京市", 438], ["山东省", 265], ["四川省", 162], ["福建省", 160], ["安徽省", 153], ["湖南省", 132]], "hu_share": 91.5, "n_geo_firms": 5155, "emp": {"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "total_wan": [1440.0, 1573.1, 1727.8, 1843.2, 1978.0, 2133.3, 2275.4, 2467.3, 2553.6, 2674.6, 2745.5], "med": [1910.0, 1913.0, 1848.0, 1924.5, 1899.0, 1744.0, 1677.0, 1637.0, 1614.0, 1634.5, 1650.0], "fn": {"tech": [0.1491, 0.1554, 0.154, 0.1597, 0.1659, 0.1665, 0.1691, 0.1733, 0.1764, 0.178, 0.1769], "prod": [0.5425, 0.521, 0.5264, 0.5151, 0.5113, 0.5143, 0.5194, 0.5157, 0.518, 0.5169, 0.5187], "sale": [0.0732, 0.074, 0.0729, 0.0728, 0.0724, 0.0716, 0.0713, 0.0702, 0.0697, 0.071, 0.0695], "fin": [0.0245, 0.0251, 0.0245, 0.0249, 0.0247, 0.0241, 0.0234, 0.0228, 0.0225, 0.0225, 0.0222], "adm": [0.106, 0.1019, 0.1022, 0.1051, 0.1051, 0.1036, 0.1031, 0.1021, 0.1023, 0.1022, 0.1001]}, "edu": {"master": [0.0235, 0.0261, 0.0261, 0.0273, 0.0296, 0.0308, 0.0305, 0.0314, 0.0349, 0.0387, 0.042], "bach": [0.2113, 0.2227, 0.2308, 0.2393, 0.2529, 0.2619, 0.2633, 0.2748, 0.2869, 0.3001, 0.308], "assoc": [0.2255, 0.225, 0.2233, 0.2261, 0.2275, 0.2262, 0.2275, 0.2278, 0.226, 0.2252, 0.2255], "below": [0.4411, 0.4309, 0.4365, 0.4406, 0.42, 0.42, 0.4333, 0.4245, 0.4139, 0.4009, 0.3968]}}};
+const Y = D.years;
+const E = D.emp, EY = E.years;
+const px = (a,f)=>a.map(f);
+const has = a => a.map(v=>(v===null||v===undefined||Number.isNaN(v))?null:v);
+
+// ---- KPI 卡 ----
+const kpis = [
+  {v: D.n_firms.at(-1).toLocaleString(), l:'上市公司总数（2025）', d:'2010 年 '+D.n_firms[0].toLocaleString()+' 家 · 1.6 倍', c:'nu'},
+  {v: D.soe_share.at(-1)+'%', l:'国有公司占比（2025）', d:'2010 年 '+D.soe_share[0]+'% · −'+(D.soe_share[0]-D.soe_share.at(-1)).toFixed(1)+'pp', c:'dn'},
+  {v: D.asset_yi.at(-1)+' 亿', l:'中位总资产（2025）', d:'2010 年 '+D.asset_yi[0]+' 亿', c:'up'},
+  {v: (D.roa_med.at(-1)*100).toFixed(1)+'%', l:'中位 ROA（2025）', d:'2010 年 '+(D.roa_med[0]*100).toFixed(1)+'% · 近乎腰斩', c:'dn'},
+  {v: D.loss_shr.at(-1)+'%', l:'亏损公司占比（2025）', d:'2010 年 '+D.loss_shr[0]+'% · 明显扩大', c:'dn'},
+  {v: D.inst_med.at(-1).toFixed(1), l:'机构持股中位（小数,2025）', d:'2010 年 '+D.inst_med[0].toFixed(2), c:'up'},
+  {v: E.total_wan.at(-1).toLocaleString()+' 万', l:'上市公司雇佣总量（2025）', d:'2015 年 '+E.total_wan[0].toLocaleString()+' 万 · 接近翻倍', c:'up'},
+];
+document.getElementById('kpis').innerHTML = kpis.map(k=>
+  `<div class="kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div><div class="d ${k.c}">${k.d}</div></div>`).join('');
+const put=(id,t)=>document.getElementById(id).textContent=t;
+put('f1', D.n_firms.at(-1).toLocaleString()); put('f2', D.soe_share.at(-1)+'%');
+put('f3', D.loss_shr.at(-1)+'%'); put('f4', (D.ret_med.at(-1)*100).toFixed(1)+'%');
+put('f5', (D.top1_med.at(-1)*100).toFixed(1)+'%');
+put('f7', D.hu_share);
+put('f8', E.total_wan.at(-1).toLocaleString());
+const top5sum = D.prov_top.slice(0,5).reduce((s,p)=>s+p[1],0);
+put('f6', Math.round(top5sum/D.n_geo*100)+'%');
+
+// ---- 图表通用 ----
+const charts=[];
+function mk(id, opt){const el=document.getElementById(id); if(!el)return; const c=echarts.init(el); c.setOption(opt); charts.push(c);}
+const AX={axisLine:{lineStyle:{color:'#c9d2dc'}},axisLabel:{color:'#5c6b7a',fontSize:11},splitLine:{lineStyle:{color:'#eef1f5'}},axisTick:{show:false}};
+const LG={textStyle:{color:'#33414f',fontSize:12},itemWidth:14,itemHeight:9,top:0};
+const TT={trigger:'axis',backgroundColor:'#fff',borderColor:'#e4e8ee',textStyle:{color:'#1c2733',fontSize:12}};
+const C={blue:'#2f5a8f',red:'#c0504d',amber:'#d9a441',green:'#4f9d69',purple:'#7b6ba8',teal:'#3a8fa3',gray:'#9aa7b4',pink:'#c97b9d'};
+const AREA=[C.blue,C.amber,C.red,C.green,C.purple,C.teal,'#8a9bb5','#d3d9e0'];
+
+mk('c1',{tooltip:TT,legend:{...LG,data:['上市公司总数','当年新增(IPO)']},
+ grid:{left:44,right:52,top:34,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},
+ yAxis:[{type:'value',name:'总数',nameTextStyle:{color:'#5c6b7a',fontSize:11},...AX},
+        {type:'value',name:'新增',nameTextStyle:{color:'#5c6b7a',fontSize:11},splitLine:{show:false},...AX}],
+ series:[{name:'上市公司总数',type:'bar',data:D.n_firms,itemStyle:{color:'#b9c8dd',borderRadius:[3,3,0,0]},barMaxWidth:26},
+         {name:'当年新增(IPO)',type:'line',yAxisIndex:1,data:D.n_ipo,lineStyle:{width:2.5,color:C.red},itemStyle:{color:C.red},symbolSize:5}]});
+
+mk('c2',{tooltip:{...TT,valueFormatter:v=>v+'%'},grid:{left:44,right:24,top:20,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},yAxis:{type:'value',max:60,axisLabel:{formatter:'{value}%',color:'#5c6b7a',fontSize:11},...AX},
+ series:[{type:'line',data:D.soe_share,areaStyle:{color:'rgba(47,90,143,.12)'},lineStyle:{width:2.5,color:C.blue},itemStyle:{color:C.blue},symbolSize:5}]});
+
+const inames=Object.keys(D.indmat);
+mk('c3',{tooltip:{...TT,valueFormatter:v=>v+'%'},legend:{...LG,type:'scroll'},
+ grid:{left:44,right:24,top:52,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},
+ yAxis:{type:'value',max:100,axisLabel:{formatter:'{value}%',color:'#5c6b7a',fontSize:11},...AX},
+ series:inames.map((n,i)=>({name:n,type:'line',stack:'tot',areaStyle:{opacity:.82},emphasis:{focus:'series'},
+   data:D.indmat[n],symbol:'none',lineStyle:{width:.6,color:'#fff',opacity:.4},color:AREA[i%AREA.length]}))});
+
+mk('c4',{tooltip:TT,legend:{...LG,data:['中位总资产(亿元)','中位营收增长率(%,右轴)']},
+ grid:{left:48,right:52,top:34,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},
+ yAxis:[{type:'value',name:'亿元',nameTextStyle:{color:'#5c6b7a',fontSize:11},...AX},
+        {type:'value',axisLabel:{formatter:'{value}%',color:'#5c6b7a',fontSize:11},splitLine:{show:false},...AX}],
+ series:[{name:'中位总资产(亿元)',type:'line',data:D.asset_yi,lineStyle:{width:2.5,color:C.blue},itemStyle:{color:C.blue},
+           areaStyle:{color:'rgba(47,90,143,.10)'},symbolSize:5},
+         {name:'中位营收增长率(%,右轴)',type:'bar',yAxisIndex:1,data:has(D.growth_med.map(v=>v===null?null:+(v*100).toFixed(1))),
+           itemStyle:{color:C.amber,opacity:.85,borderRadius:[2,2,0,0]},barMaxWidth:14}]});
+
+mk('c5',{tooltip:{...TT,valueFormatter:v=>v+'%'},legend:{...LG},
+ grid:{left:44,right:24,top:34,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},
+ yAxis:{type:'value',axisLabel:{formatter:'{value}%',color:'#5c6b7a',fontSize:11},...AX},
+ series:[{name:'中位ROA',type:'line',data:D.roa_med.map(v=>+(v*100).toFixed(2)),lineStyle:{width:2.5,color:C.blue},itemStyle:{color:C.blue},symbolSize:5},
+         {name:'中位ROE',type:'line',data:D.roe_med.map(v=>+(v*100).toFixed(2)),lineStyle:{width:2.5,color:C.green},itemStyle:{color:C.green},symbolSize:5},
+         {name:'中位资产负债率',type:'line',data:D.lev_med.map(v=>+(v*100).toFixed(1)),lineStyle:{width:2,type:'dashed',color:C.gray},itemStyle:{color:C.gray},symbolSize:4}]});
+
+mk('c6',{tooltip:{...TT,valueFormatter:v=>v+'%'},legend:{...LG},
+ grid:{left:44,right:24,top:34,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},
+ yAxis:{type:'value',axisLabel:{formatter:'{value}%',color:'#5c6b7a',fontSize:11},...AX},
+ series:[{name:'中位研发强度',type:'line',data:has(D.rd_med.map(v=>v===null?null:+(v*100).toFixed(2))),connectNulls:true,
+           lineStyle:{width:3,color:C.purple},itemStyle:{color:C.purple},symbolSize:6,
+           areaStyle:{color:'rgba(123,107,168,.12)'}},
+         {name:'中位管理费用率',type:'line',data:D.mfee_med.map(v=>+(v*100).toFixed(2)),
+           lineStyle:{width:2,type:'dashed',color:C.gray},itemStyle:{color:C.gray},symbolSize:4}]});
+
+mk('c7',{tooltip:TT,legend:{...LG},
+ grid:{left:44,right:52,top:34,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},
+ yAxis:[{type:'value',name:'TobinQ',nameTextStyle:{color:'#5c6b7a',fontSize:11},...AX},
+        {type:'value',name:'BM',nameTextStyle:{color:'#5c6b7a',fontSize:11},splitLine:{show:false},...AX}],
+ series:[{name:'中位TobinQ',type:'line',data:D.tobinq_med,lineStyle:{width:2.5,color:C.blue},itemStyle:{color:C.blue},
+           areaStyle:{color:'rgba(47,90,143,.10)'},symbolSize:5},
+         {name:'中位账面市值比',type:'line',yAxisIndex:1,data:D.bm_med,lineStyle:{width:2.5,color:C.amber},itemStyle:{color:C.amber},symbolSize:5}]});
+
+mk('c8',{tooltip:{...TT,valueFormatter:v=>v+'%'},grid:{left:44,right:24,top:20,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},
+ yAxis:{type:'value',axisLabel:{formatter:'{value}%',color:'#5c6b7a',fontSize:11},...AX},
+ series:[{type:'bar',data:D.ret_med.map(v=>+(v*100).toFixed(1)),barMaxWidth:18,
+           itemStyle:{borderRadius:[2,2,0,0],color:p=>p.value>=0?C.red:C.green}}]});
+
+mk('c9',{tooltip:TT,legend:{...LG},
+ grid:{left:44,right:52,top:34,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},
+ yAxis:[{type:'value',name:'%',nameTextStyle:{color:'#5c6b7a',fontSize:11},axisLabel:{formatter:'{value}',color:'#5c6b7a',fontSize:11},...AX},
+        {type:'value',name:'%',splitLine:{show:false},axisLabel:{formatter:'{value}',color:'#5c6b7a',fontSize:11},...AX}],
+ series:[{name:'第一大股东持股(左轴)',type:'line',data:D.top1_med.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:2.5,color:C.blue},itemStyle:{color:C.blue},symbolSize:5},
+         {name:'机构持股(右轴)',type:'line',yAxisIndex:1,data:D.inst_med.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:2.5,color:C.red},itemStyle:{color:C.red},symbolSize:5}]});
+
+mk('c10',{tooltip:{...TT,valueFormatter:v=>v+'%'},legend:{...LG},
+ grid:{left:44,right:24,top:34,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},
+ yAxis:{type:'value',axisLabel:{formatter:'{value}%',color:'#5c6b7a',fontSize:11},...AX},
+ series:[{name:'两职合一占比',type:'line',data:D.dual_shr,lineStyle:{width:2.5,color:C.amber},itemStyle:{color:C.amber},symbolSize:5},
+         {name:'女性高管占比',type:'line',data:D.femexe_shr,lineStyle:{width:2.5,color:C.pink},itemStyle:{color:C.pink},symbolSize:5}]});
+
+mk('c11',{tooltip:TT,legend:{...LG},
+ grid:{left:44,right:52,top:34,bottom:28},
+ xAxis:{type:'category',data:Y,...AX},
+ yAxis:[{type:'value',name:'%',nameTextStyle:{color:'#5c6b7a',fontSize:11},axisLabel:{formatter:'{value}',color:'#5c6b7a',fontSize:11},...AX},
+        {type:'value',name:'ln(费用)',nameTextStyle:{color:'#5c6b7a',fontSize:11},min:12.5,max:14.5,splitLine:{show:false},...AX}],
+ series:[{name:'四大审计占比',type:'line',data:D.audit4_shr,lineStyle:{width:2.5,color:C.blue},itemStyle:{color:C.blue},symbolSize:5},
+         {name:'非标意见率',type:'line',data:D.opinion_shr.map(v=>+(100-v).toFixed(1)),lineStyle:{width:2.5,color:C.red},itemStyle:{color:C.red},symbolSize:5},
+         {name:'中位审计费用(ln)',type:'line',yAxisIndex:1,data:D.lnfee_med.map(v=>+v.toFixed(2)),lineStyle:{width:2,type:'dashed',color:C.gray},itemStyle:{color:C.gray},symbolSize:4}]});
+
+mk('c13',{tooltip:TT,grid:{left:70,right:40,top:10,bottom:28},
+ xAxis:{type:'value',...AX},
+ yAxis:{type:'category',data:D.prov_top.map(p=>p[0]).reverse(),axisLabel:{color:'#33414f',fontSize:12},axisLine:{lineStyle:{color:'#c9d2dc'}},axisTick:{show:false}},
+ series:[{type:'bar',data:D.prov_top.map(p=>p[1]).reverse(),barMaxWidth:16,itemStyle:{color:C.blue,borderRadius:[0,3,3,0]},
+   label:{show:true,position:'right',color:'#5c6b7a',fontSize:11}}]});
+
+// ---- 九、员工规模与结构 (2015 起) ----
+mk('c14',{tooltip:TT,legend:{...LG,data:['上市公司雇佣总量(万人)','中位每公司员工数(人)']},
+ grid:{left:56,right:56,top:34,bottom:28},
+ xAxis:{type:'category',data:EY,...AX},
+ yAxis:[{type:'value',name:'万人',nameTextStyle:{color:'#5c6b7a',fontSize:11},...AX},
+        {type:'value',name:'人',nameTextStyle:{color:'#5c6b7a',fontSize:11},splitLine:{show:false},...AX}],
+ series:[{name:'上市公司雇佣总量(万人)',type:'bar',data:E.total_wan,itemStyle:{color:'#b9c8dd',borderRadius:[3,3,0,0]},barMaxWidth:22},
+         {name:'中位每公司员工数(人)',type:'line',yAxisIndex:1,data:E.med,lineStyle:{width:2.5,color:C.red},itemStyle:{color:C.red},symbolSize:5}]});
+
+mk('c15',{tooltip:{...TT,valueFormatter:v=>v+'%'},legend:{...LG},
+ grid:{left:44,right:24,top:34,bottom:28},
+ xAxis:{type:'category',data:EY,...AX},
+ yAxis:{type:'value',axisLabel:{formatter:'{value}%',color:'#5c6b7a',fontSize:11},...AX},
+ series:[{name:'技术人员(含研发)',type:'line',data:E.fn.tech.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:3,color:C.blue},itemStyle:{color:C.blue},symbolSize:5,
+           areaStyle:{color:'rgba(47,90,143,.08)'}},
+         {name:'生产人员',type:'line',data:E.fn.prod.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:2,color:C.gray},itemStyle:{color:C.gray},symbolSize:4},
+         {name:'行政人员',type:'line',data:E.fn.adm.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:2,color:C.amber},itemStyle:{color:C.amber},symbolSize:4},
+         {name:'销售人员(含营销)',type:'line',data:E.fn.sale.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:2,color:C.green},itemStyle:{color:C.green},symbolSize:4},
+         {name:'财务人员(含会计)',type:'line',data:E.fn.fin.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:2,color:C.pink},itemStyle:{color:C.pink},symbolSize:4}]});
+
+mk('c16',{tooltip:{...TT,valueFormatter:v=>v+'%'},legend:{...LG},
+ grid:{left:44,right:24,top:34,bottom:28},
+ xAxis:{type:'category',data:EY,...AX},
+ yAxis:{type:'value',axisLabel:{formatter:'{value}%',color:'#5c6b7a',fontSize:11},...AX},
+ series:[{name:'高中及以下',type:'line',data:E.edu.below.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:2.5,color:C.gray},itemStyle:{color:C.gray},symbolSize:4},
+         {name:'大专',type:'line',data:E.edu.assoc.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:2,color:C.amber},itemStyle:{color:C.amber},symbolSize:4},
+         {name:'本科',type:'line',data:E.edu.bach.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:2.5,color:C.blue},itemStyle:{color:C.blue},symbolSize:5},
+         {name:'硕士及以上(含博士)',type:'line',data:E.edu.master.map(v=>+(v*100).toFixed(1)),
+           lineStyle:{width:3,color:C.purple},itemStyle:{color:C.purple},symbolSize:5}]});
+
+window.addEventListener('resize',()=>{charts.forEach(c=>c.resize());});
+</script>
+</body>
+</html>

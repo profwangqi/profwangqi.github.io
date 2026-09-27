@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第5周：时间序列分析 | 商业数据分析课程</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        :root {
+            --bg-main: #F5F0E8;
+            --bg-card: #FFFFFF;
+            --bg-accent: #E8D5C4;
+            --bg-formula: #FFF8E7;
+            --bg-code: #2D2D2D;
+            --text-main: #3D3D3D;
+            --text-light: #6B6B6B;
+            --color-primary: #C49A6C;
+            --color-dark: #8B6F4E;
+            --color-border: #DDD0C0;
+            --font-serif: Georgia, 'Times New Roman', serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.8;
+        }
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #E8D5C4 0%, #F5F0E8 100%);
+            padding: 60px 20px 40px;
+            text-align: center;
+            border-bottom: 3px solid var(--color-primary);
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--color-dark);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+        .week-badge {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        /* Container */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* Week overview */
+        .week-overview {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--color-primary);
+        }
+        .week-overview h2 {
+            color: var(--color-dark);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+        .week-overview ul {
+            margin-left: 20px;
+            color: var(--text-light);
+        }
+        .week-overview li {
+            margin: 8px 0;
+        }
+        /* Lesson card */
+        .lesson {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+        }
+        .lesson-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--bg-accent);
+        }
+        .lesson-number {
+            background: var(--color-primary);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-right: 18px;
+        }
+        .lesson-title {
+            font-size: 1.5rem;
+            color: var(--color-dark);
+            font-weight: 600;
+        }
+        .lesson-duration {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        /* Sections */
+        .section {
+            margin: 25px 0;
+        }
+        .section h3 {
+            color: var(--color-dark);
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .section h3::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 20px;
+            background: var(--color-primary);
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+        .section p {
+            margin: 10px 0;
+            color: var(--text-main);
+        }
+        /* Formula derivation block */
+        .formula-block {
+            background: var(--bg-formula);
+            border-left: 4px solid var(--color-primary);
+            padding: 20px 25px;
+            margin: 18px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .formula-block .step {
+            margin: 10px 0;
+        }
+        .formula-block .step-label {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+        }
+        /* Code block */
+        pre {
+            background: var(--bg-code);
+            color: #F8F8F2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        /* Example box */
+        .example-box {
+            background: #F0F5F0;
+            border: 1px solid #C0D0C0;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 18px 0;
+        }
+        .example-box .example-title {
+            color: #5A7A5A;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            border: 1px solid var(--color-border);
+            padding: 10px 14px;
+            text-align: center;
+        }
+        th {
+            background: var(--bg-accent);
+            color: var(--color-dark);
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background: #FAF8F4;
+        }
+        /* Summary box */
+        .summary-box {
+            background: linear-gradient(135deg, #E8D5C4 0%, #F5F0E8 100%);
+            border-radius: 10px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+        .summary-box h4 {
+            color: var(--color-dark);
+            margin-bottom: 10px;
+        }
+        .summary-box ul {
+            margin-left: 20px;
+        }
+        /* Notebook link */
+        .notebook-link {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .notebook-link:hover {
+            background: var(--color-dark);
+        }
+        /* Two-column for components */
+        .components-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .component-item {
+            background: var(--bg-main);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 3px solid var(--color-primary);
+        }
+        .component-item strong {
+            color: var(--color-dark);
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.5rem; }
+            .lesson { padding: 25px; }
+            .lesson-title { font-size: 1.2rem; }
+            .components-grid { grid-template-columns: 1fr; }
+            .container { padding: 12px; }
+        }
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        /* Anchor offset */
+        .lesson-anchor { scroll-margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="week-badge">第 5 周</div>
+    <h1>时间序列分析</h1>
+    <p class="subtitle">Time Series Analysis — 趋势、季节变动与预测</p>
+</header>
+
+<div class="container">
+
+    <!-- Week Overview -->
+    <div class="week-overview">
+        <h2>本周学习目标</h2>
+        <ul>
+            <li>理解时间序列的四个基本成分（趋势、季节变动、周期变动、随机变动）</li>
+            <li>掌握加法模型与乘法模型的区别与适用场景</li>
+            <li>学会用移动平均法提取趋势成分，包括中心化移动平均</li>
+            <li>能够计算季节指数并进行季节性调整预测</li>
+            <li>通过 Python 实现完整的时间序列分解与预测流程</li>
+        </ul>
+    </div>
+
+    <!-- ==================== LESSON 1 ==================== -->
+    <div class="lesson lesson-anchor" id="lesson1">
+        <div class="lesson-header">
+            <div class="lesson-number">1</div>
+            <div>
+                <div class="lesson-title">时间序列的四个成分</div>
+                <div class="lesson-duration">约 45 分钟</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>什么是时间序列？</h3>
+            <p>时间序列（Time Series）就是<strong>按时间顺序排列的一系列数据点</strong>。简单来说，就是把同一个指标在不同时间点的观测值记录下来，按时间先后排成一串。</p>
+            <p>比如：</p>
+            <ul style="margin-left:20px; color:var(--text-light);">
+                <li>某商店每月的销售额</li>
+                <li>某城市每天的平均气温</li>
+                <li>某公司每季度的利润</li>
+            </ul>
+            <p>时间序列的核心思想是：<strong>过去的数据中隐藏着某种规律，我们可以把这种规律提取出来，用于预测未来</strong>。</p>
+        </div>
+
+        <div class="section">
+            <h3>四个成分的直观理解</h3>
+            <p>任何一个时间序列，都可以想象成由四个"力量"共同作用产生的：</p>
+            <div class="components-grid">
+                <div class="component-item">
+                    <strong>趋势 (Trend)</strong><br>
+                    长期的、缓慢的总体方向。比如一家成长型企业的销售额<strong>逐年稳步上升</strong>，这就是趋势。
+                </div>
+                <div class="component-item">
+                    <strong>季节变动 (Seasonal)</strong><br>
+                    固定周期的规律性波动。比如羽绒服销量<strong>每年冬天达到高峰</strong>，夏天跌到谷底。
+                </div>
+                <div class="component-item">
+                    <strong>周期变动 (Cyclical)</strong><br>
+                    非固定周期的中长期波动。比如经济<strong>繁荣—衰退—复苏</strong>的循环，周期不固定。
+                </div>
+                <div class="component-item">
+                    <strong>随机变动 (Random)</strong><br>
+                    无法预测的偶然波动。比如某天突降暴雨导致客流骤减，属于随机扰动。
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>加法模型与乘法模型</h3>
+            <p>如何把这四个成分组合起来？有两种经典模型：</p>
+            
+            <div class="formula-block">
+                <div class="step">
+                    <span class="step-label">加法模型</span>
+                    当四个成分<strong>相互独立</strong>、以绝对数值相加时：
+                </div>
+                $$Y = T + S + C + R$$
+                <p style="margin-top:10px; color:var(--text-light);">
+                    其中：$Y$ = 观测值，$T$ = 趋势，$S$ = 季节变动，$C$ = 周期变动，$R$ = 随机变动。
+                </p>
+                <div class="step" style="margin-top:15px;">
+                    <span class="step-label">乘法模型</span>
+                    当四个成分<strong>相互影响</strong>、以比例相乘时：
+                </div>
+                $$Y = T \times S \times C \times R$$
+                <p style="margin-top:10px; color:var(--text-light);">
+                    乘法模型更适合<strong>季节波动的幅度随趋势增大而增大</strong>的场景（如销售额越高，季节性波动绝对值也越大）。
+                </p>
+            </div>
+
+            <p><strong>什么时候用加法，什么时候用乘法？</strong></p>
+            <ul style="margin-left:20px;">
+                <li>如果季节波动的<strong>绝对幅度</strong>基本不变 → 用加法模型</li>
+                <li>如果季节波动的<strong>相对比例</strong>基本不变（即波动幅度随趋势增长） → 用乘法模型</li>
+            </ul>
+            <p>商业数据分析中，<strong>销售额、利润等财务数据</strong>通常使用乘法模型；<strong>气温、库存量</strong>等数据常使用加法模型。</p>
+        </div>
+
+        <div class="section">
+            <h3>实际案例：零售销售额的季节变动</h3>
+            <div class="example-box">
+                <div class="example-title">案例：某服装店季度销售额（单位：万元）</div>
+                <table>
+                    <tr>
+                        <th>年份</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th>
+                    </tr>
+                    <tr><td>2021</td><td>80</td><td>60</td><td>70</td><td>120</td></tr>
+                    <tr><td>2022</td><td>90</td><td>65</td><td>75</td><td>135</td></tr>
+                    <tr><td>2023</td><td>100</td><td>72</td><td>85</td><td>150</td></tr>
+                </table>
+                <p>观察上表，你能发现什么规律？</p>
+                <ul style="margin-left:20px;">
+                    <li><strong>趋势</strong>：每年Q4销售额从120→135→150，整体呈上升趋势</li>
+                    <li><strong>季节变动</strong>：Q4总是最高（冬季/年末促销），Q2总是最低（春末淡季）</li>
+                    <li><strong>周期/随机</strong>：数据有限，难以判断，但大致稳定</li>
+                </ul>
+                <p>此外，注意到Q4的峰值从40万元增长到了50万元（相对于Q1），说明<strong>季节波动幅度随趋势增大</strong>，这种情况更适合用<strong>乘法模型</strong>。</p>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <h4>本节小结</h4>
+            <ul>
+                <li>时间序列 = 按时间顺序排列的数据点</li>
+                <li>四个成分：Trend（趋势）、Seasonal（季节）、Cyclical（周期）、Random（随机）</li>
+                <li>加法模型：$Y = T + S + C + R$（波动幅度固定）</li>
+                <li>乘法模型：$Y = T \times S \times C \times R$（波动比例固定）</li>
+                <li>销售/利润数据常用乘法模型；气温/库存常用加法模型</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ==================== LESSON 2 ==================== -->
+    <div class="lesson lesson-anchor" id="lesson2">
+        <div class="lesson-header">
+            <div class="lesson-number">2</div>
+            <div>
+                <div class="lesson-title">移动平均法与趋势计算</div>
+                <div class="lesson-duration">约 60 分钟 · 含完整公式推导</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>为什么需要移动平均？</h3>
+            <p>我们想从时间序列中提取<strong>趋势成分 $T$</strong>，但原始数据里混杂着季节波动、周期波动和随机波动。移动平均的核心思想是：<strong>用"取平均"的方式把这些短期波动"抹平"</strong>。</p>
+            <p>想象一下：你记录每天的气温，某些天突然降温只是偶然天气现象。如果把连续几天的气温取平均，这些偶然波动就会被削弱，呈现出更稳定的"基础气温"。</p>
+        </div>
+
+        <div class="section">
+            <h3>简单移动平均（Simple Moving Average）</h3>
+            <p>最简单的移动平均是取最近 $n$ 个数据点的算术平均值。</p>
+
+            <div class="formula-block">
+                <div class="step">
+                    <span class="step-label">定义</span>
+                    设时间序列的观测值为 $Y_1, Y_2, ..., Y_t, ...$
+                </div>
+                <div class="step">
+                    <span class="step-label">公式</span>
+                    $n$ 期简单移动平均（SMA）为：
+                </div>
+                $$M_t = \frac{Y_t + Y_{t-1} + Y_{t-2} + ... + Y_{t-n+1}}{n} = \frac{1}{n} \sum_{i=0}^{n-1} Y_{t-i}$$
+                <div class="step" style="margin-top:15px;">
+                    <span class="step-label">3期移动平均示例</span>
+                </div>
+                $$M_3 = \frac{Y_3 + Y_2 + Y_1}{3}$$
+                $$M_4 = \frac{Y_4 + Y_3 + Y_2}{3}$$
+                $$M_5 = \frac{Y_5 + Y_4 + Y_3}{3}$$
+            </div>
+
+            <p>注意一个关键问题：如果数据有<strong>季度性</strong>（比如4个季度为一个周期），用<strong>3期</strong>移动平均就不太合适——你会混合不同季节的数据，结果依然会有季节残留。</p>
+            <p><strong>黄金法则：移动平均的期数应等于季节周期的长度</strong>。对于季度数据（周期=4），应该用4期移动平均；对于月度数据（周期=12），应该用12期移动平均。</p>
+        </div>
+
+        <div class="section">
+            <h3>中心化移动平均（Centered Moving Average）</h3>
+            <p>当季节周期为<strong>偶数</strong>（如季度数据周期=4）时，直接用4期移动平均会产生一个尴尬的问题：计算出的平均值落在两个季度的"中间"，而不是某个具体季度上。</p>
+
+            <div class="formula-block">
+                <div class="step">
+                    <span class="step-label">问题</span>
+                    对季度数据（Q1, Q2, Q3, Q4）取4期移动平均：
+                </div>
+                $$M_{2.5} = \frac{Y_1 + Y_2 + Y_3 + Y_4}{4}$$
+                <p>这个值对应的是第2期和第3期之间的"中点"，而不是Q1、Q2、Q3或Q4本身！</p>
+                <div class="step" style="margin-top:15px;">
+                    <span class="step-label">解决方案</span>
+                    计算两个连续4期移动平均的平均值，这就是<strong>中心化移动平均（CMA）</strong>。
+                </div>
+                <div class="step" style="margin-top:10px;">
+                    <span class="step-label">步骤1</span>
+                    先计算两个连续的4期移动平均：
+                </div>
+                $$A_1 = \frac{Y_1 + Y_2 + Y_3 + Y_4}{4}$$
+                $$A_2 = \frac{Y_2 + Y_3 + Y_4 + Y_5}{4}$$
+                <div class="step" style="margin-top:10px;">
+                    <span class="step-label">步骤2</span>
+                    取这两个移动平均的平均值，得到<strong>中心化移动平均</strong>，它正好落在第3期（Q3）上：
+                </div>
+                $$CMA_3 = \frac{A_1 + A_2}{2} = \frac{1}{2}\left(\frac{Y_1+Y_2+Y_3+Y_4}{4} + \frac{Y_2+Y_3+Y_4+Y_5}{4}\right)$$
+                <div class="step" style="margin-top:10px;">
+                    <span class="step-label">简化</span>
+                    合并同类项：
+                </div>
+                $$CMA_3 = \frac{Y_1 + 2Y_2 + 2Y_3 + 2Y_4 + Y_5}{8}$$
+                <p>这等价于一个"加权"的5点平均，首尾权重为1，中间权重为2。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>为什么移动平均能"消除"季节波动？</h3>
+            <p>这是移动平均最核心的数学原理，我们来逐步推导：</p>
+
+            <div class="formula-block">
+                <div class="step">
+                    <span class="step-label">假设</span>
+                    使用加法模型：$Y_t = T_t + S_t + R_t$（暂时忽略周期变动C）
+                </div>
+                <div class="step">
+                    <span class="step-label">第1步</span>
+                    对4个季度取移动平均（假设周期为4）：
+                </div>
+                $$M = \frac{Y_1 + Y_2 + Y_3 + Y_4}{4}$$
+                <div class="step">
+                    <span class="step-label">第2步</span>
+                    将每个 $Y_t$ 分解为趋势+季节+随机：
+                </div>
+                $$M = \frac{(T_1+S_1+R_1) + (T_2+S_2+R_2) + (T_3+S_3+R_3) + (T_4+S_4+R_4)}{4}$$
+                <div class="step">
+                    <span class="step-label">第3步</span>
+                    重新分组：
+                </div>
+                $$M = \frac{T_1+T_2+T_3+T_4}{4} + \frac{S_1+S_2+S_3+S_4}{4} + \frac{R_1+R_2+R_3+R_4}{4}$$
+                <div class="step">
+                    <span class="step-label">第4步</span>
+                    关键观察——季节指数在一个完整周期内之和为0（加法模型）：
+                </div>
+                $$S_1 + S_2 + S_3 + S_4 = 0$$
+                <p>因此季节成分的平均值完全抵消了！</p>
+                <div class="step">
+                    <span class="step-label">第5步</span>
+                    随机成分的平均值也会趋近于0（正负抵消）：
+                </div>
+                $$\frac{R_1+R_2+R_3+R_4}{4} \approx 0$$
+                <div class="step">
+                    <span class="step-label">结论</span>
+                </div>
+                $$M \approx \frac{T_1+T_2+T_3+T_4}{4} \approx T_{中心点}$$
+                <p>移动平均后，<strong>只剩下趋势成分</strong>！这就是移动平均能提取趋势的原理。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>例题：用移动平均提取趋势</h3>
+            <div class="example-box">
+                <div class="example-title">例题：某企业2021-2023年季度销售额（万元）</div>
+                <table>
+                    <tr><th>时间</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th></tr>
+                    <tr><td>2021</td><td>80</td><td>60</td><td>70</td><td>120</td></tr>
+                    <tr><td>2022</td><td>90</td><td>65</td><td>75</td><td>135</td></tr>
+                    <tr><td>2023</td><td>100</td><td>72</td><td>85</td><td>150</td></tr>
+                </table>
+                <p><strong>求2021年Q3的中心化移动平均（即趋势估计值）</strong></p>
+                <p><strong>解：</strong></p>
+                <p>步骤1：计算第一个4期移动平均（对应Q2-Q3之间）：</p>
+                $$A_1 = \frac{80 + 60 + 70 + 120}{4} = \frac{330}{4} = 82.5$$
+                <p>步骤2：计算第二个4期移动平均（对应Q3-Q4之间）：</p>
+                $$A_2 = \frac{60 + 70 + 120 + 90}{4} = \frac{340}{4} = 85.0$$
+                <p>步骤3：中心化移动平均（对应Q3）：</p>
+                $$CMA_{2021Q3} = \frac{82.5 + 85.0}{2} = \frac{167.5}{2} = 83.75$$
+                <p><strong>结论：</strong>2021年Q3的趋势估计值为 <strong>83.75 万元</strong>。</p>
+                <p>对比实际值70万元，差异 $70 - 83.75 = -13.75$ 万元，这就是该季度的季节变动（Q3通常是淡季，低于趋势）。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Python实现：移动平均计算</h3>
+            <pre><code># Python: 计算中心化移动平均
+import pandas as pd
+import numpy as np
+
+# 季度销售额数据（2021 Q1 到 2023 Q4，共12个季度）
+data = [80, 60, 70, 120,   # 2021年
+        90, 65, 75, 135,   # 2022年
+        100, 72, 85, 150]  # 2023年
+
+dates = pd.date_range('2021-01-01', periods=12, freq='Q')
+series = pd.Series(data, index=dates)
+
+# 第1步：计算4期移动平均（未中心化）
+ma4 = series.rolling(window=4).mean()
+
+# 第2步：中心化移动平均 = 两个连续4期MA的平均
+cma = ma4.rolling(window=2).mean()
+
+print("原始数据:", series.values)
+print("4期移动平均:", ma4.round(2).values)
+print("中心化移动平均:", cma.round(2).values)</code></pre>
+        </div>
+
+        <div class="summary-box">
+            <h4>本节小结</h4>
+            <ul>
+                <li>简单移动平均：$M_t = \frac{1}{n}\sum_{i=0}^{n-1} Y_{t-i}$</li>
+                <li>移动平均的期数应等于季节周期长度</li>
+                <li>偶数周期需要做<strong>中心化</strong>处理：两个连续MA再取平均</li>
+                <li>数学原理：季节指数在一个完整周期内之和为0，因此取平均后被抵消</li>
+                <li>移动平均的结果 ≈ 趋势成分</li>
+            </ul>
+        </div>
+        <div style="text-align:center;">
+            <a href="../03-Notebook代码/week5-时间序列分析.html" class="notebook-link">前往 Notebook 练习 →</a>
+        </div>
+    </div>
+
+    <!-- ==================== LESSON 3 ==================== -->
+    <div class="lesson lesson-anchor" id="lesson3">
+        <div class="lesson-header">
+            <div class="lesson-number">3</div>
+            <div>
+                <div class="lesson-title">季节变动预测与Python实践</div>
+                <div class="lesson-duration">约 60 分钟 · 完整预测流程</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>提取季节指数</h3>
+            <p>当我们用移动平均得到趋势值 $T$ 后，就可以从原始数据中"剥离"趋势，得到季节成分。</p>
+
+            <div class="formula-block">
+                <div class="step">
+                    <span class="step-label">加法模型</span>
+                    季节变动 = 观测值 − 趋势值
+                </div>
+                $$S = Y - T$$
+                <div class="step" style="margin-top:15px;">
+                    <span class="step-label">乘法模型</span>
+                    季节指数 = 观测值 ÷ 趋势值
+                </div>
+                $$S = \frac{Y}{T}$$
+                <p style="margin-top:10px;">乘法模型中，季节指数通常在1附近波动：大于1表示"旺季"，小于1表示"淡季"。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>计算平均季节变动</h3>
+            <p>同一季度在不同年份会有不同的季节指数（因为随机因素的影响）。我们需要<strong>把各年份同一季度的季节指数取平均</strong>，得到该季度的"典型"季节指数。</p>
+
+            <div class="formula-block">
+                <div class="step">
+                    <span class="step-label">步骤</span>
+                    对每个季度，收集所有年份的季节指数，计算算术平均值：
+                </div>
+                <p>加法模型（季节变动）：</p>
+                $$\bar{S}_{Q1} = \frac{S_{2021,Q1} + S_{2022,Q1} + S_{2023,Q1}}{\text{年数}}$$
+                <p style="margin-top:10px;">乘法模型（季节指数）：</p>
+                $$\bar{S}_{Q1} = \frac{S_{2021,Q1} + S_{2022,Q1} + S_{2023,Q1}}{\text{年数}}$$
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>预测公式：趋势外推 + 季节调整</h3>
+            <p>有了趋势和季节指数，我们就可以预测未来了。预测的基本思路是：</p>
+            <ol style="margin-left:20px;">
+                <li>用线性回归等方法把趋势<strong>外推</strong>到未来</li>
+                <li>把季节指数<strong>叠加</strong>到外推趋势上</li>
+            </ol>
+
+            <div class="formula-block">
+                <div class="step">
+                    <span class="step-label">步骤1：趋势外推</span>
+                    设线性趋势方程为 $T_t = a + bt$，其中 $t$ 是时间序号。
+                </div>
+                <p>用最小二乘法拟合趋势线（后续课程详细讲解）。</p>
+                <div class="step" style="margin-top:15px;">
+                    <span class="step-label">步骤2：预测公式</span>
+                </div>
+                <p>加法模型预测：</p>
+                $$\hat{Y}_{t} = T_t + \bar{S}_{\text{对应季度}}$$
+                <p style="margin-top:10px;">乘法模型预测：</p>
+                $$\hat{Y}_{t} = T_t \times \bar{S}_{\text{对应季度}}$$
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>完整例题：从原始数据到预测</h3>
+            <div class="example-box">
+                <div class="example-title">完整例题：预测2024年各季度销售额</div>
+                <p>沿用前面的数据，我们使用<strong>乘法模型</strong>完成整个预测流程。</p>
+                <p><strong>第1步：计算中心化移动平均（趋势）</strong></p>
+                <table>
+                    <tr><th>时间</th><th>Y</th><th>4期MA</th><th>CMA (Trend)</th></tr>
+                    <tr><td>2021 Q1</td><td>80</td><td>—</td><td>—</td></tr>
+                    <tr><td>2021 Q2</td><td>60</td><td>82.5</td><td>—</td></tr>
+                    <tr><td>2021 Q3</td><td>70</td><td>85.0</td><td><strong>83.75</strong></td></tr>
+                    <tr><td>2021 Q4</td><td>120</td><td>87.5</td><td><strong>86.25</strong></td></tr>
+                    <tr><td>2022 Q1</td><td>90</td><td>92.5</td><td><strong>90.00</strong></td></tr>
+                    <tr><td>2022 Q2</td><td>65</td><td>95.0</td><td><strong>93.75</strong></td></tr>
+                    <tr><td>2022 Q3</td><td>75</td><td>97.5</td><td><strong>96.25</strong></td></tr>
+                    <tr><td>2022 Q4</td><td>135</td><td>102.5</td><td><strong>100.00</strong></td></tr>
+                    <tr><td>2023 Q1</td><td>100</td><td>107.5</td><td><strong>105.00</strong></td></tr>
+                    <tr><td>2023 Q2</td><td>72</td><td>110.0</td><td><strong>108.75</strong></td></tr>
+                    <tr><td>2023 Q3</td><td>85</td><td>112.5</td><td><strong>111.25</strong></td></tr>
+                    <tr><td>2023 Q4</td><td>150</td><td>—</td><td>—</td></tr>
+                </table>
+                <p><strong>第2步：计算季节指数（$S = Y / T$）</strong></p>
+                <table>
+                    <tr><th>时间</th><th>Y</th><th>T (CMA)</th><th>S = Y/T</th></tr>
+                    <tr><td>2021 Q3</td><td>70</td><td>83.75</td><td>0.836</td></tr>
+                    <tr><td>2021 Q4</td><td>120</td><td>86.25</td><td>1.391</td></tr>
+                    <tr><td>2022 Q1</td><td>90</td><td>90.00</td><td>1.000</td></tr>
+                    <tr><td>2022 Q2</td><td>65</td><td>93.75</td><td>0.693</td></tr>
+                    <tr><td>2022 Q3</td><td>75</td><td>96.25</td><td>0.779</td></tr>
+                    <tr><td>2022 Q4</td><td>135</td><td>100.00</td><td>1.350</td></tr>
+                    <tr><td>2023 Q1</td><td>100</td><td>105.00</td><td>0.952</td></tr>
+                    <tr><td>2023 Q2</td><td>72</td><td>108.75</td><td>0.662</td></tr>
+                    <tr><td>2023 Q3</td><td>85</td><td>111.25</td><td>0.764</td></tr>
+                </table>
+                <p><strong>第3步：计算各季度平均季节指数</strong></p>
+                <table>
+                    <tr><th>季度</th><th>2021</th><th>2022</th><th>2023</th><th>平均季节指数</th></tr>
+                    <tr><td>Q1</td><td>—</td><td>1.000</td><td>0.952</td><td><strong>0.976</strong></td></tr>
+                    <tr><td>Q2</td><td>—</td><td>0.693</td><td>0.662</td><td><strong>0.678</strong></td></tr>
+                    <tr><td>Q3</td><td>0.836</td><td>0.779</td><td>0.764</td><td><strong>0.793</strong></td></tr>
+                    <tr><td>Q4</td><td>1.391</td><td>1.350</td><td>—</td><td><strong>1.371</strong></td></tr>
+                </table>
+                <p><strong>第4步：趋势外推</strong></p>
+                <p>用CMA值对时间 $t$（Q3=3, Q4=4, Q1=5...）做线性回归，得到趋势线：</p>
+                <p>简化处理：观察CMA从83.75增长到111.25（共9个季度），平均每季度增长约3.06。</p>
+                <p>2024年Q1对应 $t=13$，趋势值约 $111.25 + 3.06 \times 3.75 = 122.7$（简化为约123）。</p>
+                <p><strong>第5步：预测2024年各季度</strong></p>
+                <table>
+                    <tr><th>季度</th><th>趋势值 T</th><th>季节指数 S</th><th>预测值 Y = T × S</th></tr>
+                    <tr><td>2024 Q1</td><td>123</td><td>0.976</td><td><strong>120</strong></td></tr>
+                    <tr><td>2024 Q2</td><td>126</td><td>0.678</td><td><strong>85</strong></td></tr>
+                    <tr><td>2024 Q3</td><td>129</td><td>0.793</td><td><strong>102</strong></td></tr>
+                    <tr><td>2024 Q4</td><td>132</td><td>1.371</td><td><strong>181</strong></td></tr>
+                </table>
+                <p><strong>结论：</strong>预测2024年全年销售额约为 $120 + 85 + 102 + 181 = \mathbf{488}$ 万元。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Python完整实现</h3>
+            <pre><code># ============================================
+# 完整时间序列分析流程：从原始数据到预测
+# ============================================
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# 1. 原始季度数据
+data = [80, 60, 70, 120, 90, 65, 75, 135, 100, 72, 85, 150]
+quarters = [f'{y}Q{q}' for y in range(2021, 2024) for q in range(1, 5)]
+df = pd.DataFrame({'Quarter': quarters, 'Y': data})
+
+# 2. 计算4期移动平均（未中心化）
+df['MA4'] = df['Y'].rolling(window=4).mean()
+
+# 3. 计算中心化移动平均 = 趋势值 T
+df['Trend'] = df['MA4'].rolling(window=2).mean()
+
+# 4. 计算季节指数（乘法模型）
+df['Seasonal_Ratio'] = df['Y'] / df['Trend']
+
+# 5. 提取各季度的季节指数并取平均
+# 为每个数据点标注季度编号（1-4）
+df['Q_Num'] = [1,2,3,4] * 3
+
+# 只取有Trend值的行（去掉头部和尾部的NaN）
+valid = df.dropna(subset=['Trend'])
+
+# 计算各季度的平均季节指数
+seasonal_index = valid.groupby('Q_Num')['Seasonal_Ratio'].mean()
+print("各季度平均季节指数:")
+print(seasonal_index.round(3))
+
+# 6. 趋势外推：用时间序号对Trend做线性回归
+valid['t'] = range(1, len(valid)+1)
+X = valid['t'].values.reshape(-1, 1)
+y = valid['Trend'].values
+model = LinearRegression()
+model.fit(X, y)
+
+print(f"\n趋势方程: T = {model.intercept_:.2f} + {model.coef_[0]:.2f} * t")
+
+# 7. 预测未来4个季度（t=10,11,12,13）
+future_t = np.array([[10], [11], [12], [13]])
+future_trend = model.predict(future_t)
+future_q = [1, 2, 3, 4]
+
+# 8. 叠加季节指数得到预测值
+forecast = future_trend * [seasonal_index[q] for q in future_q]
+
+print("\n2024年预测:")
+for i, (q, tr, fc) in enumerate(zip(future_q, future_trend, forecast)):
+    print(f"  2024Q{q}: 趋势={tr:.1f}, 季节指数={seasonal_index[q]:.3f}, 预测值={fc:.1f}")
+
+# 9. 可视化
+plt.figure(figsize=(12, 6))
+plt.plot(df['Y'], 'o-', label='实际值', color='#8B6F4E')
+plt.plot(df['Trend'], 's--', label='趋势(CMA)', color='#C49A6C')
+plt.plot(range(9, 13), forecast, '^--', label='预测值', color='#E74C3C')
+plt.legend()
+plt.title('时间序列分解与预测')
+plt.xticks(range(12), quarters, rotation=45)
+plt.tight_layout()
+plt.show()</code></pre>
+        </div>
+
+        <div class="summary-box">
+            <h4>本节小结</h4>
+            <ul>
+                <li>季节指数计算：加法 $S = Y - T$，乘法 $S = Y / T$</li>
+                <li>各年份同一季度的季节指数取平均，得到"典型"季节指数</li>
+                <li>预测公式：加法 $\hat{Y} = T + \bar{S}$，乘法 $\hat{Y} = T \times \bar{S}$</li>
+                <li>完整流程：原始数据 → 移动平均 → 中心化 → 提取季节指数 → 趋势外推 → 预测</li>
+                <li>Python可用 <code>rolling().mean()</code> 和 <code>LinearRegression</code> 实现全流程</li>
+            </ul>
+        </div>
+        <div style="text-align:center;">
+            <a href="../03-Notebook代码/week5-时间序列分析.html" class="notebook-link">前往 Notebook 练习 →</a>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>商业数据分析课程 · 第5周：时间序列分析</p>
+    <p>© 2024 教学资源开发组</p>
+</div>
+
+
+<div style="position:fixed;left:18px;bottom:18px;z-index:999;">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;background:#1b3a5f;color:#fff;text-decoration:none;font-size:13px;padding:8px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(27,58,95,0.3);font-family:-apple-system,'PingFang SC',sans-serif;">← 课件目录</a>
+</div>
+
+</body>
+</html>

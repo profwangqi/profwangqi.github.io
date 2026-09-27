@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="T85M3FAGF179eXTzKZUEXN">
+<head data-page-node-id="3Lmh19mHxcDQuwp3fpRcDW">
+<meta charset="UTF-8" data-page-node-id="qNtIE3HubfNwLxHv2qScGU">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="Tzpl7Xyz0FMM0HcX60sQiK">
+<title>本科毕业论文指导 · Qi Wang</title>
+<meta name="robots" content="noindex" data-page-node-id="2ZWXM8Wx6DrYxomkyWj9WU">
+<link rel="icon" href="favicon.svg" type="image/svg+xml" data-page-node-id="ZSDeoHYmfdv4MCxTg7tmEn">
+<link rel="stylesheet" href="style.css" data-page-node-id="qC1DXddZ66FdoVvRXgkEYD">
+<style>
+/* ============ 详情页专属样式 ============ */
+.guide-wrap { max-width: 860px; margin: 0 auto; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; color: var(--gray); text-decoration: none;
+  margin: 26px 0 8px; transition: color .2s;
+}
+.back-link:hover { color: var(--navy); }
+.guide-head { padding: 8px 0 6px; border-bottom: 2px solid var(--navy); margin-bottom: 30px; }
+.guide-head h1 {
+  font-family: var(--serif); font-size: 28px; color: var(--navy); font-weight: 700;
+}
+.guide-head .sub { font-size: 14px; color: var(--gray); margin-top: 4px; letter-spacing: 0.04em; }
+.guide-intro {
+  background: var(--bg-soft); border: 1px solid var(--line); border-radius: 10px;
+  padding: 18px 22px; font-size: 15.5px; line-height: 1.85; margin-bottom: 34px; text-align: justify;
+}
+.gsec { margin-bottom: 36px; }
+.gsec-title {
+  display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px;
+}
+.gsec-title .n {
+  font-family: var(--serif); font-style: italic; font-weight: 700;
+  color: var(--accent); font-size: 15px;
+}
+.gsec-title h3 { font-family: var(--serif); font-size: 20px; color: var(--navy); font-weight: 700; }
+.gsec p { font-size: 15.5px; line-height: 1.85; margin-bottom: 12px; text-align: justify; }
+.gsec p:last-child { margin-bottom: 0; }
+.journal-list { list-style: none; margin: 14px 0; }
+.journal-list li {
+  padding: 12px 16px; border-left: 3px solid var(--navy-light);
+  background: var(--bg-soft); border-radius: 0 8px 8px 0;
+  font-family: var(--serif); font-size: 16.5px; color: var(--navy); font-weight: 700;
+  margin-bottom: 10px; letter-spacing: 0.02em;
+}
+.journal-list li span { font-family: var(--sans); font-weight: 400; font-size: 13px; color: var(--gray); margin-left: 10px; }
+.four-part { display: flex; flex-direction: column; gap: 0; margin-top: 16px; }
+.four-part .fp-card { position: relative; margin-bottom: 32px; }
+.four-part .fp-card:last-child { margin-bottom: 0; }
+.flow-arrow {
+  position: absolute; left: 50%; bottom: -31px; transform: translateX(-50%);
+  width: 30px; height: 30px; line-height: 28px; text-align: center;
+  background: #ffffff; border: 1px solid #dfe5ec; border-radius: 50%;
+  color: #b08d4f; font-weight: 700; font-size: 15px;
+  box-shadow: 0 2px 6px rgba(27,58,95,0.10); z-index: 2; box-sizing: border-box;
+}
+.fp-card {
+  background: #ffffff; border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px;
+  border-top: 3px solid var(--navy-light);
+}
+.fp-card .fn-num {
+  font-family: var(--serif); font-style: italic; font-weight: 700;
+  color: var(--accent); font-size: 13px; margin-bottom: 6px;
+}
+.fp-card h4 { font-size: 16px; color: var(--navy); font-weight: 700; margin-bottom: 8px; }
+.fp-card p { font-size: 13.5px; color: var(--gray); line-height: 1.7; text-align: justify; }
+.warn-box {
+  border: 1px solid #e7c9c4; border-left: 4px solid #b03a2e; background: #fdf6f5;
+  border-radius: 0 10px 10px 0; padding: 18px 22px; margin-top: 16px;
+}
+.warn-box .warn-list { list-style: none; }
+.warn-box .warn-list li {
+  font-size: 14.5px; color: #6b3a34; line-height: 1.8;
+  padding: 5px 0 5px 26px; position: relative; text-align: justify;
+}
+.warn-box .warn-list li::before {
+  content: attr(data-n); position: absolute; left: 0; top: 6px;
+  width: 18px; height: 18px; line-height: 18px; text-align: center;
+  background: #b03a2e; color: #ffffff; border-radius: 50%;
+  font-size: 11px; font-weight: 700;
+}
+.warn-box h5 { font-size: 14px; color: #b03a2e; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.04em; }
+.warn-box p { font-size: 14.5px; color: #6b3a34; line-height: 1.8; text-align: justify; }
+.office-box {
+  background: linear-gradient(135deg, #f2f6fa 0%, #faf3e6 100%);
+  border: 1px solid #dfe5ec; border-radius: 12px; padding: 24px 28px;
+  display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
+}
+.office-box .otime {
+  font-family: var(--serif); font-size: 25px; font-weight: 700; color: var(--navy);
+  letter-spacing: 0.01em; white-space: nowrap;
+}
+.office-box .otime small { display: block; font-size: 12.5px; color: var(--accent); font-weight: 700; letter-spacing: 0.18em; margin-bottom: 4px; }
+.office-box .odesc { flex: 1; min-width: 240px; font-size: 14.5px; color: var(--ink); line-height: 1.8; }
+
+.req-box {
+  margin-top: 18px; background: #f6f8fa;
+  border: 1px solid #dfe5ec; border-left: 4px solid #2d5a8e;
+  border-radius: 0 10px 10px 0; padding: 16px 22px;
+}
+.req-box h5 { font-size: 14px; color: #1b3a5f; font-weight: 700; margin-bottom: 10px; letter-spacing: 0.04em; }
+.req-box ul { list-style: none; }
+.req-box li {
+  font-size: 14.5px; color: #22303e; line-height: 1.8;
+  padding: 4px 0 4px 18px; position: relative;
+}
+.req-box li::before {
+  content: ""; position: absolute; left: 0; top: 14px;
+  width: 6px; height: 6px; border-radius: 50%; background: #2d5a8e;
+}
+.gate-note { text-align: center; font-size: 12.5px; color: var(--gray); margin-top: 26px; font-style: italic; }
+@media (max-width: 640px) {
+  .four-part { grid-template-columns: 1fr; }
+  .office-box { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body class="page-top" data-page-node-id="9WMy1eewo9HmRn5yRRQvkV">
+
+<!-- ================= Navigation ================= -->
+<nav class="nav" id="top" data-page-node-id="7tqPfuhbtUdGhP7rHCV3NX">
+  <div class="nav-inner" data-page-node-id="SGZykjTsYCFgbhdIU0VpAT">
+    <a class="brand" href="index.html" data-page-node-id="bofE1INiFC8nHGc8huAC8K"><img class="brand-ico" src="favicon.svg" alt="" data-page-node-id="gcDDBoNQJplZUjPEnnjJYU">Qi Wang</a>
+    <div class="nav-links" data-page-node-id="PS6iiFR1fRaXWELhMbGdQF">
+      <a href="index.html" data-page-node-id="GDaECP4EKjBEQIDg0bipaR">About</a>
+      <a href="publications.html" data-page-node-id="wLMpE2cowGmsyY47p954ok">Publications</a>
+      <a href="books.html" data-page-node-id="EcCk4m5RpPeVzHNrvPWJ11">Books</a>
+      <a href="teaching.html" data-page-node-id="oS8UdBg88FowWdKy2vc3CP">Teaching</a>
+      <a href="students.html" data-page-node-id="L1zoESoFQBTB7D9jz31dzC">Students</a>
+    </div>
+  </div>
+</nav>
+
+<div class="main" data-page-node-id="jXDaGUWjk5mgFlwnArvonE">
+
+<!-- ================= 密码门 ================= -->
+<div id="gate" style="position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#f2f6fa 0%,#e8eef5 100%);padding:24px;" data-page-node-id="3sF8GAogpCdT8td9NSOIxH">
+  <div style="background:#fff;border:1px solid #dfe5ec;border-radius:16px;padding:40px 44px 36px;width:100%;max-width:400px;box-shadow:0 24px 60px rgba(27,58,95,0.14);text-align:center;" data-page-node-id="n4F3tJ9iWXqOPVAfXl1WUj">
+    <div style="width:54px;height:54px;border-radius:13px;margin:0 auto 18px;background:linear-gradient(145deg,#1b3a5f 0%,#2d5a8e 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:22px;font-weight:700;" data-page-node-id="3rFaUZb9SIoOTQj6KwnQzU">UG</div>
+    <h1 style="font-family:Georgia,serif;font-size:21px;color:#1b3a5f;margin-bottom:4px;" data-page-node-id="YqTKpgNSHuEeLxkxrklvFv">本科毕业论文指导</h1>
+    <div style="font-size:13px;color:#5b6b7b;margin-bottom:24px;" data-page-node-id="xMzDBAQnjC38ExphhYsNcP">Undergraduate Thesis Guide</div>
+    <input type="password" id="pwInput" placeholder="请输入访问密码" autocomplete="off"
+           style="width:100%;font-size:16px;letter-spacing:.15em;text-align:center;border:1px solid #c8d4e0;border-radius:9px;padding:11px 14px;outline:none;" data-page-node-id="za7m981V8hPt8MIGsnUYUl">
+    <div id="pwErr" style="display:none;font-size:13px;color:#b03a2e;margin-top:8px;" data-page-node-id="Tp1VQaem9st6AqMmRTmY1A">密码不正确，请重试</div>
+    <button id="pwBtn" style="width:100%;margin-top:18px;font-size:15.5px;font-weight:600;cursor:pointer;background:#1b3a5f;color:#fff;border:none;border-radius:9px;padding:12px 0;" data-page-node-id="dRSCQpRh5j4lyKXUq7Fzgl">进入指导页面</button>
+    <div style="font-size:12px;color:#5b6b7b;margin-top:16px;font-style:italic;" data-page-node-id="wsodIGLaH6EGXHIeD4nKG3">密码由指导教师在课堂/群内公布</div>
+  </div>
+</div>
+
+<!-- ================= 正文（密码通过后显示） ================= -->
+<div id="content" style="display:none;" data-page-node-id="JVg7Wr2V0zDDkB0jQi3DrW">
+<div class="guide-wrap" data-page-node-id="wP7mNuFyV2RRf3wjFrWMsR">
+  <a class="back-link" href="students.html" data-page-node-id="sADrFTFcJ9Z7zGdZiBERb4">← 返回学生培养</a>
+
+  <div class="guide-head" data-page-node-id="ED0bDpAguXFZimjAbUvDAi">
+    <h1 data-page-node-id="hciWU4hVdld16jRJq8Oste">本科毕业论文指导</h1>
+    <div class="sub" data-page-node-id="ME3UmyzgQBcBxVoMBL7TCx">UNDERGRADUATE THESIS GUIDE · 公司治理与会计学方向</div>
+  </div>
+
+  <div class="guide-intro" data-page-node-id="s2DswRoAy95pWOemBaYEhW">
+    本科毕业论文是本科阶段学术训练的综合检验。指导方向聚焦<strong data-page-node-id="HH5SZox1fxpmc5UdWbJn0h">公司治理与会计学</strong>，基于<strong data-page-node-id="Msa2JEPE18mPHZvJ906ULv">中国上市公司面板数据</strong>，运用<strong data-page-node-id="bZ6VjEKtOFvzYgmLIASUeS">因果推断方法</strong>开展实证研究。从选题凝练、实证设计到写作规范，本页面给出完整的整体要求与安排；研究过程中的任何疑问，欢迎在 Office Hour 当面讨论。
+  </div>
+
+  <!-- 一、选题凝练 -->
+  <div class="gsec" data-page-node-id="Bv2XsY5NyoqYg5IEa0yHWd">
+    <div class="gsec-title" data-page-node-id="gxEnDeGDVShnNpCIQjDFuL"><span class="n" data-page-node-id="7GCMbrBWMkrUCn7ygXp7wv">01</span><h3 data-page-node-id="CTTZGPQ6srM6RLZ9VH2Vcz">选题凝练</h3></div>
+    <p data-page-node-id="0VbKrZKZBcFV9lkaRpVYNn">选题聚焦<strong data-page-node-id="NXtCCszVPIT9GKNA4cdSM9">公司治理与会计学</strong>方向，基于<strong data-page-node-id="wSYPnCt4PJajGHF3psO3T9">中国上市公司面板数据</strong>，运用<strong data-page-node-id="XPaLBRarUibLShiiq2udBo">因果推断方法</strong>开展实证研究。建议从以下三本权威期刊中阅读近年文献，寻找自己感兴趣的选题方向：</p>
+    <ul class="journal-list" data-page-node-id="9jeIV9KDDVjEGNtC4QZnXc">
+      <li data-page-node-id="8cbZyOdXVvHC4ueF3FucG3">《会计研究》<span data-page-node-id="8zxk7P82bvVHXWHAX9Lqax">中国会计学权威期刊</span></li>
+      <li data-page-node-id="aASIonTnqp1FxQHAEjCTFf">《金融研究》<span data-page-node-id="fl6pGu9oOgDEqf0ZVcCzhR">中国金融学权威期刊</span></li>
+      <li data-page-node-id="Wii68iOhSp3pRUDT6UJJAK">《管理世界》<span data-page-node-id="hIiaJpqIelTryGnqqhn3aA">中国经济管理权威期刊</span></li>
+    </ul>
+    <p data-page-node-id="XQVnn6llb8hOuSGn1HavNt">若阅读后仍未找到感兴趣的选题，可直接<strong data-page-node-id="A7S1ajAQf2mfDTAI5cyrBF">与我沟通咨询</strong>，我会结合你的兴趣与可行性协助凝练题目。</p>
+  </div>
+
+  <!-- 二、实证研究设计 -->
+  <div class="gsec" data-page-node-id="uMHiaiD6KauiLhoLoDHKYt">
+    <div class="gsec-title" data-page-node-id="iCHqx26wpfnyDfR3dcNvzT"><span class="n" data-page-node-id="J8L3QPWGvABnsCoX1GXe3q">02</span><h3 data-page-node-id="Uoac6WujGFBwDxZdAw6bRG">实证研究设计</h3></div>
+    <p data-page-node-id="2jdAu7SD2pSbv6ElL0Dn9t">完整的实证研究包含以下四个核心部分，缺一不可，按研究逻辑顺序从上到下依次推进：</p>
+    <div class="four-part four-part-flow" data-page-node-id="Xx89IdJOuH9eCkl0rbEFhB">
+      <div class="fp-card" data-page-node-id="7KqSdbS0yv2nWpKjwrABJV">
+        <div class="fn-num" data-page-node-id="VxNJfBYWUiUsGFyvyCcdjF">Part 1</div>
+        <h4 data-page-node-id="wmjiqS41rWDAEPwnt6HtoL">基准回归</h4>
+        <p data-page-node-id="czAc403CpAMmapl2AyYHE2">检验核心解释变量与被解释变量因果关系的主回归，是全文证据链的基石。</p>
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="fp-card" data-page-node-id="S88jMzkwQA2yNhzzv2gr7W">
+        <div class="fn-num" data-page-node-id="5DhO8dkmA0mg7cfzF3R1Uc">Part 2</div>
+        <h4 data-page-node-id="Hg9G8iq7kxp5KhQMvpPvvH">稳健性检验</h4>
+        <p data-page-node-id="RkGQsOPDCVFcwqRtjbOVY7">针对基准回归的多角度稳健性检验：替换变量测度、更换样本区间、安慰剂检验、工具变量等。</p>
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="fp-card" data-page-node-id="Y80iKHtYWyydVtzOuBaYhJ">
+        <div class="fn-num" data-page-node-id="14uoSckpBohYjaHOLQJ3gJ">Part 3</div>
+        <h4 data-page-node-id="z0tWjjLJ1BEe9AddQOW5bi">机制分析</h4>
+        <p data-page-node-id="gb02Bhvu1EfBaqHLw2wysi">识别并检验因果作用的传导渠道，回答"通过什么机制产生影响"。</p>
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="fp-card" data-page-node-id="2mznBeYJfdphO8Xn6oMV7z">
+        <div class="fn-num" data-page-node-id="0LEuLjuqCvy3dcETKUmp0b">Part 4</div>
+        <h4 data-page-node-id="Ly98E8Zs3xgEOmRkyvkoD9">异质性分析</h4>
+        <p data-page-node-id="f637nAA0mTWh3CKYUw9COw">考察因果效应在不同维度（产权性质、企业规模、地区、行业等）上的差异。</p>
+      </div>
+    </div>
+    <div class="req-box">
+      <h5>一些要求</h5>
+      <ul>
+        <li><strong>题目格式：</strong>统一为「X对Y的影响研究」。</li>
+        <li><strong>回归表格：</strong>论文中的实证回归表格<strong>至少 2 列</strong>，不能出现一个实证回归表格只有 1 列的情况。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 三、写作规范与学术要求 -->
+  <div class="gsec" data-page-node-id="Dbn9JIEeOMoDmRMqsEzwp9">
+    <div class="gsec-title" data-page-node-id="YCnWss5AWBZmrBwA88JOBZ"><span class="n" data-page-node-id="EkmzBbNvbYmLHCIBZQe5gf">03</span><h3 data-page-node-id="2iKpUzcBq6juGG5vhMaEB5">写作规范与学术要求</h3></div>
+    <p data-page-node-id="WigmXhvaFYKax3cDdsWJSg">论文全文字数<strong data-page-node-id="vai1mx2dsNpeD7U4v71os6">2–3 万字</strong>，严格遵守学术规范。请特别注意：</p>
+    <div class="warn-box" data-page-node-id="jAPPtaEcuFblvGFDmtmVvD">
+      <h5 data-page-node-id="oSX2bL3bFA9Kq4K3BB9Xzs">学术诚信红线</h5>
+      <ul class="warn-list">
+        <li data-n="1"><strong>所有实证代码须可重复</strong>，并提供 <strong>Stata log 文件</strong>存档。</li>
+        <li data-n="2"><strong>杜绝抄袭与造假</strong>，论文须通过<strong>重复率查重</strong>与 <strong>AI 查重</strong>双重检测。</li>
+        <li data-n="3">毕业论文将上传<strong>知网数据库</strong>长期存档——请对学术诚信<strong>终身负责</strong>。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 四、师生沟通安排 -->
+  <div class="gsec" data-page-node-id="yMVq0MC41cVYgdZf9MtAU2">
+    <div class="gsec-title" data-page-node-id="rNRR6jhGsJ6jxIr7qinqEz"><span class="n" data-page-node-id="xqaOPyGuQQFBLW5JZXAwET">04</span><h3 data-page-node-id="48Xuqs7N3FE9o1iJPhBPrv">师生沟通安排</h3></div>
+    <div class="office-box" data-page-node-id="ZF8WHAVwu4fxPWeTGWB73w">
+      <div class="otime" data-page-node-id="KGgIlHqFX8wHEFoXFGNGuR"><small data-page-node-id="NV86aJCZQI769L7UJxDatX">OFFICE HOUR</small>星期五 9:00–17:00</div>
+      <div class="odesc" data-page-node-id="YBRSRMgb0syd9aFjwzlbWE">
+        每个工作日<strong data-page-node-id="3ovZwZqr135AD2kuCJpYqF">星期五 9:00–17:00</strong> 为固定答疑时间，同学可在此时间段<strong data-page-node-id="bQiZTQqLedkFtbRHAD602f">直接到办公室</strong>咨询毕业论文及其他学术问题，无需预约。
+      </div>
+    </div>
+  </div>
+
+  <p class="gate-note" data-page-node-id="Y8VAzzFG3sKV4bNDxMjeYq">本科毕业论文指导 · Students / Undergraduate Thesis</p>
+</div>
+</div>
+
+</div>
+
+<!-- ================= Footer（与其他页一致） ================= -->
+<footer data-page-node-id="bud0B9l3aElTGICFOsxVLT">
+  <div class="footer-wave" aria-hidden="true" data-page-node-id="gn7t6bB5GRWFYJHW4d412C"><i style="height:8px;background:#1b3a5f" data-page-node-id="MMvyULE7NhwOp5WDPUfwtj"></i><i style="height:14px;background:#2d5a8e" data-page-node-id="YEJWICz9ZP4WivQPzWmVlU"></i><i style="height:20px;background:#b08d4f" data-page-node-id="l4AQtM54Bfml2Ku1VdyCEa"></i><i style="height:11px;background:#c8d4e0" data-page-node-id="Nm6BwY6WD1fa2z4SQPY4uS"></i><i style="height:24px;background:#1b3a5f" data-page-node-id="Oekk5IugtZgSzS7E2FakOD"></i><i style="height:16px;background:#2d5a8e" data-page-node-id="lAaPWwumO8DuiLvi4unGM8"></i><i style="height:6px;background:#b08d4f" data-page-node-id="KEiLHHCNZ1H0TBWNeFT8WK"></i><i style="height:18px;background:#c8d4e0" data-page-node-id="LCT2s8HeAYOaWUokD0ACCu"></i><i style="height:10px;background:#1b3a5f" data-page-node-id="8DpBn8LgE6y4FMz9cZ53g6"></i><i style="height:22px;background:#2d5a8e" data-page-node-id="Oqpj3ikCvUErmmCZud4GH3"></i><i style="height:13px;background:#c8d4e0" data-page-node-id="cAS2pBJtAjcxGRbLXlyfdh"></i><i style="height:7px;background:#c8d4e0" data-page-node-id="bpAAogDVAieiQOGQjLUdwC"></i><i style="height:19px;background:#1b3a5f" data-page-node-id="FOFt1wpH4w3GjmfPIGukw9"></i><i style="height:9px;background:#2d5a8e" data-page-node-id="L6PpJJHCd1GvkPXxrV9R4l"></i><i style="height:8px;background:#b08d4f" data-page-node-id="KtQskIBEbzSUsi9IV3F9cW"></i><i style="height:14px;background:#c8d4e0" data-page-node-id="I9y28ejlwSusCENHQHDUwC"></i><i style="height:20px;background:#1b3a5f" data-page-node-id="9pqMhyhAwlNnos0MOH0ly8"></i><i style="height:11px;background:#c8d4e0" data-page-node-id="B82VqHccyepaBuGYFL5Ilq"></i><i style="height:24px;background:#b08d4f" data-page-node-id="NqZWAlzzgiCzr7gm1hE99P"></i><i style="height:16px;background:#c8d4e0" data-page-node-id="VSixcw2IgFRb5DgNlWjtIF"></i><i style="height:6px;background:#1b3a5f" data-page-node-id="hKoQ5midP0FBg91pDWX8TY"></i><i style="height:18px;background:#2d5a8e" data-page-node-id="DKUNy53DZh4ISLnRm8W5F5"></i><i style="height:10px;background:#b08d4f" data-page-node-id="FyQAFOXCOQS9esa0KwmS4Q"></i><i style="height:22px;background:#c8d4e0" data-page-node-id="bUScVlZwdzlHwXAwWowdPh"></i><i style="height:13px;background:#c8d4e0" data-page-node-id="1IvC4DxCw0vbPboq3YDGpQ"></i><i style="height:7px;background:#2d5a8e" data-page-node-id="Ax1X3QlIk9Dd3hHTV7UQuW"></i></div>
+  <div class="footer-slogan" data-page-node-id="YH8a9sm7edvENgscF8A7xx"><span class="slog" data-page-node-id="GgipoQ8JEY3hRwYJE1uDsr">Focusing on Agent Economy, Building Framework</span></div>
+  <span class="vcr" data-page-node-id="Z1E7HNDzN0aRlYTbm83THa">Q I<br data-page-node-id="sBbelluiBLUhJ1t7IulnFy">W A N G</span>
+</footer>
+
+<script>
+(function () {
+  var KEY = 'ug_thesis_pass';
+  var EXPECT = '2cc3c81e6ecb2d24c69d680ed35174c2b68e420b86e7c5eac9c26fda96656370'; // sha256
+  var gate = document.getElementById('gate'),
+      content = document.getElementById('content'),
+      input = document.getElementById('pwInput'),
+      err = document.getElementById('pwErr');
+
+  function unlock() {
+    gate.style.display = 'none';
+    content.style.display = 'block';
+    try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+  }
+  function sha256hex(text) {
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+        return ('0' + b.toString(16)).slice(-2);
+      }).join('');
+    });
+  }
+  function tryPass() {
+    sha256hex(input.value).then(function (hash) {
+      if (hash === EXPECT) unlock();
+      else { err.style.display = 'block'; input.select(); }
+    });
+  }
+  document.getElementById('pwBtn').addEventListener('click', tryPass);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') tryPass(); });
+  try { if (sessionStorage.getItem(KEY) === '1') unlock(); } catch (e) {}
+})();
+</script>
+
+</body>
+</html>

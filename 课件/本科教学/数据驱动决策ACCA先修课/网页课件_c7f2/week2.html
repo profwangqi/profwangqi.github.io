@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2周：描述性统计与数据汇总 | 商业数据分析</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<style>
+/* ========== 全局重置与变量 ========== */
+:root {
+  --bg-primary: #F5F0E8;
+  --bg-secondary: #E8D5C4;
+  --accent: #C49A6C;
+  --accent-dark: #8B6F4E;
+  --text-primary: #3D3D3D;
+  --text-secondary: #6B6B6B;
+  --code-bg: #2D2D2D;
+  --code-text: #F8F8F2;
+  --card-bg: #FFFFFF;
+  --border-radius: 12px;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+/* ========== 顶部标题区 ========== */
+header {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  padding: 60px 20px 40px;
+  text-align: center;
+  border-bottom: 3px solid var(--accent);
+}
+header h1 { font-size: 2.2rem; color: var(--accent-dark); margin-bottom: 10px; font-weight: 700; }
+header .subtitle { font-size: 1.1rem; color: var(--text-secondary); }
+header .week-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+/* ========== 导航栏 ========== */
+nav {
+  background: var(--card-bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 12px 20px;
+}
+nav ul { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+nav li a {
+  display: block; padding: 8px 16px; text-decoration: none;
+  color: var(--text-secondary); border-radius: 20px; font-size: 0.9rem; transition: all 0.3s;
+}
+nav li a:hover, nav li a.active { background: var(--accent); color: white; }
+
+/* ========== 容器 ========== */
+.container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+/* ========== 周目标概述 ========== */
+.week-overview {
+  background: var(--card-bg); border-radius: var(--border-radius);
+  padding: 30px; margin: 30px auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border-left: 5px solid var(--accent);
+}
+.week-overview h2 { color: var(--accent-dark); font-size: 1.4rem; margin-bottom: 15px; }
+.week-overview ul { margin-left: 22px; }
+.week-overview li { margin: 8px 0; }
+
+/* ========== 课程卡片 ========== */
+.lesson-card {
+  background: var(--card-bg); border-radius: var(--border-radius);
+  padding: 35px; margin: 30px auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  scroll-margin-top: 80px;
+}
+.lesson-header {
+  border-bottom: 2px solid var(--bg-secondary);
+  padding-bottom: 15px; margin-bottom: 25px;
+}
+.lesson-header .lesson-num {
+  display: inline-block; background: var(--accent); color: white;
+  padding: 4px 14px; border-radius: 15px; font-size: 0.85rem; margin-bottom: 8px;
+}
+.lesson-header h2 { color: var(--accent-dark); font-size: 1.5rem; font-weight: 700; }
+
+/* ========== 内容区 ========== */
+.lesson-content h3 {
+  color: var(--accent-dark); font-size: 1.2rem;
+  margin: 25px 0 12px; padding-left: 12px; border-left: 4px solid var(--accent);
+}
+.lesson-content p { margin: 12px 0; }
+.lesson-content ul, .lesson-content ol { margin: 10px 0 10px 24px; }
+.lesson-content li { margin: 6px 0; }
+
+/* ========== 表格 ========== */
+table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 0.95rem; }
+th, td { padding: 12px 14px; text-align: left; border: 1px solid var(--bg-secondary); }
+th { background: var(--bg-secondary); color: var(--accent-dark); font-weight: 600; }
+tr:nth-child(even) { background: #FAF8F5; }
+
+/* ========== 信息框 ========== */
+.info-box {
+  background: #FAF3EC; border-left: 4px solid var(--accent);
+  padding: 18px 20px; margin: 18px 0; border-radius: 0 8px 8px 0;
+}
+.info-box strong { color: var(--accent-dark); }
+.tip-box {
+  background: #F0F5EC; border-left: 4px solid #7DA87B;
+  padding: 18px 20px; margin: 18px 0; border-radius: 0 8px 8px 0;
+}
+.tip-box strong { color: #5A7E58; }
+.warning-box {
+  background: #F5ECEC; border-left: 4px solid #C44;
+  padding: 18px 20px; margin: 18px 0; border-radius: 0 8px 8px 0;
+}
+.warning-box strong { color: #A33; }
+
+/* ========== 代码块 ========== */
+code {
+  font-family: "Consolas", "Monaco", monospace; background: #EFE8DD;
+  color: var(--accent-dark); padding: 2px 6px; border-radius: 4px; font-size: 0.9em;
+}
+pre {
+  background: var(--code-bg); color: var(--code-text);
+  padding: 18px 22px; border-radius: 8px; overflow-x: auto;
+  margin: 16px 0; font-size: 0.9rem; line-height: 1.6;
+}
+pre code { background: none; color: var(--code-text); padding: 0; font-size: 0.9rem; }
+
+/* ========== 公式区 ========== */
+.formula-block {
+  background: #FAF8F5; border: 1px solid var(--bg-secondary);
+  border-radius: 8px; padding: 20px 24px; margin: 18px 0; text-align: center;
+}
+
+/* ========== 步骤推导 ========== */
+.step-derivation {
+  background: #FAF8F5; border-radius: 8px; padding: 20px 24px; margin: 18px 0;
+}
+.step-derivation .step {
+  margin: 14px 0; padding-left: 20px; position: relative;
+}
+.step-derivation .step::before {
+  content: attr(data-step); position: absolute; left: 0;
+  color: var(--accent); font-weight: bold;
+}
+
+/* ========== 底部按钮 ========== */
+.notebook-btn {
+  display: inline-block; margin-top: 25px; padding: 14px 32px;
+  background: var(--accent); color: white; text-decoration: none;
+  border-radius: 8px; font-weight: 600; transition: background 0.3s;
+}
+.notebook-btn:hover { background: var(--accent-dark); }
+
+/* ========== 小结框 ========== */
+.summary-box {
+  background: var(--bg-secondary); border-radius: var(--border-radius);
+  padding: 24px; margin-top: 25px;
+}
+.summary-box h4 { color: var(--accent-dark); margin-bottom: 10px; }
+
+/* ========== 页脚 ========== */
+footer {
+  text-align: center; padding: 40px 20px; color: var(--text-secondary);
+  font-size: 0.9rem; border-top: 1px solid var(--bg-secondary); margin-top: 40px;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 640px) {
+  header h1 { font-size: 1.6rem; }
+  .lesson-card { padding: 22px; }
+  .lesson-header h2 { font-size: 1.25rem; }
+  nav ul { gap: 4px; }
+  nav li a { padding: 6px 12px; font-size: 0.8rem; }
+  th, td { padding: 8px 10px; font-size: 0.85rem; }
+}
+
+/* ========== 两列布局 ========== */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+@media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+.col-card { background: #FAF8F5; border-radius: 8px; padding: 18px; border: 1px solid var(--bg-secondary); }
+.col-card h4 { color: var(--accent-dark); margin-bottom: 8px; }
+
+/* ========== 对比卡片 ========== */
+.compare-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 16px 0; }
+@media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+.compare-card { background: #FAF8F5; border-radius: 10px; padding: 20px; border: 1px solid var(--bg-secondary); }
+.compare-card h4 { color: var(--accent-dark); font-size: 1.05rem; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ========== 顶部标题区 ========== -->
+<header>
+  <div class="week-badge">Week 2</div>
+  <h1>描述性统计与数据汇总</h1>
+  <p class="subtitle">Descriptive Statistics &amp; Data Summarisation</p>
+</header>
+
+<!-- ========== 导航栏 ========== -->
+<nav>
+  <ul>
+    <li><a href="#lesson1" class="active">第1节：集中趋势</a></li>
+    <li><a href="#lesson2">第2节：离散程度</a></li>
+    <li><a href="#lesson3">第3节：Python实践</a></li>
+  </ul>
+</nav>
+
+<!-- ========== 周目标概述 ========== -->
+<div class="container">
+  <div class="week-overview">
+    <h2>本周学习目标</h2>
+    <ul>
+      <li>掌握均值、中位数、众数的定义、计算方法和适用场景</li>
+      <li>理解加权均值的含义，能在加权场景下正确计算</li>
+      <li>理解方差的推导过程，掌握 $n-1$ 作为分母的原因（样本方差无偏性）</li>
+      <li>熟练使用 Python 计算全部描述性统计量并绘制统计图表</li>
+      <li>学会根据数据特征选择合适的集中趋势和离散程度度量</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========== 第1节课：集中趋势度量 ========== -->
+<div class="container">
+  <section class="lesson-card" id="lesson1">
+    <div class="lesson-header">
+      <span class="lesson-num">第1课</span>
+      <h2>集中趋势度量</h2>
+    </div>
+
+    <div class="lesson-content">
+      <h3>什么是"集中趋势"？</h3>
+      <p>拿到一组数据后，第一个问题通常是：<strong>"这组数据的中心在哪里？"</strong></p>
+      <p>例如：某公司50名员工的月薪分布在6000元到30000元之间。我们不会逐个描述50个数字，而是想知道"典型"员工的月薪大概是多少。这就是<strong>集中趋势度量</strong>（Measures of Central Tendency）的作用——用一个代表性的数值概括整组数据。</p>
+      <p>统计学中，最常用的三个集中趋势度量是：<strong>均值</strong>（Mean）、<strong>中位数</strong>（Median）和<strong>众数</strong>（Mode）。</p>
+
+      <h3>1. 均值 (Mean / Arithmetic Average)</h3>
+
+      <p><strong>直观理解</strong></p>
+      <p>均值是最自然的"平均"概念。把一组数全部加起来，然后平分，每人一份。就像把一摞钱平均分给所有人，每人拿到多少。</p>
+
+      <p><strong>公式推导</strong></p>
+      <p>设有一组数据 $x_1, x_2, x_3, \ldots, x_n$，共 $n$ 个观测值。</p>
+      <p><strong>第一步</strong>：把所有观测值求和。</p>
+      <div class="formula-block">
+        $$S = x_1 + x_2 + x_3 + \cdots + x_n = \sum_{i=1}^{n} x_i$$
+      </div>
+      <p>符号 $\sum$（读作"Sigma"）表示"求和"。$\sum_{i=1}^{n} x_i$ 的意思就是"从 $x_1$ 加到 $x_n$"。</p>
+
+      <p><strong>第二步</strong>：把总和平分给 $n$ 个观测值，得到均值。</p>
+      <div class="formula-block">
+        $$\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n} = \frac{x_1 + x_2 + \cdots + x_n}{n}$$
+      </div>
+      <p>其中 $\bar{x}$（读作"x-bar"）是样本均值的统计符号。</p>
+
+      <p><strong>例题</strong></p>
+      <p>某小组5名学生的期末成绩分别为：78, 85, 92, 68, 88。计算平均分。</p>
+      <div class="formula-block">
+        $$\bar{x} = \frac{78 + 85 + 92 + 68 + 88}{5} = \frac{411}{5} = 82.2$$
+      </div>
+
+      <div class="warning-box">
+        <strong>均值的致命弱点：极端值敏感</strong>
+        <p>如果上述5名学生中，第5名的成绩不是88而是<strong>200</strong>（假设是加了额外加分），均值会变成：</p>
+        $$\bar{x} = \frac{78 + 85 + 92 + 68 + 200}{5} = \frac{523}{5} = 104.6$$
+        <p>104.6分远超大部分学生的实际水平！一个极端值就把均值拉偏了。这就是为什么在存在极端值时，均值可能不是最好的代表。</p>
+      </div>
+
+      <h3>2. 中位数 (Median)</h3>
+
+      <p><strong>直观理解</strong></p>
+      <p>中位数的思路是：把数据排好队，站在<strong>正中间</strong>的那个人就是"代表"。</p>
+      <p>中位数不受极端值影响。无论你给最高分再加多少分，中间位置的人始终不变。</p>
+
+      <p><strong>计算方法</strong></p>
+      <p>将数据从小到大排序后：</p>
+      <ul>
+        <li>如果 $n$ 是<strong>奇数</strong>：中位数就是第 $\frac{n+1}{2}$ 个值</li>
+        <li>如果 $n$ 是<strong>偶数</strong>：中位数是第 $\frac{n}{2}$ 个和第 $(\frac{n}{2}+1)$ 个值的平均</li>
+      </ul>
+
+      <div class="formula-block">
+        $$\text{Median} = \begin{cases}
+        x_{(\frac{n+1}{2})} & \text{当 } n \text{ 为奇数} \\[8pt]
+        \dfrac{x_{(\frac{n}{2})} + x_{(\frac{n}{2}+1)}}{2} & \text{当 } n \text{ 为偶数}
+        \end{cases}$$
+      </div>
+
+      <p><strong>例题：奇数个数据</strong></p>
+      <p>数据：12, 5, 8, 20, 15（$n=5$，奇数）</p>
+      <p>Step 1 — 排序：5, 8, 12, 15, 20</p>
+      <p>Step 2 — 中间位置：$\frac{5+1}{2} = 3$，第3个数是12</p>
+      <div class="formula-block">
+        $$\text{Median} = 12$$
+      </div>
+
+      <p><strong>例题：偶数个数据</strong></p>
+      <p>数据：12, 5, 8, 20, 15, 10（$n=6$，偶数）</p>
+      <p>Step 1 — 排序：5, 8, 10, 12, 15, 20</p>
+      <p>Step 2 — 中间两个：第3个=10，第4个=12</p>
+      <div class="formula-block">
+        $$\text{Median} = \frac{10 + 12}{2} = 11$$
+      </div>
+
+      <h3>3. 众数 (Mode)</h3>
+      <p>众数是数据集中<strong>出现次数最多</strong>的值。它适用于所有类型的数据，包括名义数据。</p>
+
+      <div class="two-col">
+        <div class="col-card">
+          <h4>数值数据</h4>
+          <p>数据：3, 5, 7, 5, 9, 5, 2</p>
+          <p>5出现了3次 → <strong>Mode = 5</strong></p>
+        </div>
+        <div class="col-card">
+          <h4>分类数据</h4>
+          <p>手机品牌偏好：苹果, 华为, 苹果, 小米, 苹果, 华为</p>
+          <p>苹果出现了3次 → <strong>Mode = "苹果"</strong></p>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <strong>注意：</strong>一组数据可能有多个众数（双峰、多峰），也可能没有众数（所有值出现次数相同）。
+      </div>
+
+      <h3>4. 加权均值 (Weighted Mean)</h3>
+      <p><strong>直观理解</strong></p>
+      <p>普通均值中，每个数据点的"话语权"是一样的。但现实中，不同数据的重要性往往不同。</p>
+      <p>例如：期末考试由平时作业（占30%）和期末考试（占70%）组成。平时90分，期末80分，总成绩不是 $(90+80)/2 = 85$，而是 $90 \times 0.3 + 80 \times 0.7 = 83$。</p>
+
+      <p><strong>公式推导</strong></p>
+      <p>设每个观测值 $x_i$ 对应一个权重 $w_i$（权重反映该数据的重要性）。</p>
+      <p><strong>第一步</strong>：每个值乘以其权重，然后求和。</p>
+      <div class="formula-block">
+        $$\sum_{i=1}^{n} w_i x_i = w_1 x_1 + w_2 x_2 + \cdots + w_n x_n$$
+      </div>
+      <p><strong>第二步</strong>：除以权重之和（使权重标准化）。</p>
+      <div class="formula-block">
+        $$\bar{x}_w = \frac{\sum_{i=1}^{n} w_i x_i}{\sum_{i=1}^{n} w_i}$$
+      </div>
+      <p>当所有权重相等（即 $w_1 = w_2 = \cdots = w_n$）时，加权均值退化为普通均值。</p>
+
+      <p><strong>例题：加权平均成绩</strong></p>
+      <p>某课程评分标准：作业(20%)、期中(30%)、期末(50%)。学生得分分别为85、78、92。</p>
+      <div class="formula-block">
+        $$\bar{x}_w = \frac{0.20 \times 85 + 0.30 \times 78 + 0.50 \times 92}{0.20 + 0.30 + 0.50} = \frac{17 + 23.4 + 46}{1} = 86.4$$
+      </div>
+
+      <h3>三种集中趋势度量的比较</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>度量</th>
+            <th>优点</th>
+            <th>缺点</th>
+            <th>最佳适用场景</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>均值</strong></td>
+            <td>利用了所有数据；数学性质好；便于进一步分析</td>
+            <td>受极端值影响大</td>
+            <td>数据对称分布，无异常值</td>
+          </tr>
+          <tr>
+            <td><strong>中位数</strong></td>
+            <td>不受极端值影响；反映"典型"水平</td>
+            <td>只利用中间位置，忽略大量信息</td>
+            <td>数据有偏态或存在异常值</td>
+          </tr>
+          <tr>
+            <td><strong>众数</strong></td>
+            <td>可用于分类数据；直观反映最常见值</td>
+            <td>可能不存在或不唯一；不利用全部数据</td>
+            <td>分类数据；找最常见的选项</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <strong>选择口诀：</strong>
+        <ul>
+          <li>对称分布 → 均值</li>
+          <li>偏态分布 / 有异常值 → 中位数</li>
+          <li>分类数据 / 找最受欢迎选项 → 众数</li>
+        </ul>
+      </div>
+
+      <div class="summary-box">
+        <h4>本节课小结</h4>
+        <ul>
+          <li>均值 $\bar{x} = \frac{\sum x_i}{n}$ —— 全部数据平分，对称分布最佳</li>
+          <li>中位数 —— 排序后中间值，抗极端值干扰</li>
+          <li>众数 —— 出现最频繁，适用于分类数据</li>
+          <li>加权均值 $\bar{x}_w = \frac{\sum w_i x_i}{\sum w_i}$ —— 不同数据赋予不同权重</li>
+        </ul>
+      </div>
+
+      <a href="../03-Notebook代码/week2-描述性统计与数据汇总.html" class="notebook-btn" target="_blank">前往 Notebook 练习 →</a>
+    </div>
+  </section>
+</div>
+
+<!-- ========== 第2节课：离散程度度量 ========== -->
+<div class="container">
+  <section class="lesson-card" id="lesson2">
+    <div class="lesson-header">
+      <span class="lesson-num">第2课</span>
+      <h2>离散程度度量</h2>
+    </div>
+
+    <div class="lesson-content">
+      <h3>为什么要度量"离散程度"？</h3>
+      <p>假设两个班级的平均成绩都是75分。但A班所有人的成绩都在70~80分之间，而B班有人考100分、有人考50分。显然，两个班级的"情况"完全不同。</p>
+      <p>集中趋势告诉我们"中心在哪里"，离散程度则告诉我们<strong>"数据有多分散"</strong>。只有同时知道两者，才能完整描述一组数据。</p>
+
+      <div class="info-box">
+        <strong>核心思想：</strong>如果离散程度很小 → 数据很集中，均值很可靠；如果离散程度很大 → 数据很分散，单个代表性数值可能掩盖重要信息。
+      </div>
+
+      <h3>1. 极差 (Range)</h3>
+      <p>极差是最简单的离散程度度量，就是最大值减最小值。</p>
+      <div class="formula-block">
+        $$\text{Range} = \max(x_i) - \min(x_i) = x_{\max} - x_{\min}$$
+      </div>
+      <p><strong>例题：</strong>数据：12, 18, 25, 30, 42。极差 = 42 - 12 = 30。</p>
+      <p>极差的优点是非常简单直观，缺点是<strong>只利用了两个极端值</strong>，完全忽略了中间数据的分布情况。如果最大值或最小值是异常值，极差就会被严重扭曲。</p>
+
+      <h3>2. 方差 (Variance) —— 从直观到公式</h3>
+      <p>方差是衡量离散程度最重要的指标。下面我们从直观思路出发，一步步推导到最终公式。</p>
+
+      <p><strong>Step 0：直观思路 — "偏离中心的程度"</strong></p>
+      <p>每个数据点与均值之间的距离（偏差）反映了它"偏离中心"的程度。如果把所有偏差加起来……</p>
+      <div class="formula-block">
+        $$\sum_{i=1}^{n} (x_i - \bar{x}) = (x_1 - \bar{x}) + (x_2 - \bar{x}) + \cdots + (x_n - \bar{x})$$
+      </div>
+      <p>令人沮丧的是：偏差之和<strong>永远等于零</strong>！因为均值定义就是"平衡点"，正负偏差恰好抵消。</p>
+      <div class="formula-block">
+        $$\sum_{i=1}^{n} (x_i - \bar{x}) = 0$$
+      </div>
+      <p>这很好理解：比如数据 2, 4, 6，均值是4。偏差分别是 -2, 0, +2，加起来正好为0。</p>
+
+      <p><strong>Step 1：绝对偏差 — 解决正负抵消问题</strong></p>
+      <p>为了消除正负抵消，一个想法是取绝对值：</p>
+      <div class="formula-block">
+        $$\text{平均绝对偏差 (MAD)} = \frac{\sum_{i=1}^{n} |x_i - \bar{x}|}{n}$$
+      </div>
+      <p>这个方法虽然可行，但绝对值函数在数学上"不友好"——不可导、计算复杂。统计学家选择了另一种方法：平方。</p>
+
+      <p><strong>Step 2：平方偏差 — 数学性质更好的选择</strong></p>
+      <p>把每个偏差平方，这样所有项都变成非负数，自然就不会抵消了。</p>
+      <div class="formula-block">
+        $$\text{平方偏差和} = \sum_{i=1}^{n} (x_i - \bar{x})^2$$
+      </div>
+      <p>为什么平方更好？因为平方函数 $f(x) = x^2$ 处处可导，性质非常优良，后续可以做微积分处理。而且平方对大偏差的"惩罚"更重（2倍偏差 → 4倍惩罚），这在很多场景下是合理的。</p>
+
+      <p><strong>Step 3：为什么要除以 $n-1$？</strong></p>
+      <p>如果只是把平方偏差和除以 $n$，得到的是<strong>总体方差</strong> $\sigma^2$。但在实际中，我们很少能拿到总体全部数据，通常只有<strong>样本</strong>。用样本推断总体时，除以 $n$ 会<strong>低估</strong>总体方差。</p>
+      <p>原因在于：样本均值 $\bar{x}$ 是从样本数据算出来的，它天然比总体均值更接近样本中的数据点。用样本均值计算的平方偏差和，比用（未知的）总体均值计算的偏差和要<strong>偏小</strong>。</p>
+      <p>数学上可以证明：当用样本均值代替总体均值时，自由度减少了1。因此除以 $n-1$ 可以得到<strong>无偏估计</strong>——样本方差的期望值等于总体方差。</p>
+
+      <div class="formula-block">
+        $$s^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}$$
+      </div>
+      <p>$s^2$ 是<strong>样本方差</strong>，分母为 $n-1$。
+        <br>$\sigma^2 = \frac{\sum (x_i - \mu)^2}{N}$ 是<strong>总体方差</strong>，分母为 $N$。</p>
+
+      <p><strong>完整的逐步计算过程</strong></p>
+      <div class="step-derivation">
+        <div class="step" data-step="1">计算均值：$\bar{x} = \frac{\sum x_i}{n}$</div>
+        <div class="step" data-step="2">计算每个数据点的偏差：$d_i = x_i - \bar{x}$</div>
+        <div class="step" data-step="3">计算平方偏差：$d_i^2 = (x_i - \bar{x})^2$</div>
+        <div class="step" data-step="4">求平方偏差和：$SS = \sum (x_i - \bar{x})^2$</div>
+        <div class="step" data-step="5">除以 $n-1$：$s^2 = \frac{SS}{n-1}$</div>
+      </div>
+
+      <p><strong>例题：逐步计算方差</strong></p>
+      <p>数据：4, 8, 6, 10, 12（$n=5$）</p>
+      <p>Step 1：均值 $\bar{x} = \frac{4+8+6+10+12}{5} = \frac{40}{5} = 8$</p>
+      <p>Step 2~3：计算偏差和平方偏差</p>
+      <table>
+        <thead><tr><th>$x_i$</th><th>$x_i - \bar{x}$</th><th>$(x_i - \bar{x})^2$</th></tr></thead>
+        <tbody>
+          <tr><td>4</td><td>-4</td><td>16</td></tr>
+          <tr><td>8</td><td>0</td><td>0</td></tr>
+          <tr><td>6</td><td>-2</td><td>4</td></tr>
+          <tr><td>10</td><td>2</td><td>4</td></tr>
+          <tr><td>12</td><td>4</td><td>16</td></tr>
+          <tr style="font-weight:bold"><td>合计</td><td>0</td><td>40</td></tr>
+        </tbody>
+      </table>
+      <p>Step 4：平方偏差和 $SS = 40$</p>
+      <p>Step 5：样本方差 $s^2 = \frac{40}{5-1} = \frac{40}{4} = 10$</p>
+
+      <h3>3. 标准差 (Standard Deviation)</h3>
+      <p>方差有一个问题：单位是原数据单位的<strong>平方</strong>。比如身高的方差单位是 $cm^2$，这不太好理解。</p>
+      <p>解决方案很简单：对方差开平方，得到标准差。</p>
+      <div class="formula-block">
+        $$s = \sqrt{s^2} = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}}$$
+      </div>
+      <p>接上例：$s = \sqrt{10} \approx 3.16$</p>
+      <p>标准差与原数据有<strong>相同的单位</strong>，解释起来直观得多。"标准差约为3.16"意味着：大多数数据点偏离均值大约3个单位左右。</p>
+
+      <div class="tip-box">
+        <strong>经验法则（Empirical Rule）：</strong>
+        <p>对于近似正态分布的数据：</p>
+        <ul>
+          <li>约 68% 的数据落在 $(\bar{x} - s, \bar{x} + s)$ 内</li>
+          <li>约 95% 的数据落在 $(\bar{x} - 2s, \bar{x} + 2s)$ 内</li>
+          <li>约 99.7% 的数据落在 $(\bar{x} - 3s, \bar{x} + 3s)$ 内</li>
+        </ul>
+      </div>
+
+      <h3>4. 变异系数 (Coefficient of Variation, CV)</h3>
+      <p>标准差有一个局限：它的数值大小与原数据的量级有关。比较不同量级数据的离散程度时，直接用标准差不公平。</p>
+      <p>例如：A公司员工平均月薪10000元，标准差2000元。B公司员工平均月薪50000元，标准差5000元。谁的工资差异更大？</p>
+      <p>变异系数把标准差标准化为均值的百分比，消除了量级的影响。</p>
+      <div class="formula-block">
+        $$CV = \frac{s}{\bar{x}} \times 100\%$$
+      </div>
+      <p>接上例：</p>
+      <ul>
+        <li>A公司：$CV_A = \frac{2000}{10000} \times 100\% = 20\%$</li>
+        <li>B公司：$CV_B = \frac{5000}{50000} \times 100\% = 10\%$</li>
+      </ul>
+      <p>结论：A公司工资的<strong>相对差异</strong>更大（虽然绝对标准差更小）。</p>
+
+      <div class="warning-box">
+        <strong>注意：</strong>变异系数<strong>只能用于比率数据</strong>（有绝对零点的正值），因为均值接近零时分母趋于零，CV会变得非常大甚至无意义。
+      </div>
+
+      <h3>离散程度度量对比总结</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>度量</th>
+            <th>公式</th>
+            <th>优点</th>
+            <th>缺点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>极差</strong></td>
+            <td>$x_{\max} - x_{\min}$</td>
+            <td>极其简单，易于理解</td>
+            <td>只用两个极端值，易受异常值影响</td>
+          </tr>
+          <tr>
+            <td><strong>方差</strong></td>
+            <td>$s^2 = \frac{\sum(x_i-\bar{x})^2}{n-1}$</td>
+            <td>利用全部数据；数学性质优良</td>
+            <td>单位是原单位的平方，不易解释</td>
+          </tr>
+          <tr>
+            <td><strong>标准差</strong></td>
+            <td>$s = \sqrt{s^2}$</td>
+            <td>与原数据同单位；解释直观</td>
+            <td>对极端值敏感；不能直接比较不同量级数据</td>
+          </tr>
+          <tr>
+            <td><strong>变异系数</strong></td>
+            <td>$CV = \frac{s}{\bar{x}} \times 100\%$</td>
+            <td>无量纲，可比较不同量级数据</td>
+            <td>要求均值不为零；只能用于正值比率数据</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="summary-box">
+        <h4>本节课小结</h4>
+        <ul>
+          <li>极差 = 最大值 - 最小值，最简单但最不稳定</li>
+          <li>方差 $s^2 = \frac{\sum(x_i-\bar{x})^2}{n-1}$，核心离散程度度量，除以 $n-1$ 保证无偏</li>
+          <li>标准差 $s = \sqrt{s^2}$，与原始数据同单位，最常用</li>
+          <li>变异系数 $CV = s/\bar{x} \times 100\%$，用于比较不同量级数据的相对离散程度</li>
+        </ul>
+      </div>
+
+      <a href="../03-Notebook代码/week2-描述性统计与数据汇总.html" class="notebook-btn" target="_blank">前往 Notebook 练习 →</a>
+    </div>
+  </section>
+</div>
+
+<!-- ========== 第3节课：Python描述性统计实践 ========== -->
+<div class="container">
+  <section class="lesson-card" id="lesson3">
+    <div class="lesson-header">
+      <span class="lesson-num">第3课</span>
+      <h2>Python 描述性统计实践</h2>
+    </div>
+
+    <div class="lesson-content">
+      <h3>本节课概览</h3>
+      <p>我们将使用 Python 完成以下实践任务：</p>
+      <ul>
+        <li>用 NumPy 和 Pandas 手动计算并验证均值、中位数、方差、标准差</li>
+        <li>用 Matplotlib 和 Seaborn 绘制直方图、箱线图和分布图</li>
+        <li>对模拟的真实场景数据（学生成绩、销售额）进行完整的描述性统计分析</li>
+      </ul>
+
+      <h3>手动计算 vs 内置函数</h3>
+      <p>先理解"手动"计算的原理，再使用内置函数提高效率，是学习数据分析的最佳路径。</p>
+
+      <pre><code>import numpy as np
+
+# 模拟10名学生的数学成绩
+data = np.array([72, 85, 78, 92, 88, 65, 90, 76, 83, 95])
+
+# ========== 手动计算 ==========
+n = len(data)
+mean_manual = np.sum(data) / n                          # 均值
+median_manual = np.median(data)                          # 中位数
+
+# 方差（样本方差，除以 n-1）
+deviations = data - mean_manual                          # 每个值与均值的偏差
+squared_devs = deviations ** 2                           # 平方偏差
+variance_manual = np.sum(squared_devs) / (n - 1)         # 样本方差
+std_manual = np.sqrt(variance_manual)                    # 标准差
+
+# 变异系数
+cv_manual = (std_manual / mean_manual) * 100
+
+print(f"均值: {mean_manual:.2f}")
+print(f"中位数: {median_manual:.2f}")
+print(f"方差: {variance_manual:.2f}")
+print(f"标准差: {std_manual:.2f}")
+print(f"变异系数: {cv_manual:.2f}%")
+
+# ========== 用内置函数验证 ==========
+print("\n--- 内置函数验证 ---")
+print(f"np.mean: {np.mean(data):.2f}")
+print(f"np.median: {np.median(data):.2f}")
+print(f"np.var(ddof=1): {np.var(data, ddof=1):.2f}")   # ddof=1 表示除以 n-1
+print(f"np.std(ddof=1): {np.std(data, ddof=1):.2f}")</code></pre>
+
+      <div class="info-box">
+        <strong>注意：</strong>NumPy 默认的 <code>np.var()</code> 和 <code>np.std()</code> 除以的是 $n$，要得到样本方差必须设置参数 <code>ddof=1</code>（Delta Degrees of Freedom）。
+      </div>
+
+      <h3>Pandas 的 describe() 方法</h3>
+      <p>Pandas 提供了一键生成描述性统计的 <code>describe()</code> 方法，是快速了解数据分布的利器。</p>
+
+      <pre><code>import pandas as pd
+import numpy as np
+
+# 创建模拟数据集：50名学生的多科成绩
+np.random.seed(42)
+n_students = 50
+
+df = pd.DataFrame({
+    '姓名': [f'学生{i+1}' for i in range(n_students)],
+    '数学': np.random.normal(75, 12, n_students).round(1),
+    '英语': np.random.normal(78, 10, n_students).round(1),
+    '物理': np.random.normal(72, 15, n_students).round(1),
+    '总分': 0  # 先占位，稍后计算
+})
+
+# 计算总分
+df['总分'] = df['数学'] + df['英语'] + df['物理']
+
+# 一键描述性统计
+print(df[['数学', '英语', '物理', '总分']].describe())</code></pre>
+
+      <h3>数据可视化：直方图与箱线图</h3>
+
+      <pre><code>import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 设置样式
+plt.rcParams['font.sans-serif'] = ['SimHei', 'DejaVu Sans']
+plt.rcParams['axes.unicode_minus'] = False
+
+# ========== 1. 直方图：展示分布形状 ==========
+fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+
+subjects = ['数学', '英语', '物理']
+colors = ['#C49A6C', '#8B6F4E', '#E8D5C4']
+
+for i, (subj, color) in enumerate(zip(subjects, colors)):
+    axes[i].hist(df[subj], bins=12, color=color, edgecolor='white', alpha=0.85)
+    axes[i].set_title(f'{subj}成绩分布', fontsize=13)
+    axes[i].set_xlabel('分数')
+    axes[i].set_ylabel('人数')
+    axes[i].axvline(df[subj].mean(), color='#3D3D3D', linestyle='--', 
+                    label=f'均值={df[subj].mean():.1f}')
+    axes[i].legend()
+
+plt.tight_layout()
+plt.show()
+
+# ========== 2. 箱线图：展示离散程度和异常值 ==========
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df[subjects], palette=['#C49A6C', '#8B6F4E', '#E8D5C4'])
+plt.title('三科成绩的箱线图对比', fontsize=14)
+plt.ylabel('分数')
+plt.show()</code></pre>
+
+      <div class="tip-box">
+        <strong>箱线图解读指南：</strong>
+        <ul>
+          <li>箱子中间的线 → 中位数</li>
+          <li>箱子的上下边界 → 上四分位数(Q3)和下四分位数(Q1)</li>
+          <li>箱子高度 → 四分位距 IQR = Q3 - Q1</li>
+          <li>箱外的"须线" → 延伸至 $Q1 - 1.5 \times IQR$ 和 $Q3 + 1.5 \times IQR$</li>
+          <li>须线外的点 → 潜在的异常值 (Outliers)</li>
+        </ul>
+      </div>
+
+      <h3>实际场景：销售数据分析</h3>
+      <p>假设我们有某公司30天的销售数据，需要全面分析。</p>
+
+      <pre><code># 模拟30天销售额（单位：万元）
+np.random.seed(123)
+days = 30
+sales = np.random.normal(50, 15, days)  # 均值50万，标准差15万
+sales = np.maximum(sales, 5)             # 保证没有负数
+
+# 人为加入一个促销日的极端值
+sales[15] = 120  # 第16天促销活动
+
+sales_df = pd.DataFrame({
+    '日期': pd.date_range('2024-01-01', periods=days),
+    '销售额(万元)': sales.round(2)
+})
+
+# 计算全部描述性统计
+mean_s = sales_df['销售额(万元)'].mean()
+median_s = sales_df['销售额(万元)'].median()
+std_s = sales_df['销售额(万元)'].std()
+var_s = sales_df['销售额(万元)'].var()
+range_s = sales_df['销售额(万元)'].max() - sales_df['销售额(万元)'].min()
+cv_s = (std_s / mean_s) * 100
+
+print("=" * 40)
+print("销售额描述性统计分析")
+print("=" * 40)
+print(f"样本量: {len(sales_df)}")
+print(f"均值: {mean_s:.2f} 万元")
+print(f"中位数: {median_s:.2f} 万元")
+print(f"极差: {range_s:.2f} 万元")
+print(f"方差: {var_s:.2f}")
+print(f"标准差: {std_s:.2f} 万元")
+print(f"变异系数: {cv_s:.2f}%")
+
+# 均值 vs 中位数差异分析
+diff_pct = abs(mean_s - median_s) / median_s * 100
+print(f"\n均值比中位数高 {(mean_s - median_s):.2f} 万元")
+print(f"差异百分比: {diff_pct:.1f}%")
+print("说明：存在右偏分布或极端高值（促销日）拉高了均值")</code></pre>
+
+      <h3>综合分析报告模板</h3>
+      <p>在实际工作中，描述性统计分析通常以报告形式呈现。以下是一个标准化的分析框架：</p>
+
+      <pre><code>def descriptive_report(data, name="数据"):
+    """生成描述性统计分析报告"""
+    n = len(data)
+    mean_val = np.mean(data)
+    median_val = np.median(data)
+    std_val = np.std(data, ddof=1)
+    var_val = np.var(data, ddof=1)
+    min_val = np.min(data)
+    max_val = np.max(data)
+    range_val = max_val - min_val
+    cv_val = (std_val / mean_val) * 100 if mean_val != 0 else np.nan
+    
+    # 判断偏态：均值 > 中位数 → 右偏；反之左偏
+    skew_desc = "右偏（有极端高值）" if mean_val > median_val else \
+                "左偏（有极端低值）" if mean_val < median_val else "近似对称"
+    
+    report = f"""
+{'='*50}
+{name} 描述性统计分析报告
+{'='*50}
+样本量 (n)       : {n}
+最小值 (Min)     : {min_val:.2f}
+最大值 (Max)     : {max_val:.2f}
+极差 (Range)     : {range_val:.2f}
+
+集中趋势:
+  均值 (Mean)    : {mean_val:.2f}
+  中位数 (Median): {median_val:.2f}
+
+离散程度:
+  方差 (Variance): {var_val:.2f}
+  标准差 (Std)   : {std_val:.2f}
+  变异系数 (CV)  : {cv_val:.2f}%
+
+分布形态:
+  偏态判断       : {skew_desc}
+{'='*50}
+"""
+    return report
+
+# 使用
+print(descriptive_report(sales_df['销售额(万元)'].values, "月度销售额"))</code></pre>
+
+      <div class="summary-box">
+        <h4>本节课小结</h4>
+        <ul>
+          <li>NumPy 手动计算帮助理解公式原理；<code>ddof=1</code> 用于样本方差</li>
+          <li>Pandas <code>describe()</code> 提供快速概览，适合探索性分析</li>
+          <li>直方图展示分布形状，箱线图展示离散程度和异常值</li>
+          <li>均值与中位数的差异可以判断分布是否偏态</li>
+          <li>变异系数消除了量级影响，适合跨数据集比较</li>
+        </ul>
+      </div>
+
+      <a href="../03-Notebook代码/week2-描述性统计与数据汇总.html" class="notebook-btn" target="_blank">前往 Notebook 练习 →</a>
+    </div>
+  </section>
+</div>
+
+<!-- ========== 页脚 ========== -->
+<footer>
+  <p>商业数据分析课程 · 第2周：描述性统计与数据汇总</p>
+  <p style="margin-top:6px; font-size:0.8rem;">配色：米白 #F5F0E8 · 浅卡其 #E8D5C4 · 暖棕 #C49A6C · 深棕 #8B6F4E</p>
+</footer>
+
+<script>
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('click', function() {
+    document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+window.addEventListener('scroll', () => {
+  const sections = ['lesson1', 'lesson2', 'lesson3'];
+  const scrollPos = window.scrollY + 100;
+  sections.forEach((id, idx) => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop <= scrollPos && el.offsetTop + el.offsetHeight > scrollPos) {
+      document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
+      document.querySelectorAll('nav a')[idx].classList.add('active');
+    }
+  });
+});
+</script>
+
+
+<div style="position:fixed;left:18px;bottom:18px;z-index:999;">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;background:#1b3a5f;color:#fff;text-decoration:none;font-size:13px;padding:8px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(27,58,95,0.3);font-family:-apple-system,'PingFang SC',sans-serif;">← 课件目录</a>
+</div>
+
+</body>
+</html>
