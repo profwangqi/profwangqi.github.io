@@ -1,0 +1,35 @@
+{
+  "base_url": "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/",
+  "qr": [
+    {
+      "title": "课堂入口",
+      "url": "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/#top",
+      "anchor": "top",
+      "file": "qr_course_entry.png",
+      "version": 8
+    },
+    {
+      "title": "情景实验",
+      "url": "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/#risk-lab",
+      "anchor": "risk-lab",
+      "file": "qr_risk_lab.png",
+      "version": 8
+    },
+    {
+      "title": "AI核验",
+      "url": "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/#s5",
+      "anchor": "s5",
+      "file": "qr_ai_review.png",
+      "version": 8
+    },
+    {
+      "title": "测验迁移",
+      "url": "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/#s6",
+      "anchor": "s6",
+      "file": "qr_quiz_transfer.png",
+      "version": 8
+    }
+  ],
+  "access": "public_no_password",
+  "china_access_note": "用户确认其现有GitHub Pages主页在中国境内可访问。本次使用同一站点；本机验证公开HTTP访问，不代替各地网络测试。"
+}

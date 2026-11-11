@@ -1,0 +1,15 @@
+{
+  "repository": "profwangqi/profwangqi.github.io",
+  "website": "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/",
+  "pdf_path": "课件/本科教学/国际金融/国际金融_示范教案_ElegantBook.pdf",
+  "pages": 23,
+  "password_required": true,
+  "local_pdf_sha256": "41dc9af1b8a98f29768d78341c04801b79dc87b8a581eb54ea0281d14d06fe29",
+  "html_sha256": "4a23fa79165ddeefc8c90fe2982a1011c717e6a248af923ea911bcedd8287cf9",
+  "interactive_password": "scu1896",
+  "pdf_password_required": false,
+  "commit": "806d09b2aa6a8ee57ddf752d5168ce348585dcb7",
+  "build_status": "built",
+  "public_html_sha256_matches_local": true,
+  "public_pdf_sha256_matches_local": true
+}

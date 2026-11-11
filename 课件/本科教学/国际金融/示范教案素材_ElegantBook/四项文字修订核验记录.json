@@ -1,0 +1,25 @@
+{
+  "exactTextEdits": 4,
+  "pages": 23,
+  "compileErrors": [],
+  "offPageWords": [],
+  "submissionPromptsAbsent": true,
+  "visualPagesReviewed": [
+    4,
+    5,
+    6
+  ],
+  "pdfPasswordRequired": false,
+  "interactivePassword": "scu1896",
+  "webChecks": {
+    "exactTextChanges": 4,
+    "passwordLogin": true,
+    "sections": 19,
+    "widths": [
+      1280,
+      768,
+      390
+    ],
+    "errors": []
+  }
+}

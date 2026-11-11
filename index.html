@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="XjZY9X2rmnO7BMYVT2m1yn">
+<head data-page-node-id="uIrMSEchIgyhBC7vsOcyEm">
+<meta charset="UTF-8" data-page-node-id="LQMUeUtBptoh4jo2ZhWJq5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="Csuvc7EbEkWUmPwkkmv4gB">
+<title>Qi Wang</title>
+<meta name="description" content="Qi Wang — Associate Professor. Research on AI agents and China's structural transformation." data-page-node-id="7kbprToFf9YaBo4lD3x9h8">
+<link rel="icon" href="favicon.svg" type="image/svg+xml" data-page-node-id="N6He7DJeGAbY0lS2EyvAxt">
+<link rel="icon" href="favicon.ico" sizes="32x32" data-page-node-id="e24oYnW0wyYegGz5iWvQk5">
+<link rel="apple-touch-icon" href="apple-touch-icon.png" data-page-node-id="kVOeDEZicseWq5cxOCgQeN">
+<link rel="stylesheet" href="style.css" data-page-node-id="Tv3urFG8g2rkOnEa5W5BFF">
+
+<!-- ===== 封面入口 Cover · 样式（与 body 末尾的 cover 区块成对，删除两处即可移除） ===== -->
+<style id="cover-style">
+#cover {
+  display: none;                    /* 默认隐藏：脚本未运行时首页保持原样 */
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 9999;
+  align-items: center; justify-content: center;
+  background: #f5f1e7;              /* 山水未渲染时的兜底底色（宣纸色） */
+  color: #26313c;                   /* 诗句墨色 */
+  font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", SimSun, serif;
+  opacity: 1; transition: opacity .9s ease;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; overflow: hidden;
+}
+html.cover-on  #cover,
+html.cover-out #cover { display: flex; }
+html.cover-on, html.cover-on body { overflow: hidden; }   /* 封面期间锁定背景滚动 */
+html.cover-out #cover { opacity: 0; pointer-events: none; }
+#cover:focus-visible { outline: 1px solid rgba(176,141,79,.65); outline-offset: -16px; }
+
+/* —— 现代线描山水：马夏边角构图，线条为主角，加载时自笔成画 —— */
+#cover .cover-scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+  opacity: 0; animation: cover-scene-in 1.8s ease forwards;
+}
+#cover .cover-scene .mist { animation: cover-drift 34s ease-in-out infinite alternate; }
+/* 线条自绘：每条路径 pathLength=1，统一按 0→1 描画 */
+#cover .cover-scene .draw {
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: cover-draw 1.7s cubic-bezier(.4,0,.2,1) forwards;
+  animation-delay: var(--d, 0s);
+}
+#cover .cover-scene .fade { opacity: 0; animation: cover-fade-in .9s ease forwards; animation-delay: var(--d, 1.3s); }
+@keyframes cover-draw { to { stroke-dashoffset: 0; } }
+@keyframes cover-fade-in { to { opacity: var(--o, 1); } }
+#cover .cover-veil {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(82% 68% at 50% 40%, rgba(245,241,231,.5) 0%, rgba(245,241,231,.16) 55%, rgba(245,241,231,0) 100%);
+}
+@keyframes cover-scene-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cover-drift { from { transform: translateX(-14px); } to { transform: translateX(14px); } }
+
+#cover .cover-inner {
+  position: relative; z-index: 2;
+  width: min(92vw, 900px); text-align: center; transform: translateY(-6vh);
+}
+html.cover-out #cover .cover-inner { transform: translateY(-10vh); }
+#cover .cover-inner,
+html.cover-out #cover .cover-inner { transition: transform 1.1s cubic-bezier(.22,.61,.36,1); }
+
+#cover .cover-rule {
+  width: 0; height: 1px; margin: 0 auto 34px;
+  background: linear-gradient(90deg, transparent, rgba(176,141,79,.9), transparent);
+  transition: width 1.6s cubic-bezier(.22,.61,.36,1);
+}
+html.cover-on  #cover .cover-rule,
+html.cover-out #cover .cover-rule { width: 92px; }
+
+/* 诗句：字符像敲键一样瞬时出现，不做淡入与位移 */
+#cover .cover-poem { font-size: clamp(24px, 3.4vw, 40px); line-height: 2.15; letter-spacing: .1em; }
+#cover .cover-poem .line { display: block; min-height: 2.15em; white-space: nowrap; }
+#cover .cover-poem .ch { display: inline-block; opacity: 0; }
+#cover .cover-poem .ch.show { opacity: 1; }
+#cover .cover-poem .ch.punc { margin-right: -.1em; }
+
+/* 细竖线光标，紧跟已敲入的最后一个字；打完后撤走，文字静止可读 */
+#cover .caret {
+  display: inline-block; width: 3px; height: 1.05em; margin-left: 3px;
+  vertical-align: -.16em; background: currentColor;
+  animation: cover-blink 1.05s steps(1) infinite;
+}
+#cover.done .caret { display: none; }
+@keyframes cover-blink { 0%,49% { opacity: 1; } 50%,to { opacity: 0; } }
+
+/* 右下角朱文印：长圆细红边、两列竖排；打完后淡入上浮（错峰） */
+#cover .cover-seal {
+  position: absolute; z-index: 2; right: clamp(26px, 6vw, 92px); bottom: clamp(66px, 11vh, 118px);
+  width: 60px; height: 128px;
+  display: flex; flex-direction: row-reverse; align-items: center; justify-content: center; gap: 7px;
+  border: 2px solid rgba(207,74,54,.95); border-radius: 30px;
+  color: rgba(207,74,54,.95);
+  font-family: "Songti SC", "STSong", "Noto Serif CJK SC", SimSun, serif;
+  font-size: 17px; line-height: 1; letter-spacing: .16em;
+  filter: url(#seal-rough);
+  opacity: 0; transform: translateY(18px) rotate(-1.6deg) scale(1.04);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.22,.61,.36,1);
+}
+#cover .cover-seal span { writing-mode: vertical-rl; text-orientation: upright; transform: scale(.9, 1.14); }
+#cover.done .cover-seal { opacity: .94; transform: translateY(0) rotate(-1.6deg) scale(1); transition-delay: 120ms; }
+
+#cover .cover-enter {
+  position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(36px, 7vh, 78px);
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 12.5px; letter-spacing: .28em; text-indent: .28em;
+  color: rgba(73,84,95,.5);
+  opacity: 0; transform: translateY(18px);
+  transition: opacity .5s ease, transform .5s cubic-bezier(.22,.61,.36,1);
+  pointer-events: none;
+}
+#cover.done .cover-enter { opacity: 1; transform: none; transition-delay: 200ms; }
+#cover .cover-enter .arrow { display: inline-block; margin-left: .5em; animation: cover-nudge 2.4s ease-in-out infinite; }
+@keyframes cover-nudge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+/* 进入时让首页轻缓浮现；两个状态都带过渡，移除 class 后自然回到原样 */
+html.cover-on  .nav, html.cover-on  .hero, html.cover-on  .main, html.cover-on  footer,
+html.cover-out .nav, html.cover-out .hero, html.cover-out .main, html.cover-out footer {
+  transition: opacity .9s ease, transform .9s ease;
+}
+html.cover-on .nav, html.cover-on .hero, html.cover-on .main, html.cover-on footer {
+  opacity: 0; transform: translateY(18px);
+}
+#cover .cover-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+@media (max-width: 640px) {
+  #cover .cover-poem { font-size: clamp(17px, 5.4vw, 24px); line-height: 1.95; letter-spacing: .03em; }
+  #cover .cover-poem .line { min-height: 1.95em; }
+  #cover .cover-rule { margin-bottom: 26px; }
+  #cover .cover-seal { right: 20px; bottom: 84px; width: 46px; height: 100px; border-radius: 23px; gap: 5px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #cover .cover-scene { opacity: 1; animation: none; }
+  #cover .cover-scene .mist { animation: none; }
+  #cover .cover-scene .draw { animation: none; stroke-dashoffset: 0; }
+  #cover .cover-scene .fade { animation: none; opacity: var(--o, 1); }
+  #cover .caret { display: none; }
+  #cover .cover-enter .arrow { animation: none; }
+  #cover, #cover .cover-inner, #cover .cover-rule, #cover .cover-seal,
+  #cover .cover-enter, html.cover-out .nav, html.cover-out .hero,
+  html.cover-out .main, html.cover-out footer { transition-duration: .01ms !important; }
+}
+</style>
+<!-- ===== /封面样式 ===== -->
+</head>
+<body data-page-node-id="5XifCSfkDlRIEssKDRmDYM">
+
+<!-- ================= Navigation ================= -->
+<nav class="nav" id="top" data-page-node-id="GtGDvUOaZ3hV7JWNl1Vqmr">
+  <div class="nav-inner" data-page-node-id="zTXXYdtkcWOhrp94PzB9RD">
+    <a class="brand" href="index.html" data-page-node-id="PQlG5z03hyDgmY3YWZTSlE"><img class="brand-ico" src="favicon.svg" alt="" data-page-node-id="DpTPsAG6pqmmD7NlfDfWKZ">Qi Wang</a>
+    <div class="nav-links" data-page-node-id="n3tx2okFmk3t4HzmXTKHrP">
+      <a href="index.html#about" class="active" data-page-node-id="DUL0av0HXcWkCwG1FbdF3H">About</a>
+      <a href="publications.html" data-page-node-id="CuKvI6M34UJqZ49lRuDGWZ">Publications</a>
+      <a href="books.html" data-page-node-id="BnTkmQPJ60JY15jUkwQ9v6">Books</a>
+      <a href="teaching.html" data-page-node-id="sR0hzyjix05ERFF3uYBKH1">Teaching</a>
+      <a href="students.html" data-page-node-id="mCFlSe2MKQyfiiqE3ANe6h">Students</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= Hero ================= -->
+<header class="hero" data-page-node-id="1Hmbu8pm1RsV9RjyRk3hzj">
+  <div class="hero-inner" data-page-node-id="GkwuUphsSEU1Bm7k9k9mul">
+    <div class="avatar" id="avatar" data-page-node-id="BE0JTECSQMiBA4B4FzGTRc">
+      <img src="avatar.jpg" alt="Qi Wang"
+           onerror="this.remove();document.getElementById('avatar').classList.add('noimg')" data-page-node-id="jZRyC6tc9hrxQSW3rqzVrQ">
+      <span class="mono" data-page-node-id="8jyl6loiDQariIuqeTM1DT">WQ</span>
+    </div>
+    <div data-page-node-id="U0DS0OLM0phQ4nCik0aSud">
+      <h1 data-page-node-id="BfvIue9PTOsBxbYzB0wrT4">Qi Wang</h1>
+      <div class="hero-role" data-page-node-id="naoLwqzKninzmxGYnZGF7A">Associate Professor</div>
+      <div class="contact" data-page-node-id="pxtdTIuZ2U6alJf24RDkWl">
+        <strong data-page-node-id="oc9NgMsH1tWDIcWqTeDQru">Email:</strong> <a href="mailto:qiwangphd@scu.edu.cn" data-page-node-id="t5lYWlnNkWmGGEH2xlxbmd">qiwangphd@scu.edu.cn</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="main" data-page-node-id="9ylgYHaZ6FOp5nRBPpgqJ7">
+
+  <!-- ================= About ================= -->
+  <section id="about" data-page-node-id="T4T8PxwYtmAHNS5gmMeVG4">
+    <div class="sec-title" data-page-node-id="Zu02XiaqyC6SS8XsD4TSTz">
+      <h2 data-page-node-id="BvPi5xmC7KvSSqO5FtUC76">About</h2>
+      <span class="num" data-page-node-id="PsnpUilEqRzHHzo0xgXICR">01</span>
+    </div>
+    <div class="about-text" data-page-node-id="dSWg5kCz0GGU8VrxxcC3Zz">
+      <p data-page-node-id="rDLX7DZGfiifuQVhdKratt">
+        <strong class="lead" data-page-node-id="VywEQHqRAqKe9cHVt0QY1G">研究领域聚焦：AI Agent（智能体）与中国经济结构转型。</strong>
+        研究人工智能等科技创新对中国经济结构转型的影响。具体微观层面而言：<span class="hl">基于多源微观大数据，使用简约估计和结构估计的实证方法，研究Agent智能体对公司金融行为和家庭金融行为的影响。</span>
+      </p>
+      <p class="en" lang="en" data-page-node-id="olp7w5pMqAJny54xBngDuK">
+        <strong class="lead" data-page-node-id="eVv8H5ZArAgxvJJ2FMoVBY">Research Focus: AI Agents and China's Structural Transformation.</strong>
+        At the micro level, <span class="hl">drawing on multi-source micro-level big data and empirical methods including reduced-form
+        and structural estimation, my research examines the impact of AI agents on corporate financial behavior and household
+        financial behavior.</span>
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<!-- ================= Footer ================= -->
+<footer data-page-node-id="LHjoIhXgbuSjJ4r7cZLKaf">
+  <div class="footer-wave" aria-hidden="true"><i style="height:8px;background:#1b3a5f"></i><i style="height:14px;background:#2d5a8e"></i><i style="height:20px;background:#b08d4f"></i><i style="height:11px;background:#c8d4e0"></i><i style="height:24px;background:#1b3a5f"></i><i style="height:16px;background:#2d5a8e"></i><i style="height:6px;background:#b08d4f"></i><i style="height:18px;background:#c8d4e0"></i><i style="height:10px;background:#1b3a5f"></i><i style="height:22px;background:#2d5a8e"></i><i style="height:13px;background:#c8d4e0"></i><i style="height:7px;background:#c8d4e0"></i><i style="height:19px;background:#1b3a5f"></i><i style="height:9px;background:#2d5a8e"></i><i style="height:8px;background:#b08d4f"></i><i style="height:14px;background:#c8d4e0"></i><i style="height:20px;background:#1b3a5f"></i><i style="height:11px;background:#c8d4e0"></i><i style="height:24px;background:#b08d4f"></i><i style="height:16px;background:#c8d4e0"></i><i style="height:6px;background:#1b3a5f"></i><i style="height:18px;background:#2d5a8e"></i><i style="height:10px;background:#b08d4f"></i><i style="height:22px;background:#c8d4e0"></i><i style="height:13px;background:#c8d4e0"></i><i style="height:7px;background:#2d5a8e"></i></div>
+  <div class="footer-slogan"><span class="slog">Focusing on Agent Economy, Building Framework</span></div>
+    <span class="vcr">Q I<br>W A N G</span>
+</footer>
+
+<!-- ===== 封面入口 Cover · 山水 + 逐字动画 + 右下朱文印（连同 head 中 #cover-style 一并删除即可移除） ===== -->
+<div id="cover" role="button" tabindex="0"
+     aria-label="静以修身，俭以养德。淡泊可明其志，宁静能致其远。点击进入网站">
+
+  <!-- 内嵌纯 SVG：连续远山 / 中景开阔水面 / 前景麦田，中央保留题字留白 -->
+  <svg class="cover-scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="cv-paper-g" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f5f1e7"/>
+        <stop offset=".48" stop-color="#f8f5ec"/>
+        <stop offset="1" stop-color="#f5f1e7"/>
+      </linearGradient>
+      <radialGradient id="cv-sun-glow">
+        <stop offset="0" stop-color="#d7bd83" stop-opacity=".2"/>
+        <stop offset=".55" stop-color="#e4d3aa" stop-opacity=".08"/>
+        <stop offset="1" stop-color="#f5f1e7" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="cv-mountain-back" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#b7c1c1" stop-opacity=".28"/>
+        <stop offset="1" stop-color="#dde0d8" stop-opacity=".04"/>
+      </linearGradient>
+      <linearGradient id="cv-mountain-front" x1=".12" y1="0" x2=".78" y2="1">
+        <stop offset="0" stop-color="#82969f" stop-opacity=".42"/>
+        <stop offset=".55" stop-color="#a8b4b2" stop-opacity=".25"/>
+        <stop offset="1" stop-color="#cbd0c5" stop-opacity=".06"/>
+      </linearGradient>
+      <linearGradient id="cv-water" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#eef0e8" stop-opacity=".08"/>
+        <stop offset=".5" stop-color="#d5e0de" stop-opacity=".48"/>
+        <stop offset="1" stop-color="#c5d5d4" stop-opacity=".25"/>
+      </linearGradient>
+      <linearGradient id="cv-wheat-field" x1="0" y1="0" x2=".8" y2="1">
+        <stop offset="0" stop-color="#d8cba5" stop-opacity=".32"/>
+        <stop offset=".52" stop-color="#c7b780" stop-opacity=".28"/>
+        <stop offset="1" stop-color="#e0d3af" stop-opacity=".16"/>
+      </linearGradient>
+      <linearGradient id="cv-wheat-near" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#b7ae7d" stop-opacity=".2"/>
+        <stop offset="1" stop-color="#d6c28d" stop-opacity=".12"/>
+      </linearGradient>
+      <linearGradient id="cv-mist" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f7f3e9" stop-opacity="0"/>
+        <stop offset=".5" stop-color="#f7f3e9" stop-opacity=".86"/>
+        <stop offset="1" stop-color="#f7f3e9" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="cv-reflection" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#b08d4f" stop-opacity=".09"/>
+        <stop offset="1" stop-color="#b08d4f" stop-opacity="0"/>
+      </linearGradient>
+      <path id="cv-wheat-stalk" d="M0 56 C1 40 0 20 2 0 M1 9 C-6 7-9 3-10-2 M1 15 C8 12 11 8 12 3 M0 22 C-7 19-10 15-11 10 M0 29 C7 26 10 22 11 17 M0 37 C-6 34-9 30-10 25"/>
+    </defs>
+
+    <!-- 宣纸底色与淡月 -->
+    <rect width="1600" height="900" fill="url(#cv-paper-g)"/>
+    <g class="fade" style="--o:1;--d:1.9s">
+      <circle cx="1210" cy="168" r="118" fill="url(#cv-sun-glow)"/>
+      <circle cx="1210" cy="168" r="42" fill="#b08d4f" opacity=".045"/>
+      <circle cx="1210" cy="168" r="42" fill="none" stroke="#b08d4f" stroke-opacity=".42" stroke-width="1.5"/>
+    </g>
+
+    <!-- 远山连成横向斜势，不再以左右孤峰夹持画面 -->
+    <g class="fade" style="--o:.74;--d:.16s">
+      <path fill="url(#cv-mountain-back)" d="M-80 592 C90 554 188 504 292 500 C400 496 470 548 566 550 C674 552 742 506 842 510 C952 514 1018 566 1124 568 C1280 570 1400 528 1680 574 L1680 690 L-80 690Z"/>
+      <path fill="url(#cv-mountain-front)" d="M-80 634 C72 606 154 532 260 486 C332 456 392 464 456 500 C536 546 604 564 690 538 C780 510 840 508 918 546 C1020 596 1112 614 1222 592 C1370 562 1490 596 1680 628 L1680 714 L-80 714Z"/>
+      <path fill="#526b78" opacity=".045" d="M260 486 C332 456 392 464 456 500 C536 546 604 564 690 538 C572 592 446 584 352 550Z"/>
+    </g>
+    <g fill="none" stroke="#42566a" stroke-linecap="round" stroke-linejoin="round">
+      <path class="draw" pathLength="1" stroke-opacity=".42" stroke-width="1.9" style="--d:.12s"
+            d="M-60 622 C82 592 162 526 260 486 C332 456 392 464 456 500 C536 546 604 564 690 538 C780 510 840 508 918 546 C1020 596 1112 614 1222 592 C1370 562 1490 596 1660 622"/>
+      <path class="draw" pathLength="1" stroke-opacity=".2" stroke-width="1.3" style="--d:.55s" d="M84 592 C176 544 252 502 338 492 C394 486 446 506 496 532"/>
+      <path class="draw" pathLength="1" stroke-opacity=".16" stroke-width="1.2" style="--d:.72s" d="M522 560 C604 580 676 572 742 546 C802 522 852 528 906 554"/>
+      <path class="draw" pathLength="1" stroke-opacity=".13" stroke-width="1.15" style="--d:.88s" d="M1030 602 C1116 620 1198 610 1280 590 C1360 572 1434 584 1510 606"/>
+    </g>
+
+    <!-- 中景水面由山前向右侧展开，形成开阔的视觉出口 -->
+    <path class="fade" style="--o:1;--d:.68s" fill="url(#cv-water)"
+          d="M-80 656 C146 628 348 644 554 630 C780 614 976 574 1180 586 C1380 598 1516 634 1680 610 L1680 842 C1436 818 1240 794 1036 800 C790 808 564 794 340 766 C156 742 40 748-80 776Z"/>
+    <path class="fade" style="--o:.48;--d:1.65s" fill="url(#cv-reflection)"
+          d="M1192 606 C1208 634 1218 662 1216 700 C1214 730 1204 754 1192 776 L1236 776 C1226 742 1226 704 1230 672 C1234 642 1226 620 1218 606Z"/>
+    <g fill="none" stroke="#6d8494" stroke-linecap="round">
+      <path class="draw" pathLength="1" stroke-opacity=".26" stroke-width="1.5" style="--d:1.1s" d="M734 650 C798 658 862 654 918 638"/>
+      <path class="draw" pathLength="1" stroke-opacity=".22" stroke-width="1.4" style="--d:1.24s" d="M1230 678 C1296 690 1362 686 1422 670"/>
+      <path class="draw" pathLength="1" stroke-opacity=".18" stroke-width="1.25" style="--d:1.38s" d="M516 704 C570 714 626 712 678 700"/>
+    </g>
+
+    <!-- 前景麦田沿水岸横向铺展，以缓慢曲线引导视线 -->
+    <g class="fade" style="--o:1;--d:.9s">
+      <path fill="url(#cv-wheat-field)" d="M-80 730 C144 684 348 698 544 744 C728 788 872 794 1044 770 C1250 742 1440 750 1680 800 L1680 940 L-80 940Z"/>
+      <path fill="url(#cv-wheat-near)" d="M-80 822 C142 770 362 784 580 832 C820 884 1084 878 1320 826 C1454 796 1568 814 1680 850 L1680 940 L-80 940Z"/>
+      <path fill="#d9c485" opacity=".12" d="M-80 866 C176 822 382 838 596 872 C812 906 1080 904 1328 866 C1462 844 1570 852 1680 878 L1680 940 L-80 940Z"/>
+    </g>
+    <g fill="none" stroke="#9a8b58" stroke-linecap="round">
+      <path class="draw" pathLength="1" stroke-opacity=".38" stroke-width="1.55" style="--d:1.06s" d="M-40 736 C150 700 338 712 520 752 C704 792 864 806 1034 782 C1232 754 1410 760 1628 802"/>
+      <path class="draw" pathLength="1" stroke-opacity=".29" stroke-width="1.4" style="--d:1.2s" d="M-30 806 C164 770 354 786 552 828 C760 872 1000 876 1218 838 C1372 812 1492 820 1630 852"/>
+      <path class="draw" pathLength="1" stroke-opacity=".2" stroke-width="1.25" style="--d:1.34s" d="M26 858 C202 832 378 844 552 872"/>
+      <path class="draw" pathLength="1" stroke-opacity=".18" stroke-width="1.2" style="--d:1.44s" d="M1080 872 C1260 842 1420 842 1570 870"/>
+    </g>
+
+    <!-- 少量麦穗点明田野质地，不作密集装饰 -->
+    <g class="fade" style="--o:.48;--d:1.5s" fill="none" stroke="#9b8146" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round">
+      <use href="#cv-wheat-stalk" transform="translate(156 756) rotate(-9) scale(1.08)"/>
+      <use href="#cv-wheat-stalk" transform="translate(204 778) rotate(5) scale(.94)"/>
+      <use href="#cv-wheat-stalk" transform="translate(258 790) rotate(-4) scale(1.12)"/>
+      <use href="#cv-wheat-stalk" transform="translate(1308 790) rotate(7) scale(1.02)"/>
+      <use href="#cv-wheat-stalk" transform="translate(1362 778) rotate(-6) scale(1.14)"/>
+      <use href="#cv-wheat-stalk" transform="translate(1418 798) rotate(4) scale(.92)"/>
+    </g>
+
+    <!-- 薄雾只柔化山脚与水岸，不遮挡中央诗句 -->
+    <g class="mist">
+      <rect x="-80" y="566" width="1760" height="126" fill="url(#cv-mist)"/>
+      <rect x="-80" y="650" width="1760" height="96" fill="url(#cv-mist)" opacity=".58"/>
+    </g>
+
+    <!-- 孤舟移至中景偏右，增强水面纵深 -->
+    <g transform="translate(280 -50)" stroke="#42566a" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path class="fade" style="--o:.08;--d:1.45s" fill="#42566a" stroke="none" d="M714 752 C744 766 798 766 828 752 C798 774 744 774 714 752Z"/>
+      <path class="draw" pathLength="1" stroke-opacity=".68" stroke-width="2.2" style="--d:1.5s"
+            d="M714 742 C742 758 800 758 828 742 C816 750 796 754 771 754 C746 754 726 750 714 742"/>
+      <path class="draw" pathLength="1" stroke-opacity=".58" stroke-width="2.05" style="--d:1.62s" d="M768 742 C774 722 776 706 772 692"/>
+      <path class="draw" pathLength="1" stroke-opacity=".5" stroke-width="1.9" style="--d:1.74s" d="M772 700 C784 696 796 698 806 706"/>
+      <circle class="fade" cx="769" cy="686" r="4" fill="#42566a" stroke="none" style="--o:.58;--d:1.8s"/>
+    </g>
+    <g stroke="#6d8494" stroke-linecap="round" fill="none">
+      <path class="draw" pathLength="1" stroke-opacity=".3" stroke-width="1.55" style="--d:1.88s" d="M918 728 C940 735 966 734 986 726"/>
+      <path class="draw" pathLength="1" stroke-opacity=".22" stroke-width="1.4" style="--d:2s" d="M1108 742 C1130 748 1154 746 1174 738"/>
+    </g>
+
+    <!-- 飞鸟两笔，延续上半幅留白 -->
+    <g stroke="#5b6b7a" stroke-linecap="round" fill="none">
+      <path class="draw" pathLength="1" stroke-opacity=".46" stroke-width="1.6" style="--d:2.2s" d="M1006 260 C1014 252 1024 252 1030 258 C1036 252 1046 252 1054 260"/>
+      <path class="draw" pathLength="1" stroke-opacity=".36" stroke-width="1.4" style="--d:2.3s" d="M1064 296 C1070 290 1078 290 1083 295 C1088 290 1096 290 1102 296"/>
+    </g>
+  </svg>
+  <div class="cover-veil" aria-hidden="true"></div>
+
+  <div class="cover-inner">
+    <div class="cover-rule" aria-hidden="true"></div>
+    <div class="cover-poem" id="coverPoem" aria-hidden="true"></div>
+  </div>
+
+  <!-- 右下角朱文印：静以修身 / 俭以养德 -->
+  <div class="cover-seal" aria-hidden="true"><span>静以修身</span><span>俭以养德</span></div>
+  <div class="cover-enter" aria-hidden="true">点击进入 <span class="arrow">↓</span></div>
+
+  <svg class="cover-defs" aria-hidden="true" focusable="false"><defs>
+    <filter id="seal-rough">
+      <feTurbulence type="fractalNoise" baseFrequency="0.055" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs></svg>
+</div>
+<script>
+(function () {
+  // 封面文案与敲击节奏：换文案只改 POEM，行数与字数不限
+  var POEM = ['静以修身，俭以养德。', '淡泊可明其志，宁静能致其远。'];
+  var KEY_MS = 280, PUNC_MS = 620, LINE_MS = 850, JITTER = 50, START_MS = 600;
+  var root  = document.documentElement;
+  var cover = document.getElementById('cover');
+  var poem  = document.getElementById('coverPoem');
+  if (!cover || !poem) return;
+
+  // 从导航 About（index.html#about）等锚点进入：不展示封面，直接呈现页面内容
+  if (location.hash) { cover.parentNode.removeChild(cover); return; }
+
+  var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var PUNC = /[，。；、！？]/;
+  var caret = document.createElement('span');
+  caret.className = 'caret';
+  function beat(ms) { return ms + Math.round((Math.random() - .5) * 2 * JITTER); }
+
+  // 整句先铺进 DOM：占位稳定、不跳动，屏幕阅读器读到的是完整句子
+  POEM.forEach(function (text) {
+    var line = document.createElement('span');
+    line.className = 'line';
+    Array.from(text).forEach(function (ch) {
+      var s = document.createElement('span');
+      s.className = 'ch' + (PUNC.test(ch) ? ' punc' : '');
+      s.textContent = ch;
+      line.appendChild(s);
+    });
+    poem.appendChild(line);
+  });
+  var chars = Array.prototype.slice.call(poem.querySelectorAll('.ch'));
+  if (!chars.length) return;                              // 空文案时不打扰首页
+  chars[0].parentNode.insertBefore(caret, chars[0]);      // 光标起于行首
+
+  var i = 0, done = false, timer = null;
+
+  function revealAll() {
+    clearTimeout(timer);
+    chars.forEach(function (s) { s.classList.add('show'); });
+    if (caret.parentNode) caret.parentNode.removeChild(caret);
+    done = true;
+    cover.classList.add('done');
+  }
+
+  function enter() {
+    if (!done) { revealAll(); return; }      // 打字中点击：先补全，再点一次进入
+    root.classList.remove('cover-on');
+    root.classList.add('cover-out');
+    cover.setAttribute('aria-hidden', 'true');
+    setTimeout(function () {
+      root.classList.remove('cover-out');
+      cover.parentNode.removeChild(cover);
+    }, 950);
+  }
+
+  cover.addEventListener('click', enter);
+  cover.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
+  });
+
+  // 字符按原文顺序瞬时出现；光标始终插在下一个待敲字符之前，跨行自动跳到行首
+  function step() {
+    if (i >= chars.length) { revealAll(); return; }
+    var s = chars[i++];
+    s.classList.add('show');
+    var next = chars[i];
+    if (!next) { revealAll(); return; }               // 最后一字敲完即收尾
+    next.parentNode.insertBefore(caret, next);
+    var atLineEnd = next.parentNode !== s.parentNode;
+    var delay = atLineEnd ? LINE_MS : (PUNC.test(s.textContent) ? PUNC_MS : KEY_MS);
+    timer = setTimeout(step, beat(delay));
+  }
+
+  root.classList.add('cover-on');
+  if (reduce) revealAll();
+  else timer = setTimeout(step, START_MS);            // 先让山水静下来，再落第一字
+})();
+</script>
+<!-- ===== /封面入口 ===== -->
+
+</body>
+</html>

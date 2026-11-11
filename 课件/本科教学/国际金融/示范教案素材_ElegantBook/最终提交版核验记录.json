@@ -1,0 +1,62 @@
+{
+  "pages": 23,
+  "pdfPasswordRequired": false,
+  "interactivePasswordRequired": true,
+  "interactiveUnifiedPassword": "scu1896",
+  "removedSubmissionPrompts": true,
+  "emptyAdministrativeFormsRemoved": true,
+  "teacherProfile": true,
+  "teacherReflectionPreserved": true,
+  "allStudentTasksPreserved": true,
+  "qrLinks": [
+    "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/#top",
+    "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/#risk-lab",
+    "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/#s5",
+    "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/#s6"
+  ],
+  "offPageWords": [],
+  "compileErrors": [],
+  "webTests": {
+    "questions": 6,
+    "modelChecks": 270,
+    "documentSections": 19,
+    "widths": [
+      1920,
+      1024,
+      768,
+      390,
+      320
+    ],
+    "wholePageOverflow": false,
+    "datesAndUncertaintyGuard": true,
+    "importDirection": true,
+    "budgetThresholds": true,
+    "localDraft": true,
+    "localExport": true,
+    "reducedMotion": true,
+    "mathErrors": 0,
+    "external": [],
+    "errors": []
+  },
+  "latestFourTextEdits": true,
+  "fourEditsWebCheck": {
+    "exactTextChanges": 4,
+    "passwordLogin": true,
+    "sections": 19,
+    "widths": [
+      1280,
+      768,
+      390
+    ],
+    "errors": []
+  },
+  "latestPaginationAndWordingEdits": true,
+  "latestCorrections": {
+    "teacherProfileTerminalPeriodsRemoved": true,
+    "printedPage5ParagraphIndent": true,
+    "printedPage7TeachingText": true,
+    "printedPage7NetExposureText": true,
+    "printedPage10ParagraphIndent": true
+  },
+  "latestCommit": "806d09b2aa6a8ee57ddf752d5168ce348585dcb7"
+}

@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第6周：大数据概念与短期决策基础 | 商业数据分析课程</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        :root {
+            --bg-main: #F5F0E8;
+            --bg-card: #FFFFFF;
+            --bg-accent: #E8D5C4;
+            --bg-formula: #FFF8E7;
+            --bg-code: #2D2D2D;
+            --text-main: #3D3D3D;
+            --text-light: #6B6B6B;
+            --color-primary: #C49A6C;
+            --color-dark: #8B6F4E;
+            --color-border: #DDD0C0;
+            --font-serif: Georgia, 'Times New Roman', serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #E8D5C4 0%, #F5F0E8 100%);
+            padding: 60px 20px 40px;
+            text-align: center;
+            border-bottom: 3px solid var(--color-primary);
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--color-dark);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+        .week-badge {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .week-overview {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--color-primary);
+        }
+        .week-overview h2 {
+            color: var(--color-dark);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+        .week-overview ul {
+            margin-left: 20px;
+            color: var(--text-light);
+        }
+        .week-overview li { margin: 8px 0; }
+        .lesson {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+        }
+        .lesson-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--bg-accent);
+        }
+        .lesson-number {
+            background: var(--color-primary);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-right: 18px;
+        }
+        .lesson-title {
+            font-size: 1.5rem;
+            color: var(--color-dark);
+            font-weight: 600;
+        }
+        .lesson-duration {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .section { margin: 25px 0; }
+        .section h3 {
+            color: var(--color-dark);
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .section h3::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 20px;
+            background: var(--color-primary);
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+        .section p {
+            margin: 10px 0;
+            color: var(--text-main);
+        }
+        .formula-block {
+            background: var(--bg-formula);
+            border-left: 4px solid var(--color-primary);
+            padding: 20px 25px;
+            margin: 18px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .formula-block .step { margin: 10px 0; }
+        .formula-block .step-label {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+        }
+        pre {
+            background: var(--bg-code);
+            color: #F8F8F2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        .example-box {
+            background: #F0F5F0;
+            border: 1px solid #C0D0C0;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 18px 0;
+        }
+        .example-box .example-title {
+            color: #5A7A5A;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            border: 1px solid var(--color-border);
+            padding: 10px 14px;
+            text-align: center;
+        }
+        th {
+            background: var(--bg-accent);
+            color: var(--color-dark);
+            font-weight: 600;
+        }
+        tr:nth-child(even) { background: #FAF8F4; }
+        .summary-box {
+            background: linear-gradient(135deg, #E8D5C4 0%, #F5F0E8 100%);
+            border-radius: 10px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+        .summary-box h4 {
+            color: var(--color-dark);
+            margin-bottom: 10px;
+        }
+        .summary-box ul { margin-left: 20px; }
+        .notebook-link {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .notebook-link:hover { background: var(--color-dark); }
+        .components-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .component-item {
+            background: var(--bg-main);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 3px solid var(--color-primary);
+        }
+        .component-item strong { color: var(--color-dark); }
+        .five-v-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .v-item {
+            background: var(--bg-main);
+            border-radius: 8px;
+            padding: 18px;
+            border-left: 4px solid var(--color-primary);
+        }
+        .v-item .v-letter {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .v-item .v-title {
+            font-weight: 600;
+            color: var(--color-dark);
+            font-size: 1.05rem;
+            margin-bottom: 5px;
+        }
+        .data-type-card {
+            background: var(--bg-main);
+            border-radius: 8px;
+            padding: 15px 18px;
+            margin: 10px 0;
+            border-left: 4px solid var(--color-primary);
+        }
+        .data-type-card strong {
+            color: var(--color-dark);
+            font-size: 1.05rem;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        .lesson-anchor { scroll-margin-top: 20px; }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.5rem; }
+            .lesson { padding: 25px; }
+            .lesson-title { font-size: 1.2rem; }
+            .components-grid, .five-v-grid { grid-template-columns: 1fr; }
+            .container { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="week-badge">第 6 周</div>
+    <h1>大数据概念与短期决策基础</h1>
+    <p class="subtitle">Big Data Concepts & Short-term Decision Making</p>
+</header>
+
+<div class="container">
+
+    <!-- Week Overview -->
+    <div class="week-overview">
+        <h2>本周学习目标</h2>
+        <ul>
+            <li>理解大数据的5V特征，认识三种数据类型及其应用场景</li>
+            <li>掌握"相关成本"原则：区分相关成本与沉没成本，识别决策中的关键因素</li>
+            <li>理解限制因素（瓶颈）的概念，学会单位限制因素贡献毛益的计算</li>
+            <li>掌握单一资源约束下最优生产组合的决策步骤</li>
+            <li>通过 Python + pandas 实现限制因素优化与可视化</li>
+        </ul>
+    </div>
+
+    <!-- ==================== LESSON 1 ==================== -->
+    <div class="lesson lesson-anchor" id="lesson1">
+        <div class="lesson-header">
+            <div class="lesson-number">1</div>
+            <div>
+                <div class="lesson-title">大数据概念</div>
+                <div class="lesson-duration">约 45 分钟</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>什么是大数据？</h3>
+            <p>大数据（Big Data）是指<strong>规模巨大、类型多样、处理速度快</strong>到传统数据处理工具难以应对的数据集合。</p>
+            <p>简单来说，当数据量从"几千条Excel能处理"变成了"几十亿条、实时产生、来自各种渠道"时，我们就进入了大数据的范畴。</p>
+        </div>
+
+        <div class="section">
+            <h3>大数据的5V特征</h3>
+            <p>业界常用5个以V开头的英文单词来概括大数据的核心特征：</p>
+
+            <div class="five-v-grid">
+                <div class="v-item">
+                    <div class="v-letter">V</div>
+                    <div class="v-title">Volume（大量）</div>
+                    <p>数据体量巨大，从TB（太字节）到PB（拍字节）级别。全球每天产生约2.5EB数据，相当于全世界所有人每天写满5000万张DVD。</p>
+                </div>
+                <div class="v-item">
+                    <div class="v-letter">V</div>
+                    <div class="v-title">Variety（多样）</div>
+                    <p>数据来源和格式极其多样：数据库表格、网页日志、社交媒体帖子、传感器读数、图片、视频、语音等。不再是单一的"结构化表格"。</p>
+                </div>
+                <div class="v-item">
+                    <div class="v-letter">V</div>
+                    <div class="v-title">Velocity（高速）</div>
+                    <p>数据产生和处理的速度极快。金融交易系统每秒处理百万笔交易，社交媒体每秒产生数十万条推文，需要实时或准实时分析。</p>
+                </div>
+                <div class="v-item">
+                    <div class="v-letter">V</div>
+                    <div class="v-title">Value（价值）</div>
+                    <p>大数据的价值密度<strong>很低</strong>。海量数据中可能只有1%是有用的信息。就像从一座沙山里淘出一粒金子，需要用强大的算法来提炼价值。</p>
+                </div>
+                <div class="v-item" style="grid-column: 1 / -1;">
+                    <div class="v-letter">V</div>
+                    <div class="v-title">Veracity（真实性）</div>
+                    <p>数据质量参差不齐，包含不确定性、噪声和偏差。社交媒体上的虚假信息、传感器故障产生的异常读数、用户填写表单时的随意输入……这些都会影响数据分析结果的可靠性。因此，数据清洗和质量控制是大数据分析的关键步骤。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>三种数据类型</h3>
+            <p>根据数据的组织程度，可以分为三大类：</p>
+
+            <div class="data-type-card">
+                <strong>1. 结构化数据（Structured Data）</strong><br>
+                具有预定义的数据模型，可以用行和列组织。比如关系型数据库中的表格、Excel表格。<br>
+                <em>示例：</em>客户订单表（订单号、客户ID、金额、日期）
+            </div>
+            <div class="data-type-card">
+                <strong>2. 半结构化数据（Semi-structured Data）</strong><br>
+                没有严格的表结构，但带有标签或标记来组织信息。比如XML、JSON、日志文件。<br>
+                <em>示例：</em>一条JSON格式的用户行为记录：
+                <pre style="margin:8px 0; padding:10px;"><code>{"user_id": "U001", "action": "click", 
+ "item": "product_A", "timestamp": "2024-01-15T09:23:00Z"}</code></pre>
+            </div>
+            <div class="data-type-card">
+                <strong>3. 非结构化数据（Unstructured Data）</strong><br>
+                没有预定义格式的数据，占企业数据的80%以上。比如文本、图片、音频、视频。<br>
+                <em>示例：</em>客服通话录音、产品评论文字、社交媒体图片、监控摄像头视频
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>大数据在企业中的主要用途</h3>
+            <table>
+                <tr>
+                    <th>用途</th>
+                    <th>说明</th>
+                    <th>示例</th>
+                </tr>
+                <tr>
+                    <td><strong>客户洞察</strong></td>
+                    <td>分析客户行为、偏好和生命周期</td>
+                    <td>电商平台根据浏览历史推荐商品</td>
+                </tr>
+                <tr>
+                    <td><strong>运营优化</strong></td>
+                    <td>提升供应链、库存和生产效率</td>
+                    <td>物流公司用算法优化配送路线</td>
+                </tr>
+                <tr>
+                    <td><strong>风险管控</strong></td>
+                    <td>识别欺诈、评估信用风险</td>
+                    <td>银行实时监测异常交易</td>
+                </tr>
+                <tr>
+                    <td><strong>产品创新</strong></td>
+                    <td>基于用户反馈改进产品</td>
+                    <td>App根据用户评分数据优化功能</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>Python演示：处理不同格式的数据</h3>
+            <pre><code>import pandas as pd
+import json
+
+# 1. 读取CSV（结构化数据）
+df = pd.read_csv('sales_data.csv')
+print(df.head())
+
+# 2. 读取JSON（半结构化数据）
+json_data = '{"users": [{"name": "张三", "age": 25}, {"name": "李四", "age": 30}]}'
+data = json.loads(json_data)
+print(data['users'])
+
+# 3. 简单文本分析（非结构化数据）
+text = "产品质量很好，物流速度快，客服态度一般"
+# 分词并统计关键词
+words = text.replace('，', ' ').split()
+print(f"文本共 {len(words)} 个词")
+</code></pre>
+        </div>
+
+        <div class="summary-box">
+            <h4>本节小结</h4>
+            <ul>
+                <li>大数据5V：Volume（大量）、Variety（多样）、Velocity（高速）、Value（价值密度低）、Veracity（真实性/质量）</li>
+                <li>三种数据类型：结构化（表格）、半结构化（JSON/XML）、非结构化（文本/图片/视频）</li>
+                <li>企业大数据四大用途：客户洞察、运营优化、风险管控、产品创新</li>
+                <li>Python中 <code>pd.read_csv()</code>、<code>json.loads()</code> 等可处理不同数据格式</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ==================== LESSON 2 ==================== -->
+    <div class="lesson lesson-anchor" id="lesson2">
+        <div class="lesson-header">
+            <div class="lesson-number">2</div>
+            <div>
+                <div class="lesson-title">相关成本原则与限制因素分析</div>
+                <div class="lesson-duration">约 60 分钟 · 含完整推导</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>什么是相关成本？</h3>
+            <p>在企业决策中，管理者最关心的不是"一共花了多少钱"，而是<strong>"这个决策会让未来的现金流发生怎样的变化"</strong>。这就引入了"相关成本"的概念。</p>
+
+            <div class="formula-block">
+                <div class="step">
+                    <span class="step-label">相关成本的三个条件</span>
+                </div>
+                <p><strong>条件1：未来发生</strong> — 只有未来的成本/收入才与决策相关。过去的支出无法改变。</p>
+                <p><strong>条件2：因决策而不同</strong> — 在两个备选方案中，如果某个成本无论选哪个方案都一样发生，那它就不相关。</p>
+                <p><strong>条件3：现金流</strong> — 必须是实际的现金流入或流出，会计上的账面折旧等非现金项目通常不相关。</p>
+            </div>
+
+            <p><strong>沉没成本（Sunk Cost）</strong>是已经花掉的钱，无论现在做什么决策都无法收回。因此，沉没成本<strong>不是</strong>相关成本。</p>
+            <p>经典例子：你花50元买了一张电影票，看了20分钟发现电影很难看。此时50元是沉没成本， relevant的决策依据应该是"继续看是否值得接下来的时间"，而不是"已经花了50元"。</p>
+        </div>
+
+        <div class="section">
+            <h3>限制因素（Limiting Factor）的概念</h3>
+            <p>企业常常面临一种情况：<strong>想生产的产品很多，但资源不够</strong>。这个"不够的资源"就是限制因素，也叫瓶颈（Bottleneck）。</p>
+            <p>常见的限制因素包括：</p>
+            <ul style="margin-left:20px;">
+                <li><strong>产能限制</strong>：机器运转时间有限，无法同时生产所有产品</li>
+                <li><strong>材料限制</strong>：原材料供应不足或采购预算有限</li>
+                <li><strong>人工限制</strong>： skilled workers 数量不足</li>
+                <li><strong>资金限制</strong>：可用于投资的资金有限</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>单位限制因素贡献毛益</h3>
+            <p>当资源有限时，企业需要回答一个关键问题：<strong>把有限的资源优先用在哪种产品上，才能让总利润最大化？</strong></p>
+            <p>直觉可能会说"生产单价利润最高的产品"，但这不一定正确！正确的思路是：<strong>计算每单位限制资源能带来的贡献毛益</strong>。</p>
+
+            <div class="formula-block">
+                <div class="step">
+                    <span class="step-label">定义</span>
+                    贡献毛益（Contribution Margin）= 销售价格 − 变动成本
+                </div>
+                $$CM = P - VC$$
+                <div class="step" style="margin-top:15px;">
+                    <span class="step-label">单位限制因素贡献毛益</span>
+                    每种产品每消耗1单位限制资源所带来的贡献毛益：
+                </div>
+                $$\text{单位限制因素贡献毛益} = \frac{\text{单位贡献毛益}}{\text{单位产品所需限制因素}}$$
+                <div class="step" style="margin-top:15px;">
+                    <span class="step-label">决策规则</span>
+                    按照单位限制因素贡献毛益<strong>从高到低排序</strong>，优先安排排序靠前的产品，直到资源用尽。
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>最优生产组合决策：完整步骤</h3>
+            <div class="formula-block">
+                <div class="step">
+                    <span class="step-label">步骤1</span>
+                    识别限制因素（瓶颈资源）及其可用总量
+                </div>
+                <div class="step">
+                    <span class="step-label">步骤2</span>
+                    计算每种产品的单位贡献毛益：$CM = P - VC$
+                </div>
+                <div class="step">
+                    <span class="step-label">步骤3</span>
+                    计算每种产品单位所需限制因素
+                </div>
+                <div class="step">
+                    <span class="step-label">步骤4</span>
+                    计算并排序：单位限制因素贡献毛益 = $\frac{CM}{\text{单位限制因素}}$
+                </div>
+                <div class="step">
+                    <span class="step-label">步骤5</span>
+                    按排序依次分配产能，直到瓶颈资源耗尽
+                </div>
+                <div class="step">
+                    <span class="step-label">步骤6</span>
+                    计算总贡献毛益 = $\sum$（各产品产量 × 单位贡献毛益）
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>完整例题：限制因素下的最优生产决策</h3>
+            <div class="example-box">
+                <div class="example-title">例题：XYZ公司生产优化</div>
+                <p>XYZ公司生产A、B、C三种产品，数据如下：</p>
+                <table>
+                    <tr><th>项目</th><th>产品A</th><th>产品B</th><th>产品C</th></tr>
+                    <tr><td>售价（元/件）</td><td>100</td><td>150</td><td>200</td></tr>
+                    <tr><td>变动成本（元/件）</td><td>60</td><td>90</td><td>120</td></tr>
+                    <tr><td>机器工时（小时/件）</td><td>2</td><td>5</td><td>8</td></tr>
+                    <tr><td>最大需求（件）</td><td>500</td><td>300</td><td>200</td></tr>
+                </table>
+                <p>公司总机器工时为 <strong>3000小时</strong>。求最优生产组合和最大总贡献毛益。</p>
+                <p><strong>解答：</strong></p>
+                <p><strong>步骤1：</strong>限制因素 = 机器工时，总量 = 3000小时</p>
+                <p><strong>步骤2：</strong>计算单位贡献毛益</p>
+                <table>
+                    <tr><th>产品</th><th>售价</th><th>变动成本</th><th>单位贡献毛益 CM</th></tr>
+                    <tr><td>A</td><td>100</td><td>60</td><td><strong>40</strong></td></tr>
+                    <tr><td>B</td><td>150</td><td>90</td><td><strong>60</strong></td></tr>
+                    <tr><td>C</td><td>200</td><td>120</td><td><strong>80</strong></td></tr>
+                </table>
+                <p><strong>步骤3：</strong>计算单位限制因素贡献毛益</p>
+                <table>
+                    <tr><th>产品</th><th>单位CM</th><th>机器工时/件</th><th>单位工时贡献毛益</th><th>排序</th></tr>
+                    <tr><td>A</td><td>40</td><td>2</td><td>$40/2 = \mathbf{20}$</td><td><strong>1</strong></td></tr>
+                    <tr><td>B</td><td>60</td><td>5</td><td>$60/5 = \mathbf{12}$</td><td><strong>2</strong></td></tr>
+                    <tr><td>C</td><td>80</td><td>8</td><td>$80/8 = \mathbf{10}$</td><td><strong>3</strong></td></tr>
+                </table>
+                <p><strong>关键发现：</strong>虽然产品C的"单位利润"最高（80元），但它消耗工时最多，每小时只贡献10元；而产品A虽然"单位利润"最低（40元），但每小时能贡献20元！所以应该优先生产A。</p>
+                <p><strong>步骤4：按排序分配产能</strong></p>
+                <table>
+                    <tr><th>顺序</th><th>产品</th><th>最大需求</th><th>所需工时</th><th>可用工时</th><th>实际产量</th></tr>
+                    <tr><td>1</td><td>A</td><td>500件</td><td>500×2=1000h</td><td>3000h</td><td><strong>500件</strong>（全产）</td></tr>
+                    <tr><td>2</td><td>B</td><td>300件</td><td>300×5=1500h</td><td>3000-1000=2000h</td><td><strong>300件</strong>（全产）</td></tr>
+                    <tr><td>3</td><td>C</td><td>200件</td><td>200×8=1600h</td><td>2000-1500=500h</td><td><strong>500/8=62件</strong>（剩余产能）</td></tr>
+                </table>
+                <p><strong>步骤5：计算总贡献毛益</strong></p>
+                $$\text{总贡献毛益} = 500 \times 40 + 300 \times 60 + 62 \times 80$$
+                $$= 20{,}000 + 18{,}000 + 4{,}960 = \mathbf{42{,}960 \text{ 元}}$$
+                <p><strong>结论：</strong>最优组合为 A=500件、B=300件、C=62件，最大总贡献毛益为 <strong>42,960元</strong>。</p>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <h4>本节小结</h4>
+            <ul>
+                <li>相关成本：未来发生、因决策而不同、涉及现金流。沉没成本不相关。</li>
+                <li>限制因素 = 瓶颈资源，常见的有产能、材料、人工、资金</li>
+                <li>单位限制因素贡献毛益 = $\frac{\text{单位贡献毛益}}{\text{单位产品所需限制因素}}$</li>
+                <li>决策步骤：找瓶颈 → 算单位贡献 → 排序 → 按序分配 → 算总贡献</li>
+                <li>"单位利润最高"不一定最优，关键是"每单位瓶颈资源的贡献"最高</li>
+            </ul>
+        </div>
+        <div style="text-align:center;">
+            <a href="../03-Notebook代码/week6-大数据与短期决策基础.html" class="notebook-link">前往 Notebook 练习 →</a>
+        </div>
+    </div>
+
+    <!-- ==================== LESSON 3 ==================== -->
+    <div class="lesson lesson-anchor" id="lesson3">
+        <div class="lesson-header">
+            <div class="lesson-number">3</div>
+            <div>
+                <div class="lesson-title">Python实现限制因素优化</div>
+                <div class="lesson-duration">约 50 分钟 · 自动化决策与可视化</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>用Python自动化限制因素分析</h3>
+            <p>当产品种类较多或数据频繁变化时，手工计算容易出错。Python可以帮助我们：</p>
+            <ul style="margin-left:20px;">
+                <li>用 pandas DataFrame 统一管理产品数据</li>
+                <li>自动计算单位贡献毛益和单位限制因素贡献毛益</li>
+                <li>按排序自动分配产能</li>
+                <li>一键计算总贡献毛益</li>
+                <li>用 matplotlib 可视化最优组合</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>完整Python代码：从数据到最优决策</h3>
+            <pre><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ============================================
+# 步骤1：定义产品数据
+# ============================================
+data = {
+    '产品': ['A', 'B', 'C'],
+    '售价': [100, 150, 200],
+    '变动成本': [60, 90, 120],
+    '机器工时_per_unit': [2, 5, 8],
+    '最大需求': [500, 300, 200]
+}
+
+df = pd.DataFrame(data)
+
+# ============================================
+# 步骤2：计算单位贡献毛益和单位工时贡献
+# ============================================
+df['单位贡献毛益'] = df['售价'] - df['变动成本']
+df['单位工时贡献'] = df['单位贡献毛益'] / df['机器工时_per_unit']
+
+# 按单位工时贡献排序（降序）
+df_sorted = df.sort_values('单位工时贡献', ascending=False)
+df_sorted = df_sorted.reset_index(drop=True)
+
+print("=== 各产品单位限制因素贡献毛益 ===")
+print(df_sorted[['产品', '单位贡献毛益', '机器工时_per_unit', '单位工时贡献']])
+
+# ============================================
+# 步骤3：按排序自动分配产能
+# ============================================
+total_hours = 3000  # 总机器工时
+remaining_hours = total_hours
+results = []
+
+for idx, row in df_sorted.iterrows():
+    product = row['产品']
+    max_demand = row['最大需求']
+    hours_per_unit = row['机器工时_per_unit']
+    cm_per_unit = row['单位贡献毛益']
+    
+    # 计算该产品最多能生产多少
+    max_possible = min(max_demand, remaining_hours // hours_per_unit)
+    used_hours = max_possible * hours_per_unit
+    contribution = max_possible * cm_per_unit
+    
+    results.append({
+        '产品': product,
+        '排序': idx + 1,
+        '计划产量': max_possible,
+        '使用工时': used_hours,
+        '贡献毛益': contribution
+    })
+    
+    remaining_hours -= used_hours
+
+result_df = pd.DataFrame(results)
+print("\n=== 最优生产组合 ===")
+print(result_df)
+
+# ============================================
+# 步骤4：计算总贡献毛益
+# ============================================
+total_contribution = result_df['贡献毛益'].sum()
+print(f"\n总贡献毛益: {total_contribution:,.0f} 元")
+print(f"剩余未用工时: {remaining_hours} 小时")
+
+# ============================================
+# 步骤5：可视化最优组合
+# ============================================
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# 柱状图：最优产量组合
+colors = ['#C49A6C', '#8B6F4E', '#E8D5C4']
+axes[0].bar(result_df['产品'], result_df['计划产量'], color=colors, edgecolor='white')
+axes[0].set_title('最优生产组合', fontsize=14)
+axes[0].set_ylabel('产量（件）')
+for i, v in enumerate(result_df['计划产量']):
+    axes[0].text(i, v + 5, str(v), ha='center', fontweight='bold')
+
+# 饼图：各产品贡献占比
+axes[1].pie(result_df['贡献毛益'], labels=result_df['产品'], autopct='%1.1f%%',
+          colors=colors, startangle=90)
+axes[1].set_title('各产品贡献毛益占比', fontsize=14)
+
+plt.tight_layout()
+plt.show()</code></pre>
+        </div>
+
+        <div class="section">
+            <h3>模拟多产品生产环境</h3>
+            <p>在实际业务中，数据可能来自CSV文件或数据库。我们可以构建一个<strong>通用的限制因素优化函数</strong>：</p>
+            <pre><code>def optimize_production(df_products, bottleneck_hours, bottleneck_col):
+    """
+    通用限制因素优化函数
+    
+    参数:
+        df_products: DataFrame，包含产品信息
+        bottleneck_hours: 限制因素总可用量
+        bottleneck_col: 限制因素对应的列名（如'机器工时_per_unit'）
+    
+    返回:
+        最优生产方案 DataFrame
+    """
+    # 确保按单位限制因素贡献排序
+    df = df_products.copy()
+    df['单位限制因素贡献'] = df['单位贡献毛益'] / df[bottleneck_col]
+    df = df.sort_values('单位限制因素贡献', ascending=False)
+    
+    remaining = bottleneck_hours
+    plan = []
+    
+    for _, row in df.iterrows():
+        max_make = min(row['最大需求'], remaining // row[bottleneck_col])
+        used = max_make * row[bottleneck_col]
+        plan.append({
+            '产品': row['产品'],
+            '产量': max_make,
+            '使用资源': used,
+            '贡献毛益': max_make * row['单位贡献毛益']
+        })
+        remaining -= used
+    
+    return pd.DataFrame(plan)
+
+# 使用示例
+products = pd.DataFrame({
+    '产品': ['A', 'B', 'C', 'D'],
+    '单位贡献毛益': [40, 60, 80, 25],
+    '机器工时_per_unit': [2, 5, 8, 1],
+    '最大需求': [500, 300, 200, 800]
+})
+
+result = optimize_production(products, 3000, '机器工时_per_unit')
+print(result)</code></pre>
+        </div>
+
+        <div class="section">
+            <h3>练习题</h3>
+            <div class="example-box">
+                <div class="example-title">练习1：材料限制下的生产决策</div>
+                <p>某工厂生产X和Y两种产品，原材料是限制因素（每月最多可用1200kg）。</p>
+                <table>
+                    <tr><th>项目</th><th>产品X</th><th>产品Y</th></tr>
+                    <tr><td>售价（元）</td><td>80</td><td>120</td></tr>
+                    <tr><td>变动成本（元）</td><td>50</td><td>70</td></tr>
+                    <tr><td>材料用量（kg/件）</td><td>4</td><td>6</td></tr>
+                    <tr><td>最大需求（件）</td><td>200</td><td>150</td></tr>
+                </table>
+                <p><strong>问题：</strong>（1）计算单位材料贡献毛益并排序；（2）确定最优生产组合；（3）计算最大总贡献毛益。</p>
+            </div>
+            <div class="example-box">
+                <div class="example-title">练习2：Python扩展</div>
+                <p>修改上面的 <code>optimize_production</code> 函数，使其能够处理<strong>多种限制因素</strong>（例如同时考虑机器工时和人工工时，取最紧的约束）。</p>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <h4>本节小结</h4>
+            <ul>
+                <li>pandas DataFrame 可以高效管理多产品数据并自动计算排序</li>
+                <li>用循环按排序依次分配产能，直到资源耗尽</li>
+                <li>总贡献毛益 = 各产品（实际产量 × 单位贡献毛益）之和</li>
+                <li>matplotlib 柱状图+饼图可以直观展示最优组合和资源分配</li>
+                <li>可以封装为通用函数，应对不同的限制因素场景</li>
+            </ul>
+        </div>
+        <div style="text-align:center;">
+            <a href="../03-Notebook代码/week6-大数据与短期决策基础.html" class="notebook-link">前往 Notebook 练习 →</a>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>商业数据分析课程 · 第6周：大数据概念与短期决策基础</p>
+    <p>© 2024 教学资源开发组</p>
+</div>
+
+
+<div style="position:fixed;left:18px;bottom:18px;z-index:999;">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;background:#1b3a5f;color:#fff;text-decoration:none;font-size:13px;padding:8px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(27,58,95,0.3);font-family:-apple-system,'PingFang SC',sans-serif;">← 课件目录</a>
+</div>
+
+</body>
+</html>

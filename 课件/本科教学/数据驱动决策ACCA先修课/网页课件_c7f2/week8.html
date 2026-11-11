@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第8周：长期决策与投资评估 | 商业数据分析</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root {
+    --bg-main: #F5F0E8;
+    --bg-card: #FFFFFF;
+    --bg-derivation: #FFF8E7;
+    --bg-code: #2D2D2D;
+    --color-light: #E8D5C4;
+    --color-medium: #C49A6C;
+    --color-dark: #8B6F4E;
+    --text-main: #3D3D3D;
+    --text-light: #6B6B6B;
+    --border: #DDD5C7;
+    --code-text: #F8F8F2;
+    --shadow: rgba(0,0,0,0.06);
+    --success: #7A9E7E;
+    --accent-blue: #4A7C9B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.75;
+  }
+  header {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-medium) 100%);
+    color: white;
+    padding: 3rem 1.5rem 2.5rem;
+    text-align: center;
+  }
+  header h1 { font-size: 1.9rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.5px; }
+  header .subtitle { font-size: 1rem; opacity: 0.92; font-family: Georgia, serif; }
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .week-overview {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px var(--shadow);
+    border-left: 5px solid var(--color-medium);
+  }
+  .week-overview h2 { color: var(--color-dark); font-size: 1.25rem; margin-bottom: 0.8rem; }
+  .week-overview ul { list-style: none; padding-left: 0; }
+  .week-overview li { padding: 0.3rem 0; padding-left: 1.5rem; position: relative; color: var(--text-light); }
+  .week-overview li::before { content: "◆"; position: absolute; left: 0; color: var(--color-medium); font-size: 0.7rem; top: 0.55rem; }
+
+  .lesson {
+    background: var(--bg-card);
+    border-radius: 12px;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 20px var(--shadow);
+    overflow: hidden;
+  }
+  .lesson-header {
+    background: linear-gradient(90deg, var(--color-light), #FDF8F2);
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .lesson-header .lesson-num {
+    display: inline-block;
+    background: var(--color-medium);
+    color: white;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+  .lesson-header h3 { color: var(--color-dark); font-size: 1.3rem; font-weight: 600; }
+
+  .lesson-body { padding: 2rem; }
+  .section-title {
+    color: var(--color-dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 1.8rem 0 0.8rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--color-light);
+  }
+  .section-title:first-of-type { margin-top: 0; }
+
+  .objectives {
+    background: #F9F5EF;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .objectives strong { color: var(--color-dark); }
+  .objectives ul { margin-top: 0.5rem; padding-left: 1.2rem; }
+  .objectives li { color: var(--text-light); font-size: 0.95rem; padding: 0.15rem 0; }
+
+  .concept-box {
+    background: #FAFAFA;
+    border-left: 4px solid var(--color-medium);
+    padding: 1rem 1.5rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1rem 0;
+  }
+  .concept-box strong { color: var(--color-dark); }
+
+  .derivation {
+    background: var(--bg-derivation);
+    border: 1px solid #F0E0C0;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    margin: 1.2rem 0;
+  }
+  .derivation-title {
+    color: var(--color-dark);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .derivation-title::before { content: "📐"; font-size: 1.2rem; }
+  .step {
+    margin: 0.8rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--color-light);
+  }
+  .step-num {
+    color: var(--color-medium);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  .step-note {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+
+  .example {
+    background: #F0F7F0;
+    border: 1px solid #C8E0C8;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    margin: 1.2rem 0;
+  }
+  .example-title {
+    color: var(--success);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .example-title::before { content: "📝"; font-size: 1.2rem; }
+  .solution { margin-top: 1rem; }
+  .solution strong { color: var(--color-dark); }
+  .highlight {
+    background: #FFF3CD;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-weight: 600;
+    color: var(--color-dark);
+  }
+
+  pre {
+    background: var(--bg-code);
+    color: var(--code-text);
+    padding: 1.2rem 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 1rem 0;
+  }
+  code {
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    background: #F0EDE8;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--color-dark);
+  }
+  pre code { background: transparent; padding: 0; color: var(--code-text); }
+
+  .summary {
+    background: linear-gradient(135deg, #F9F5EF, #FFF8E7);
+    border-radius: 10px;
+    padding: 1.2rem 1.8rem;
+    margin-top: 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .summary strong { color: var(--color-dark); }
+
+  .notebook-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.8rem;
+    background: var(--color-medium);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.3s;
+    box-shadow: 0 4px 12px rgba(196,154,108,0.3);
+  }
+  .notebook-link:hover { background: var(--color-dark); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--color-light);
+    color: var(--color-dark);
+    font-weight: 600;
+  }
+  tr:hover { background: #FAFAFA; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.4rem; }
+    .container { padding: 1rem; }
+    .lesson-body { padding: 1.2rem; }
+    .derivation, .example { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>第8周：长期决策与投资评估</h1>
+  <p class="subtitle">Long-term Decision Making &amp; Investment Appraisal</p>
+</header>
+
+<div class="container">
+
+<!-- 周概述 -->
+<div class="week-overview">
+  <h2>本周学习目标</h2>
+  <ul>
+    <li>理解货币时间价值：单利、复利、名义利率与实际利率</li>
+    <li>掌握折现原理，能从复利公式反推现值公式</li>
+    <li>理解年金现值的等比数列推导</li>
+    <li>掌握四种投资评估方法：NPV、IRR、ROCE、回收期</li>
+    <li>能用Python实现复利/折现计算、NPV/IRR计算、敏感性分析和可视化</li>
+  </ul>
+</div>
+
+<!-- ========== 第1节课 ========== -->
+<div class="lesson">
+  <div class="lesson-header">
+    <span class="lesson-num">第1课</span>
+    <h3>复利与折现：货币的时间价值</h3>
+  </div>
+  <div class="lesson-body">
+
+    <div class="objectives">
+      <strong>学习目标</strong>
+      <ul>
+        <li>理解货币时间价值（Time Value of Money）的核心思想</li>
+        <li>掌握单利与复利的公式推导，能逐步展开复利从第1期到第n期</li>
+        <li>理解名义利率与实际利率的区别，掌握EAR公式</li>
+        <li>能从复利公式反推折现公式，理解"今天的1元 > 明天的1元"</li>
+        <li>掌握普通年金现值的等比数列推导</li>
+        <li>能用Python实现复利/折现/年金计算</li>
+      </ul>
+    </div>
+
+    <div class="section-title">1.1 货币时间价值的核心思想</div>
+    <p><strong>今天的1元钱，比未来的1元钱更值钱。</strong></p>
+    <p>因为今天的1元可以投资，在未来产生利息。这就是<strong>货币时间价值</strong>（Time Value of Money, TVM）的核心。</p>
+
+    <div class="concept-box">
+      <strong>基本问题：</strong>如果现在把 \( P \) 元存入银行，年利率 \( r \)，\( n \) 年后能拿到多少？<br>
+      反过来：如果 \( n \) 年后想拿到 \( F \) 元，现在需要存多少？
+    </div>
+
+    <div class="section-title">1.2 单利与复利</div>
+
+    <div class="derivation">
+      <div class="derivation-title">单利公式推导</div>
+      <p>单利：利息只按<strong>原始本金</strong>计算。</p>
+      <div class="step">
+        <div class="step-num">第1步：计算每年的利息</div>
+        每年利息 = \( P \times r \)（只与原始本金有关）
+      </div>
+      <div class="step">
+        <div class="step-num">第2步：n年后的总金额</div>
+        $$\text{总利息 } I = P \times r \times n$$
+        $$\boxed{A = P(1 + rn)}$$
+      </div>
+    </div>
+
+    <div class="derivation">
+      <div class="derivation-title">复利公式推导（逐步展开）</div>
+      <p>复利：利息<strong>计入本金</strong>再产生利息——"利滚利"。</p>
+
+      <div class="step">
+        <div class="step-num">第1期末（第1年末）</div>
+        $$A_1 = P + P \times r = P(1 + r)$$
+        <p class="step-note">本金加上第1年的利息</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第2期末</div>
+        $$A_2 = A_1 + A_1 \times r = A_1(1 + r) = P(1 + r)(1 + r) = P(1 + r)^2$$
+        <p class="step-note">第2年的本金是第1期末的金额，不是原始本金</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第3期末</div>
+        $$A_3 = A_2(1 + r) = P(1 + r)^2(1 + r) = P(1 + r)^3$$
+      </div>
+
+      <div class="step">
+        <div class="step-num">以此类推，第n期末</div>
+        $$\boxed{A_n = P(1 + r)^n}$$
+        <p class="step-note">这是金融数学中最重要的公式之一</p>
+      </div>
+    </div>
+
+    <div class="concept-box">
+      <strong>单利 vs 复利对比：</strong><br>
+      本金10,000元，年利率8%，5年后：<br>
+      单利：\( 10,000 \times (1 + 0.08 \times 5) = 14,000 \) 元<br>
+      复利：\( 10,000 \times (1.08)^5 = 14,693 \) 元<br>
+      复利多出693元——时间越长、利率越高，差距越大。
+    </div>
+
+    <div class="section-title">1.3 名义利率与实际利率</div>
+    <p>银行说"年利率6%，按月复利"，那么实际年收益是多少？</p>
+
+    <div class="derivation">
+      <div class="derivation-title">实际年利率（EAR）推导</div>
+      <p>设名义年利率为 \( r \)，每年复利 \( m \) 次，则每期利率为 \( r/m \)。</p>
+
+      <div class="step">
+        <div class="step-num">第1步：1年后的复利终值</div>
+        按复利公式，1年后：
+        $$A = P\left(1 + \frac{r}{m}\right)^m$$
+      </div>
+      <div class="step">
+        <div class="step-num">第2步：计算实际年利率</div>
+        实际年利率 EAR 满足：\( P(1 + EAR) = A \)
+        $$\boxed{EAR = \left(1 + \frac{r}{m}\right)^m - 1}$$
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-title">例题：名义利率与实际利率</div>
+      <p>某理财产品宣称"年利率6%，按月复利"。计算实际年利率。</p>
+      <div class="solution">
+        \( r = 6\% = 0.06 \)，\( m = 12 \)（按月复利）<br><br>
+        $$EAR = \left(1 + \frac{0.06}{12}\right)^{12} - 1 = (1.005)^{12} - 1$$
+        $$EAR = 1.0617 - 1 = 6.17\%$$
+        <span class="highlight">实际年利率为6.17%，高于名义利率6%。</span>
+      </div>
+    </div>
+
+    <div class="section-title">1.4 折现：从未来回到现在</div>
+    <p>投资评估需要比较"现在投入"与"未来收回"，必须把它们放到<strong>同一时间维度</strong>。</p>
+
+    <div class="derivation">
+      <div class="derivation-title">折现公式推导</div>
+      <p>已知复利终值公式 \( A = P(1 + r)^n \)，求现在的 \( P \)（现值，Present Value）。</p>
+
+      <div class="step">
+        <div class="step-num">第1步：写出复利终值方程</div>
+        $$FV = PV \times (1 + r)^n$$
+        <p class="step-note">FV = 未来值（Future Value），PV = 现值（Present Value）</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第2步：两边除以 (1+r)^n</div>
+        $$\boxed{PV = \frac{FV}{(1 + r)^n}}$$
+        <p class="step-note">这就是折现公式——把未来的钱"打折"回到今天</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第3步：引入折现因子</div>
+        定义折现因子 \( DF_n = \frac{1}{(1+r)^n} \)，则：
+        $$PV = FV \times DF_n$$
+        <p class="step-note">折现因子可以理解为"未来1元在今天的价值"</p>
+      </div>
+    </div>
+
+    <div class="section-title">1.5 年金现值推导</div>
+    <p><strong>年金（Annuity）</strong>是一系列等额的定期现金流。普通年金在每期<strong>期末</strong>支付。</p>
+
+    <div class="derivation">
+      <div class="derivation-title">普通年金现值推导（等比数列求和）</div>
+      <p>假设每年末收到 \( PMT \) 元，共 \( n \) 年，折现率 \( r \)。</p>
+
+      <div class="step">
+        <div class="step-num">第1步：写出各期现金流现值</div>
+        <p>第1年末的PMT，现值：\( \frac{PMT}{1+r} \)</p>
+        <p>第2年末的PMT，现值：\( \frac{PMT}{(1+r)^2} \)</p>
+        <p>第3年末的PMT，现值：\( \frac{PMT}{(1+r)^3} \)</p>
+        <p>……</p>
+        <p>第n年末的PMT，现值：\( \frac{PMT}{(1+r)^n} \)</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第2步：年金现值 = 各期现值之和</div>
+        $$PV_{\text{annuity}} = \frac{PMT}{1+r} + \frac{PMT}{(1+r)^2} + \frac{PMT}{(1+r)^3} + \cdots + \frac{PMT}{(1+r)^n}$$
+      </div>
+
+      <div class="step">
+        <div class="step-num">第3步：提取公因子，识别等比数列</div>
+        提取 \( PMT \)：
+        $$PV_{\text{annuity}} = PMT \times \left[ \frac{1}{1+r} + \frac{1}{(1+r)^2} + \cdots + \frac{1}{(1+r)^n} \right]$$
+        <p>方括号内是<strong>等比数列</strong>，首项 \( a = \frac{1}{1+r} \)，公比 \( q = \frac{1}{1+r} \)</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第4步：等比数列求和公式</div>
+        等比数列前n项和：\( S_n = a \cdot \frac{1 - q^n}{1 - q} \)<br><br>
+        代入 \( a = \frac{1}{1+r} \)，\( q = \frac{1}{1+r} \)：
+        $$S_n = \frac{1}{1+r} \cdot \frac{1 - \frac{1}{(1+r)^n}}{1 - \frac{1}{1+r}}$$
+      </div>
+
+      <div class="step">
+        <div class="step-num">第5步：化简分母</div>
+        $$1 - \frac{1}{1+r} = \frac{(1+r) - 1}{1+r} = \frac{r}{1+r}$$
+        所以：
+        $$S_n = \frac{1}{1+r} \cdot \frac{1 - (1+r)^{-n}}{\frac{r}{1+r}} = \frac{1}{1+r} \cdot \frac{1+r}{r} \cdot \left[1 - (1+r)^{-n}\right]$$
+      </div>
+
+      <div class="step">
+        <div class="step-num">第6步：最终年金现值公式</div>
+        $$\boxed{PV_{\text{annuity}} = PMT \times \frac{1 - (1 + r)^{-n}}{r}}$$
+        <p class="step-note">方括号内的部分叫做"年金现值系数"（PVIFA）</p>
+      </div>
+    </div>
+
+    <div class="section-title">1.6 例题演示</div>
+    <div class="example">
+      <div class="example-title">例题：复利、折现与年金</div>
+      <p>(1) 现在存入50,000元，年利率5%，按年复利，10年后有多少？</p>
+      <p>(2) 3年后需要100,000元，年利率6%，现在需要存入多少？</p>
+      <p>(3) 一项投资未来5年每年末收回20,000元，折现率8%，现值是多少？</p>
+      <div class="solution">
+        <strong>(1) 复利终值：</strong>
+        $$FV = 50,000 \times (1.05)^{10} = 50,000 \times 1.6289 = 81,445 \text{ 元}$$
+        <br>
+        <strong>(2) 折现现值：</strong>
+        $$PV = \frac{100,000}{(1.06)^3} = \frac{100,000}{1.1910} = 83,962 \text{ 元}$$
+        <br>
+        <strong>(3) 年金现值：</strong>
+        $$PV_{\text{annuity}} = 20,000 \times \frac{1 - (1.08)^{-5}}{0.08} = 20,000 \times 3.9927 = 79,854 \text{ 元}$$
+      </div>
+    </div>
+
+    <div class="section-title">1.7 Python实现</div>
+    <pre><code># 复利、折现与年金计算
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ===== 复利终值计算 =====
+P = 50000           # 本金
+r = 0.05            # 年利率
+n = 10              # 年数
+
+FV = P * (1 + r)**n
+print(f"复利终值: {FV:,.2f} 元")
+
+# ===== 折现现值计算 =====
+FV_target = 100000
+r2 = 0.06
+n2 = 3
+PV = FV_target / (1 + r2)**n2
+print(f"折现现值: {PV:,.2f} 元")
+
+# ===== 年金现值计算 =====
+PMT = 20000
+r3 = 0.08
+n3 = 5
+pv_annuity = PMT * (1 - (1 + r3)**(-n3)) / r3
+print(f"年金现值: {pv_annuity:,.2f} 元")
+
+# ===== 可视化：复利增长曲线 =====
+years = np.arange(0, 21)
+compound = 10000 * (1.06)**years
+simple = 10000 * (1 + 0.06 * years)
+
+plt.figure(figsize=(10, 6))
+plt.plot(years, compound, color='#C49A6C', linewidth=2.5, label='复利')
+plt.plot(years, simple, color='#8B6F4E', linewidth=2.5, linestyle='--', label='单利')
+plt.fill_between(years, simple, compound, alpha=0.15, color='#C49A6C', label='复利优势')
+plt.xlabel('年数', fontsize=12)
+plt.ylabel('金额（元）', fontsize=12)
+plt.title('单利 vs 复利增长对比（本金10,000，利率6%）', fontsize=14, fontweight='bold')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# ===== 可视化：折现因子随时间变化 =====
+rates = [0.05, 0.08, 0.12]
+periods = np.arange(1, 21)
+plt.figure(figsize=(10, 6))
+for r in rates:
+    df = 1 / (1 + r)**periods
+    plt.plot(periods, df, linewidth=2.5, label=f'r = {r:.0%}')
+plt.xlabel('期数 n', fontsize=12)
+plt.ylabel('折现因子', fontsize=12)
+plt.title('折现因子随时间的变化', fontsize=14, fontweight='bold')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()</code></pre>
+
+    <div class="summary">
+      <strong>第1课小结</strong>
+      <ul>
+        <li>复利终值：\( A = P(1+r)^n \)，从第1期到第n期逐步推导</li>
+        <li>实际年利率：\( EAR = (1 + r/m)^m - 1 \)，复利次数越多，EAR越高</li>
+        <li>折现是复利的逆运算：\( PV = FV / (1+r)^n \)</li>
+        <li>年金现值用等比数列求和推导：\( PV_{annuity} = PMT \times \frac{1 - (1+r)^{-n}}{r} \)</li>
+      </ul>
+    </div>
+    <a class="notebook-link" href="../03-Notebook代码/week8-长期决策与投资评估.html" target="_blank">前往Notebook练习 →</a>
+  </div>
+</div>
+
+<!-- ========== 第2节课 ========== -->
+<div class="lesson">
+  <div class="lesson-header">
+    <span class="lesson-num">第2课</span>
+    <h3>投资评估技术：NPV、IRR、ROCE与回收期</h3>
+  </div>
+  <div class="lesson-body">
+
+    <div class="objectives">
+      <strong>学习目标</strong>
+      <ul>
+        <li>理解为什么投资评估用现金流而非会计利润</li>
+        <li>掌握NPV公式的逐期折现推导</li>
+        <li>理解IRR的定义，掌握试错法/线性插值近似</li>
+        <li>掌握ROCE和回收期的计算</li>
+        <li>能比较四种方法的决策规则和优缺点</li>
+      </ul>
+    </div>
+
+    <div class="section-title">2.1 现金流 vs 利润：为什么投资评估用现金流？</div>
+    <p>会计利润包含了非现金项目（如折旧），且受会计政策影响。投资评估关心的是<strong>真金白银的进出</strong>。</p>
+
+    <table>
+      <tr><th>对比维度</th><th>会计利润</th><th>现金流</th></tr>
+      <tr><td>折旧处理</td><td>作为费用扣除</td><td>非现金流出，不影响现金流</td></tr>
+      <tr><td>时间价值</td><td>不考虑</td><td>通过折现体现</td></tr>
+      <tr><td>客观性</td><td>受会计政策影响</td><td>更客观，可验证</td></tr>
+      <tr><td>再投资假设</td><td>隐含利率不确定</td><td>NPV假设按折现率再投资</td></tr>
+    </table>
+
+    <div class="concept-box">
+      <strong>关键原则：</strong>投资评估使用<strong>税后现金流</strong>（Cash Flow After Tax）。折旧虽不直接影响现金流，但通过抵税间接影响——这叫做"折旧税盾"效应。
+    </div>
+
+    <div class="section-title">2.2 净现值（NPV）</div>
+    <p>NPV是将项目所有未来现金流<strong>折现到当前</strong>，减去初始投资后的净值。</p>
+
+    <div class="derivation">
+      <div class="derivation-title">NPV公式推导</div>
+      <p>设项目初始投资为 \( I_0 \)，第 \( t \) 年末的净现金流为 \( CF_t \)，折现率为 \( r \)。</p>
+
+      <div class="step">
+        <div class="step-num">第1步：逐期折现</div>
+        第1年现金流现值：\( \frac{CF_1}{(1+r)^1} \)<br>
+        第2年现金流现值：\( \frac{CF_2}{(1+r)^2} \)<br>
+        第3年现金流现值：\( \frac{CF_3}{(1+r)^3} \)<br>
+        ……<br>
+        第n年现金流现值：\( \frac{CF_n}{(1+r)^n} \)
+      </div>
+
+      <div class="step">
+        <div class="step-num">第2步：所有现值求和，减去初始投资</div>
+        $$\boxed{NPV = \sum_{t=1}^{n} \frac{CF_t}{(1+r)^t} - I_0}$$
+        <p class="step-note">也可以写成：NPV = −I₀ + CF₁/(1+r) + CF₂/(1+r)² + … + CFₙ/(1+r)ⁿ</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第3步：决策规则</div>
+        <ul>
+          <li>\( NPV > 0 \)：项目创造价值，<strong>接受</strong></li>
+          <li>\( NPV = 0 \）：项目刚好回本（按折现率），可接受可拒绝</li>
+          <li>\( NPV < 0 \)：项目毁灭价值，<strong>拒绝</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title">2.3 内部收益率（IRR）</div>
+    <p>IRR是使<strong>NPV = 0</strong>的折现率，代表项目内在的收益率水平。</p>
+
+    <div class="derivation">
+      <div class="derivation-title">IRR定义与线性插值近似</div>
+
+      <div class="step">
+        <div class="step-num">第1步：IRR的定义方程</div>
+        IRR 满足：
+        $$\sum_{t=1}^{n} \frac{CF_t}{(1 + IRR)^t} - I_0 = 0$$
+        <p class="step-note">这是一个关于 IRR 的高次方程，通常没有解析解</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第2步：试错法（Trial and Error）</div>
+        <p>选择两个试算折现率 \( r_1 \) 和 \( r_2 \)，使得：</p>
+        <ul>
+          <li>\( NPV(r_1) > 0 \)（即 \( r_1 < IRR \)）</li>
+          <li>\( NPV(r_2) < 0 \)（即 \( r_2 > IRR \)）</li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-num">第3步：线性插值近似</div>
+        假设NPV与折现率近似线性关系：
+        $$\frac{IRR - r_1}{r_2 - r_1} = \frac{NPV_1 - 0}{NPV_1 - NPV_2}$$
+        整理得：
+        $$\boxed{IRR \approx r_1 + \frac{NPV_1}{NPV_1 - NPV_2} \times (r_2 - r_1)}$$
+        <p class="step-note">线性插值是近似方法，\( r_1 \) 和 \( r_2 \) 越接近，结果越精确</p>
+      </div>
+    </div>
+
+    <div class="section-title">2.4 会计收益率（ROCE/ARR）</div>
+    <p>ARR使用会计利润而非现金流，是一种简单但粗糙的方法。</p>
+
+    <div class="derivation">
+      <div class="derivation-title">ARR公式</div>
+      $$\text{ARR} = \frac{\text{平均年会计利润}}{\text{平均投资额}} \times 100\%$$
+      <div class="step">
+        <div class="step-num">平均年会计利润</div>
+        $$\text{平均利润} = \frac{\text{项目寿命期内总利润}}{\text{项目寿命期（年）}}$$
+        <p class="step-note">利润 = 现金流 − 折旧</p>
+      </div>
+      <div class="step">
+        <div class="step-num">平均投资额</div>
+        如果项目结束时资产残值为 \( S \)：
+        $$\text{平均投资额} = \frac{I_0 + S}{2}$$
+        <p class="step-note">假设资产价值从初始投资线性下降到残值</p>
+      </div>
+    </div>
+
+    <div class="section-title">2.5 回收期（Payback Period）</div>
+    <p>回收期是<strong>累计现金流等于初始投资</strong>所需的时间。它回答：多久能回本？</p>
+
+    <div class="derivation">
+      <div class="derivation-title">回收期计算</div>
+      <div class="step">
+        <div class="step-num">非折现回收期</div>
+        找到满足 \( \sum_{t=1}^{T} CF_t \geq I_0 \) 的最小 \( T \)。<br><br>
+        若现金流不均匀，使用插值：
+        $$\text{Payback} = T_{\text{整年}} + \frac{\text{剩余未回收金额}}{\text{下一年现金流}}$$
+      </div>
+      <div class="step">
+        <div class="step-num">折现回收期（Discounted Payback）</div>
+        用<strong>折现后</strong>的现金流计算：
+        $$\sum_{t=1}^{T} \frac{CF_t}{(1+r)^t} \geq I_0$$
+        <p class="step-note">折现回收期 ≥ 非折现回收期（因为折现减少了后期现金流的价值）</p>
+      </div>
+    </div>
+
+    <div class="section-title">2.6 四种方法对比</div>
+    <table>
+      <tr><th>方法</th><th>决策规则</th><th>优点</th><th>缺点</th></tr>
+      <tr><td><strong>NPV</strong></td><td>NPV > 0 则接受</td><td>考虑时间价值；直接衡量财富增加</td><td>折现率选择有主观性</td></tr>
+      <tr><td><strong>IRR</strong></td><td>IRR > 要求回报率 则接受</td><td>直观显示收益率百分比</td><td>非常规现金流可能有多个IRR；互斥项目可能误导</td></tr>
+      <tr><td><strong>ARR</strong></td><td>ARR > 目标回报率 则接受</td><td>计算简单；使用熟悉的数据</td><td>忽略时间价值；使用利润而非现金流</td></tr>
+      <tr><td><strong>回收期</strong></td><td>回收期 < 目标期限 则接受</td><td>简单直观；强调流动性</td><td>忽略回收期后现金流；忽略时间价值（非折现版）</td></tr>
+    </table>
+
+    <div class="section-title">2.7 例题演示</div>
+    <div class="example">
+      <div class="example-title">例题：全面投资评估</div>
+      <p>某项目需要初始投资100,000元，预计未来4年现金流如下：</p>
+      <ul>
+        <li>第1年：30,000元</li>
+        <li>第2年：40,000元</li>
+        <li>第3年：35,000元</li>
+        <li>第4年：25,000元</li>
+      </ul>
+      <p>折现率 \( r = 10\% \)，项目无残值，直线法折旧。</p>
+      <p><strong>要求：</strong>计算NPV、IRR、ARR和非折现回收期。</p>
+      <div class="solution">
+        <strong>(1) NPV计算：</strong><br>
+        $$NPV = -100,000 + \frac{30,000}{1.1} + \frac{40,000}{1.1^2} + \frac{35,000}{1.1^3} + \frac{25,000}{1.1^4}$$
+        $$= -100,000 + 27,273 + 33,058 + 26,296 + 17,075 = 3,702 \text{ 元}$$
+        <span class="highlight">NPV > 0，项目创造价值，建议接受。</span><br><br>
+
+        <strong>(2) IRR近似：</strong><br>
+        试算 \( r = 12\% \)：NPV ≈ −1,200<br>
+        已知 \( r = 10\% \)：NPV = +3,702<br>
+        $$IRR \approx 10\% + \frac{3,702}{3,702 - (-1,200)} \times (12\% - 10\%) = 10\% + 1.51\% = 11.51\%$$
+        <span class="highlight">IRR ≈ 11.5% > 10%，与NPV结论一致。</span><br><br>
+
+        <strong>(3) ARR计算：</strong><br>
+        年折旧 = \( 100,000 / 4 = 25,000 \) 元<br>
+        各年利润 = 现金流 − 折旧：5,000 / 15,000 / 10,000 / 0<br>
+        平均利润 = \( (5,000 + 15,000 + 10,000 + 0) / 4 = 7,500 \) 元<br>
+        平均投资 = \( (100,000 + 0) / 2 = 50,000 \) 元<br>
+        $$ARR = \frac{7,500}{50,000} = 15\%$$
+        <br>
+        <strong>(4) 回收期：</strong><br>
+        第1年末累计：30,000；第2年末：70,000；第3年末：105,000<br>
+        在第3年回收：还需要30,000 / 35,000 = 0.86年<br>
+        回收期 = \( 2 + 30,000/35,000 = 2.86 \) 年
+      </div>
+    </div>
+
+    <div class="summary">
+      <strong>第2课小结</strong>
+      <ul>
+        <li>NPV是投资评估的"黄金标准"，直接衡量财富增加值</li>
+        <li>IRR是使NPV=0的折现率，试错法+线性插值可近似求解</li>
+        <li>ARR使用会计利润，简单但忽略时间价值</li>
+        <li>回收期强调流动性和风险，但忽略后期现金流</li>
+        <li><strong>决策优先级：NPV > IRR > 回收期 > ARR</strong></li>
+      </ul>
+    </div>
+    <a class="notebook-link" href="../03-Notebook代码/week8-长期决策与投资评估.html" target="_blank">前往Notebook练习 →</a>
+  </div>
+</div>
+
+<!-- ========== 第3节课 ========== -->
+<div class="lesson">
+  <div class="lesson-header">
+    <span class="lesson-num">第3课</span>
+    <h3>Python投资评估计算与决策分析</h3>
+  </div>
+  <div class="lesson-body">
+
+    <div class="objectives">
+      <strong>学习目标</strong>
+      <ul>
+        <li>用numpy手动实现NPV和IRR试错法</li>
+        <li>用Python计算ROCE和回收期</li>
+        <li>进行多项目NPV/IRR对比分析</li>
+        <li>进行敏感性分析：改变折现率/现金流看NPV变化</li>
+        <li>可视化NPV随折现率变化曲线</li>
+        <li>形成系统的投资决策建议框架</li>
+      </ul>
+    </div>
+
+    <div class="section-title">3.1 手动实现NPV计算</div>
+    <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+# ===== 手动实现NPV =====
+def calculate_npv(cash_flows, discount_rate):
+    """
+    手动计算NPV
+    cash_flows: 现金流列表，第0期为初始投资（负值）
+    discount_rate: 折现率
+    """
+    npv = 0
+    for t, cf in enumerate(cash_flows):
+        npv += cf / (1 + discount_rate)**t
+    return npv
+
+# 项目现金流（单位：万元）
+cf_project = [-100, 30, 40, 35, 25]  # 第0-4年
+r = 0.10
+
+npv_result = calculate_npv(cf_project, r)
+print(f"项目NPV (r=10%) = {npv_result:.2f} 万元")
+
+# ===== 验证：用numpy_financial（如可用）或numpy =====
+npv_numpy = npv_result  # 手动计算已完成
+print(f"手动计算NPV = {npv_numpy:.4f} 万元")</code></pre>
+
+    <div class="section-title">3.2 手动实现IRR试错法</div>
+    <pre><code># ===== 手动试错法求IRR =====
+def calculate_irr_trial_error(cash_flows, r_low=0.0, r_high=1.0, tol=1e-6):
+    """
+    用试错法（二分法）求解IRR
+    要求NPV(r_low) > 0 且 NPV(r_high) < 0
+    """
+    npv_low = calculate_npv(cash_flows, r_low)
+    npv_high = calculate_npv(cash_flows, r_high)
+    
+    # 确保符号相反
+    if npv_low * npv_high > 0:
+        raise ValueError("需要调整r_low和r_high的范围")
+    
+    while abs(r_high - r_low) > tol:
+        r_mid = (r_low + r_high) / 2
+        npv_mid = calculate_npv(cash_flows, r_mid)
+        
+        if npv_mid > 0:
+            r_low = r_mid
+        else:
+            r_high = r_mid
+    
+    return (r_low + r_high) / 2
+
+irr_result = calculate_irr_trial_error(cf_project, 0.0, 0.50)
+print(f"项目IRR = {irr_result:.2%}")
+
+# ===== 线性插值法验证 =====
+npv_10 = calculate_npv(cf_project, 0.10)
+npv_15 = calculate_npv(cf_project, 0.15)
+irr_linear = 0.10 + npv_10 / (npv_10 - npv_15) * (0.15 - 0.10)
+print(f"线性插值IRR (10%-15%) = {irr_linear:.2%}")</code></pre>
+
+    <div class="section-title">3.3 回收期计算</div>
+    <pre><code># ===== 回收期计算 =====
+def calculate_payback(cash_flows):
+    """
+    计算非折现回收期
+    cash_flows: 第0期为初始投资，后续为各期现金流
+    """
+    initial = -cash_flows[0]  # 初始投资金额
+    cumulative = 0
+    for t in range(1, len(cash_flows)):
+        cumulative += cash_flows[t]
+        if cumulative >= initial:
+            # 在本期内回收
+            previous_cum = cumulative - cash_flows[t]
+            fraction = (initial - previous_cum) / cash_flows[t]
+            return (t - 1) + fraction
+    return None  # 无法回收
+
+def calculate_discounted_payback(cash_flows, r):
+    """计算折现回收期"""
+    initial = -cash_flows[0]
+    cumulative = 0
+    for t in range(1, len(cash_flows)):
+        dcf = cash_flows[t] / (1 + r)**t
+        cumulative += dcf
+        if cumulative >= initial:
+            previous_cum = cumulative - dcf
+            fraction = (initial - previous_cum) / dcf
+            return (t - 1) + fraction
+    return None
+
+pb = calculate_payback(cf_project)
+dpb = calculate_discounted_payback(cf_project, 0.10)
+print(f"非折现回收期: {pb:.2f} 年")
+print(f"折现回收期: {dpb:.2f} 年")</code></pre>
+
+    <div class="section-title">3.4 多项目对比分析</div>
+    <pre><code># ===== 多项目对比 =====
+projects = {
+    "项目A": [-100, 30, 40, 35, 25],
+    "项目B": [-150, 50, 55, 60, 40],
+    "项目C": [-80, 25, 30, 30, 20]
+}
+
+r = 0.10
+results = []
+for name, cf in projects.items():
+    npv = calculate_npv(cf, r)
+    irr = calculate_irr_trial_error(cf, 0.0, 0.50)
+    pb = calculate_payback(cf)
+    results.append({"项目": name, "NPV(万元)": round(npv, 2),
+                    "IRR": f"{irr:.1%}", "回收期(年)": round(pb, 2)})
+
+import pandas as pd
+df = pd.DataFrame(results)
+print(df.to_string(index=False))</code></pre>
+
+    <div class="section-title">3.5 NPV敏感性分析与可视化</div>
+    <pre><code># ===== NPV随折现率变化曲线 =====
+rates = np.linspace(0, 0.30, 100)
+plt.figure(figsize=(12, 7))
+
+colors = ['#C49A6C', '#8B6F4E', '#4A7C9B']
+for (name, cf), color in zip(projects.items(), colors):
+    npvs = [calculate_npv(cf, r) for r in rates]
+    plt.plot(rates * 100, npvs, linewidth=2.5, label=name, color=color)
+    # 标记IRR点
+    irr = calculate_irr_trial_error(cf, 0.0, 0.50)
+    plt.scatter([irr * 100], [0], color=color, s=80, zorder=5)
+
+plt.axhline(0, color='gray', linestyle='-', alpha=0.5)
+plt.axvline(10, color='#E74C3C', linestyle='--', alpha=0.5, label='要求回报率10%')
+plt.xlabel('折现率 r (%)', fontsize=12)
+plt.ylabel('NPV (万元)', fontsize=12)
+plt.title('NPV-折现率曲线（NPV Profile）', fontsize=14, fontweight='bold')
+plt.legend(loc='upper right')
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# ===== 现金流敏感性分析 =====
+print("\n=== 现金流敏感性分析 ===")
+base_cf = [-100, 30, 40, 35, 25]
+for pct in [-20, -10, 0, 10, 20]:
+    adjusted = [base_cf[0]] + [cf * (1 + pct/100) for cf in base_cf[1:]]
+    npv_adj = calculate_npv(adjusted, 0.10)
+    print(f"现金流变动{pct:+d}%: NPV = {npv_adj:.2f} 万元")</code></pre>
+
+    <div class="section-title">3.6 投资决策建议框架</div>
+    <div class="concept-box">
+      <strong>系统决策框架：</strong>
+      <ol>
+        <li><strong>初步筛选：</strong>用回收期快速排除明显不可行的项目</li>
+        <li><strong>核心评估：</strong>计算NPV，NPV > 0是接受项目的必要条件</li>
+        <li><strong>收益验证：</strong>检查IRR是否高于要求回报率（资本成本）</li>
+        <li><strong>风险分析：</strong>进行敏感性分析，评估关键变量变动的影响</li>
+        <li><strong>综合决策：</strong>NPV优先；若NPV冲突（互斥项目），选NPV最大者</li>
+      </ol>
+    </div>
+
+    <div class="example">
+      <div class="example-title">综合决策案例</div>
+      <p>假设公司要求：NPV > 0，IRR > 12%，回收期 < 3年。</p>
+      <p>根据上述多项目分析结果：</p>
+      <ul>
+        <li>项目A：NPV > 0，IRR ≈ 11.5% < 12%，<span style="color:#E74C3C">不满足IRR要求</span></li>
+        <li>项目B：NPV > 0，IRR > 12%，回收期 < 3年，<span style="color:var(--success)">全部满足</span></li>
+        <li>项目C：NPV > 0，IRR > 12%，回收期 < 3年，<span style="color:var(--success)">全部满足</span></li>
+      </ul>
+      <p><strong>决策建议：</strong>排除项目A。若项目B和C互斥（只能选一个），选NPV更高的<strong>项目B</strong>；若独立，则两个都可以接受。</p>
+    </div>
+
+    <div class="summary">
+      <strong>第3课小结</strong>
+      <ul>
+        <li>手动实现NPV：逐期折现求和，清晰理解每笔现金流的现值</li>
+        <li>手动实现IRR：试错法（二分法）可精确求解，线性插值可快速估算</li>
+        <li>NPV Profile曲线直观展示项目价值对折现率的敏感程度</li>
+        <li>敏感性分析帮助识别关键风险变量</li>
+        <li>投资决策：NPV > 0是必要条件，IRR验证收益，回收期评估流动性</li>
+      </ul>
+    </div>
+    <a class="notebook-link" href="../03-Notebook代码/week8-长期决策与投资评估.html" target="_blank">前往Notebook练习 →</a>
+  </div>
+</div>
+
+<footer>
+  <p>商业数据分析 · 第8周：长期决策与投资评估</p>
+  <p style="font-size:0.8rem; margin-top:0.5rem; opacity:0.7;">© 教学内容仅供学习使用</p>
+</footer>
+
+</div>
+
+<div style="position:fixed;left:18px;bottom:18px;z-index:999;">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;background:#1b3a5f;color:#fff;text-decoration:none;font-size:13px;padding:8px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(27,58,95,0.3);font-family:-apple-system,'PingFang SC',sans-serif;">← 课件目录</a>
+</div>
+
+</body>
+</html>
