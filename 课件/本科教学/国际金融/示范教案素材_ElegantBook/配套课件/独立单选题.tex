@@ -1,0 +1,67 @@
+% !TeX program = xelatex
+% 完整主文件；XeLaTeX编译两遍。图片放在images目录，Logo保留brand目录；数值图表为TikZ或原生表格。
+\documentclass[aspectratio=169,compress,11pt]{beamer}
+\usetheme{Singapore}
+\usepackage[UTF8,fontset=fandol]{ctex}
+\usepackage{amsmath,booktabs,tabularx,array,tikz,graphicx}
+\usefonttheme[onlymath]{serif}
+\setlength{\abovedisplayskip}{0.45em}
+\setlength{\belowdisplayskip}{0.4em}
+\setCJKsansfont{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf]
+\usetikzlibrary{positioning,arrows.meta}
+\definecolor{lightblue}{RGB}{45,45,235}
+\definecolor{navgray}{RGB}{137,141,177}
+\definecolor{scured}{RGB}{154,25,42}
+\setbeamercolor{structure}{fg=lightblue}
+\setbeamercolor{frametitle}{fg=lightblue}
+\setbeamerfont{frametitle}{size=\Large,series=\mdseries}
+\setbeamercolor{title}{fg=lightblue}
+\setbeamertemplate{frametitle}[default][center]
+\addtobeamertemplate{frametitle}{\vspace{-0.12cm}}{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamercolor{block title}{bg=scured!90!black,fg=white}
+\setbeamercolor{block body}{bg=scured!6,fg=black}
+\setbeamercolor{block title example}{bg=teal!65!black,fg=white}
+\setbeamercolor{block body example}{bg=teal!5,fg=black}
+\setbeamercolor{block title alerted}{bg=orange!85!black,fg=white}
+\setbeamercolor{block body alerted}{bg=orange!7,fg=black}
+\setbeamerfont{block title}{size=\normalsize}
+\setbeamerfont{block body}{size=\small}
+\setbeamertemplate{itemize item}[triangle]
+\setbeamertemplate{itemize subitem}[circle]
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.15em}
+\setbeamersize{text margin left=0.75cm,text margin right=0.75cm}
+\setbeamercolor{author in head/foot}{bg=blue!20,fg=black}
+\setbeamercolor{title in head/foot}{bg=blue!16,fg=black}
+\setbeamercolor{date in head/foot}{bg=blue!20,fg=black}
+\IfFileExists{brand/qi-wang-logo.pdf}{\def\qwlogofile{brand/qi-wang-logo.pdf}}{\def\qwlogofile{../brand/qi-wang-logo.pdf}}
+\newcommand{\qwcoverlogo}{\begin{tikzpicture}[remember picture,overlay]\node[anchor=north,inner sep=0pt] at ([yshift=-6.8cm]current page.north){\includegraphics[width=3.7cm]{\qwlogofile}};\end{tikzpicture}}
+\newcommand{\currentweeklabel}{导入}
+\setbeamertemplate{footline}{\leavevmode\hbox{\begin{beamercolorbox}[wd=.33\paperwidth,ht=2.5ex,dp=1ex,center]{author in head/foot}\raisebox{-0.6pt}{\includegraphics[height=0.27cm]{\qwlogofile}}\hspace{0.7em}\scriptsize 王奇（四川大学）\end{beamercolorbox}\begin{beamercolorbox}[wd=.34\paperwidth,ht=2.5ex,dp=1ex,center]{title in head/foot}\scriptsize 国际金融 · 单选题\end{beamercolorbox}\begin{beamercolorbox}[wd=.33\paperwidth,ht=2.5ex,dp=1ex,center]{date in head/foot}\scriptsize\currentweeklabel\quad\insertframenumber{} / \inserttotalframenumber\end{beamercolorbox}}}
+\setbeamertemplate{headline}{\leavevmode\pgfmathsetmacro{\navwidth}{\paperwidth/1pt}\begin{tikzpicture}[x=1pt,y=-1pt]\path[use as bounding box](0,0)rectangle(\navwidth,20);\shade[top color=blue!8,bottom color=white](0,0)rectangle(\navwidth,20);\ifnum\insertframenumber<1\def\navcol{navgray}\else\ifnum\insertframenumber>4\def\navcol{navgray}\else\def\navcol{lightblue}\fi\fi\node[font=\fontsize{8}{9}\selectfont,text=\navcol] at (40,8) {\hyperlink{slide1}{导入}};\ifnum\insertframenumber<5\def\navcol{navgray}\else\ifnum\insertframenumber>6\def\navcol{navgray}\else\def\navcol{lightblue}\fi\fi\node[font=\fontsize{8}{9}\selectfont,text=\navcol] at (115,8) {\hyperlink{slide5}{识险}};\ifnum\insertframenumber<7\def\navcol{navgray}\else\ifnum\insertframenumber>8\def\navcol{navgray}\else\def\navcol{lightblue}\fi\fi\node[font=\fontsize{8}{9}\selectfont,text=\navcol] at (190,8) {\hyperlink{slide7}{计量}};\ifnum\insertframenumber<9\def\navcol{navgray}\else\ifnum\insertframenumber>10\def\navcol{navgray}\else\def\navcol{lightblue}\fi\fi\node[font=\fontsize{8}{9}\selectfont,text=\navcol] at (265,8) {\hyperlink{slide9}{对冲}};\ifnum\insertframenumber<11\def\navcol{navgray}\else\ifnum\insertframenumber>12\def\navcol{navgray}\else\def\navcol{lightblue}\fi\fi\node[font=\fontsize{8}{9}\selectfont,text=\navcol] at (340,8) {\hyperlink{slide11}{决策}};\ifnum\insertframenumber<13\def\navcol{navgray}\else\ifnum\insertframenumber>14\def\navcol{navgray}\else\def\navcol{lightblue}\fi\fi\node[font=\fontsize{8}{9}\selectfont,text=\navcol] at (415,8) {\hyperlink{slide13}{归纳}};\end{tikzpicture}}\hypersetup{pdftitle={国际金融 · 单选题},pdfauthor={王奇}}\begin{document}
+\renewcommand{\currentweeklabel}{导入}\begin{frame}[t]{}\relax\hypertarget{slide1}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north,font=\fontsize{23}{28}\selectfont,text=lightblue] at ([yshift=-1.55cm]current page.north){课堂单选题与解析};
+\node[anchor=north,align=center,font=\fontsize{13}{19}\selectfont,text=lightblue] at ([yshift=-2.55cm]current page.north){六道四选一题\\课前诊断、课中检验与课末测验};
+\node[anchor=north,font=\large] at ([yshift=-4.05cm]current page.north){王奇};
+\node[anchor=north] at ([yshift=-4.70cm]current page.north){四川大学商学院};
+\node[anchor=north,font=\small] at ([yshift=-5.45cm]current page.north){qiwangphd@scu.edu.cn};
+\node[anchor=north] at ([yshift=-6.55cm]current page.north){\includegraphics[width=3.7cm]{\qwlogofile}};
+\end{tikzpicture}\end{frame}
+\renewcommand{\currentweeklabel}{导入}\begin{frame}[t]{使用安排与计分}\relax\hypertarget{slide2}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}{\fontsize{9.8}{12}\selectfont\renewcommand{\arraystretch}{1.28}\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}\toprule \textbf{题号} & \textbf{环节} & \textbf{用途}\\\midrule Q1—Q2 & 课前 & 报价与风险分类；保留初答与订正\\
+Q3—Q4 & 40—45分钟 & 净额与交易方向，先个人作答\\
+Q5—Q6 & 82—90分钟 & 计算与方案评价\\\bottomrule\end{tabularx}}\begin{exampleblock}{使用方式}题目下一页提供答案及四个选项的逐项解析；主课件不重复列题。\end{exampleblock}\end{frame}
+\renewcommand{\currentweeklabel}{导入}\begin{frame}[t]{Q1 课前诊断}\relax\hypertarget{slide3}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}采用“\(\frac{\text{元人民币}}{\text{美元}}\)”报价，汇率由7.10降至6.80。在本讲条件下，正确的判断是。\par\vspace{.7em}\begin{enumerate}[A.]\setlength{\itemsep}{.7em}\item 人民币贬值，美元净应收折算收入增加\item 人民币升值，美元净应收折算收入减少\item 美元升值，美元净应收折算收入减少\item 人民币升值，美元净应收金额自动减少\end{enumerate}\end{frame}
+\renewcommand{\currentweeklabel}{导入}\begin{frame}[t]{Q1 答案与逐项解析}\relax\hypertarget{slide4}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}\begin{exampleblock}{正确答案}\(B\)\end{exampleblock}\begin{itemize}\setlength{\itemsep}{.4em}\item \textbf{A. }\(\frac{\text{本币}}{\text{外币}}\)报价下降表示人民币升值，方向判断反了。\item \textbf{B. }每美元换得的人民币减少；在美元净应收不变时，人民币收入减少。\item \textbf{C. }报价下降表示美元相对人民币贬值，而非升值。\item \textbf{D. }汇率改变折算金额，不自动改变合同规定的美元金额。\end{itemize}\end{frame}
+\renewcommand{\currentweeklabel}{识险}\begin{frame}[t]{Q2 课前诊断}\relax\hypertarget{slide5}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}企业已签订合同，三个月后确定收取一笔美元货款，其人民币折算金额随汇率变化。这首先属于。\par\vspace{.7em}\begin{enumerate}[A.]\setlength{\itemsep}{.7em}\item 境外报表折算风险\item 国内商品库存数量风险\item 外汇交易风险\item 人民币现金存款利率风险\end{enumerate}\end{frame}
+\renewcommand{\currentweeklabel}{识险}\begin{frame}[t]{Q2 答案与逐项解析}\relax\hypertarget{slide6}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}\begin{exampleblock}{正确答案}\(C\)\end{exampleblock}\begin{itemize}\setlength{\itemsep}{.4em}\item \textbf{A. }报表折算风险主要涉及外币财务报表的折算，与本题中已确定但尚未结算的外币收款无直接关系。\item \textbf{B. }本题没有商品库存数量变化，不能用它解释汇率引起的折算变化。\item \textbf{C. }已确定、尚未结算的外币收付款面临汇率变动，属于交易风险。\item \textbf{D. }题干未涉及人民币存款利率变化。\end{itemize}\end{frame}
+\renewcommand{\currentweeklabel}{计量}\begin{frame}[t]{Q3 课中检验}\relax\hypertarget{slide7}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}企业同日确定收取100万美元、支付60万美元，无其他外汇业务。自然匹配后的美元净敞口是。\par\vspace{.7em}\begin{enumerate}[A.]\setlength{\itemsep}{.7em}\item 净应收40万美元\item 净应收100万美元\item 净应付60万美元\item 净应收160万美元\end{enumerate}\end{frame}
+\renewcommand{\currentweeklabel}{计量}\begin{frame}[t]{Q3 答案与逐项解析}\relax\hypertarget{slide8}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}\begin{exampleblock}{正确答案}\(A\)\end{exampleblock}\begin{itemize}\setlength{\itemsep}{.4em}\item \textbf{A. }相同主体、币种和日期下，\(100-60=40\,\text{万美元}\)，为净应收。\item \textbf{B. }只计应收，漏掉可匹配的同日应付。\item \textbf{C. }忽略了金额更大的应收，将净方向判断反了。\item \textbf{D. }把流入与流出直接相加，得到的不是净敞口。\end{itemize}\end{frame}
+\renewcommand{\currentweeklabel}{对冲}\begin{frame}[t]{Q4 课中检验}\relax\hypertarget{slide9}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}对Q3的确定净敞口进行100\%远期套保，且期限匹配，企业应办理。\par\vspace{.7em}\begin{enumerate}[A.]\setlength{\itemsep}{.7em}\item 远期买入100万美元\item 远期卖出100万美元\item 远期买入40万美元\item 远期卖出40万美元\end{enumerate}\end{frame}
+\renewcommand{\currentweeklabel}{对冲}\begin{frame}[t]{Q4 答案与逐项解析}\relax\hypertarget{slide10}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}\begin{exampleblock}{正确答案}\(D\)\end{exampleblock}\begin{itemize}\setlength{\itemsep}{.4em}\item \textbf{A. }美元净应收需要卖出美元；买入100万美元会扩大美元多头。\item \textbf{B. }自然匹配后仅剩40万美元；卖出100万美元可能造成60万美元超额套保。\item \textbf{C. }买入美元适合匹配净应付，本题方向相反。\item \textbf{D. }按剩余40万美元净应收、同到期日远期卖出美元，方向与规模匹配。\end{itemize}\end{frame}
+\renewcommand{\currentweeklabel}{决策}\begin{frame}[t]{Q5 课末测验}\relax\hypertarget{slide11}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}净应收40万美元，50\%按7.10远期结汇，其余到期按6.80结汇。忽略费用，人民币净收入是。\par\vspace{.7em}\begin{enumerate}[A.]\setlength{\itemsep}{.7em}\item 272万元\item 278万元\item 284万元\item 296万元\end{enumerate}\end{frame}
+\renewcommand{\currentweeklabel}{决策}\begin{frame}[t]{Q5 答案与逐项解析}\relax\hypertarget{slide12}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}\begin{exampleblock}{正确答案}\(B\)\end{exampleblock}\begin{itemize}\setlength{\itemsep}{.4em}\item \textbf{A. }\(272=40\times 6.80\)，对应完全不套保。\item \textbf{B. }\(278=20\times 7.10+20\times 6.80\)，单位为万元人民币。\item \textbf{C. }\(284=40\times 7.10\)，对应100\%远期套保。\item \textbf{D. }\(296=40\times 7.40\)，是另一情景下不套保的结果。\end{itemize}\end{frame}
+\renewcommand{\currentweeklabel}{归纳}\begin{frame}[t]{Q6 课末测验}\relax\hypertarget{slide13}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}在本讲确定净应收、忽略费用的条件下，对100\%远期套保的评价，最恰当的是。\par\vspace{.7em}\begin{enumerate}[A.]\setlength{\itemsep}{.7em}\item 保证所有情景下收入最高\item 保证企业全部经营利润不变\item 锁定该笔净敞口的折算收入，但不保证事后收入最高\item 只要AI预测人民币贬值，就应取消已确定的套保方案\end{enumerate}\end{frame}
+\renewcommand{\currentweeklabel}{归纳}\begin{frame}[t]{Q6 答案与逐项解析}\relax\hypertarget{slide14}{}\fontsize{10.5}{12.8}\selectfont\setlength{\abovedisplayskip}{.25em}\setlength{\belowdisplayskip}{.25em}\begin{exampleblock}{正确答案}\(C\)\end{exampleblock}\begin{itemize}\setlength{\itemsep}{.4em}\item \textbf{A. }当到期汇率高于7.10，不套保的折算收入可能更高。\item \textbf{B. }套保只能管理本笔交易的汇率不确定性，不能消除生产、信用等全部经营风险。\item \textbf{C. }在上述条件成立时锁定284万元；评价应结合预算目标和整体业务，不应只以事后最高收益为标准。\item \textbf{D. }预测不能替代风险目标；经营变化需要复核敞口、授权和调整成本。\end{itemize}\end{frame}
+\end{document}

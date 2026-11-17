@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="XjZY9X2rmnO7BMYVT2m1yn">
+<head data-page-node-id="uIrMSEchIgyhBC7vsOcyEm">
+<meta charset="UTF-8" data-page-node-id="LQMUeUtBptoh4jo2ZhWJq5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="Csuvc7EbEkWUmPwkkmv4gB">
+<title>Qi Wang</title>
+<meta name="description" content="Qi Wang — Associate Professor. Research on AI agents and China's structural transformation." data-page-node-id="7kbprToFf9YaBo4lD3x9h8">
+<link rel="icon" href="favicon.svg" type="image/svg+xml" data-page-node-id="N6He7DJeGAbY0lS2EyvAxt">
+<link rel="icon" href="favicon.ico" sizes="32x32" data-page-node-id="e24oYnW0wyYegGz5iWvQk5">
+<link rel="apple-touch-icon" href="apple-touch-icon.png" data-page-node-id="kVOeDEZicseWq5cxOCgQeN">
+<link rel="stylesheet" href="style.css" data-page-node-id="Tv3urFG8g2rkOnEa5W5BFF">
+
+<style id="cover-style">
+@font-face {
+  font-family: "Explora";
+  src: url("assets/cover-signature.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 首页封面 */
+#cover {
+  --frame: clamp(12px, 2.8vw, 38px);
+  --paper: #f7f1e6;
+  --seal: #983d30;
+  --glyph: clamp(39px, 7vw, 94px);
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  overflow: hidden;
+  border: 0;
+  background: var(--paper);
+  color: #252722;
+  opacity: 1;
+  transition: opacity .55s ease;
+}
+#cover[open] { display: grid; place-items: center; }
+#cover::backdrop { background: transparent; }
+#cover.is-closing { opacity: 0; pointer-events: none; }
+html.cover-on, html.cover-on body { overflow: hidden; }
+
+#cover .cover-landscape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  filter: saturate(.58);
+  opacity: .74;
+}
+#cover .cover-frame {
+  position: absolute;
+  inset: var(--frame);
+  border: 1px solid rgba(90, 71, 51, .27);
+  outline: 1px solid rgba(90, 71, 51, .11);
+  outline-offset: -5px;
+  pointer-events: none;
+}
+#cover .cover-imprint {
+  position: absolute;
+  top: calc(var(--frame) + clamp(16px, 2.2vw, 28px));
+  left: calc(var(--frame) + clamp(16px, 2.2vw, 28px));
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.15vw, 17px);
+}
+#cover .cover-seal {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: clamp(39px, 4vw, 49px);
+  aspect-ratio: 1;
+  background:
+    radial-gradient(ellipse at 16% 14%, #b3553f, transparent 65%),
+    radial-gradient(ellipse at 87% 79%, #a64432, transparent 53%),
+    #88382d;
+  color: #f8edda;
+  font: 700 clamp(13px, 1.4vw, 16px)/1 "Kaiti SC", STKaiti, KaiTi, "Songti SC", serif;
+  clip-path: polygon(
+    1% 4%, 4% 1%, 36% 1%, 39% 3%, 43% 1%, 89% 0, 100% 2%,
+    99% 27%, 97% 32%, 100% 37%, 99% 94%, 96% 99%, 69% 98%,
+    62% 100%, 21% 99%, 16% 96%, 11% 99%, 1% 98%, 0 59%, 2% 53%, 0 44%
+  );
+  /* 错开点状和条状纸纹，模拟印泥的针孔和浅缺墨。 */
+  mask-image:
+    radial-gradient(ellipse .85px .64px at 2px 5px, #0007, #000),
+    radial-gradient(ellipse .56px .88px at 6px 2px, #0008, #000),
+    radial-gradient(ellipse 1.35px .42px at 11px 8px, #0007, #000);
+  mask-size: 13px 17px, 17px 11px, 19px 14px;
+  mask-composite: intersect;
+}
+#cover .cover-seal::before {
+  content: "";
+  position: absolute;
+  inset: 3px 2.5px 2.5px 3px;
+  border: solid rgba(250, 229, 196, .82);
+  border-width: 1px .75px .8px 1.1px;
+  border-radius: 1px .5px 1px .5px;
+}
+#cover .cover-seal-column {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: .04em;
+}
+#cover .cover-name {
+  color: #302a23;
+  font: 400 clamp(35px, 3.3vw, 47px)/1 "Explora", "Snell Roundhand", "Segoe Script", cursive;
+  white-space: nowrap;
+  -webkit-text-stroke: .15px currentColor;
+}
+
+#cover .cover-content {
+  position: relative;
+  width: calc(100% - 2 * var(--frame) - 16px);
+  text-align: center;
+  transform: translateY(-5vh);
+}
+#cover .cover-quote {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  font: var(--glyph)/1 "Kaiti SC", STKaiti, KaiTi, "Songti SC", serif;
+}
+#cover .cover-clause {
+  display: flex;
+  align-items: baseline;
+  gap: .035em;
+}
+#cover .cover-glyph {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 1em;
+  height: 1em;
+}
+#cover .cover-punctuation {
+  width: .36em;
+  top: -.09em;
+  inset-inline-start: -.13em;
+  color: #464337;
+  font-size: .79em;
+}
+#cover .cover-glyph svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+#cover .cover-stroke { display: none; }
+#cover.is-writing .cover-stroke {
+  display: inline;
+  opacity: 0;
+  animation: cover-write var(--duration) cubic-bezier(.33, .06, .57, 1) var(--delay) forwards;
+}
+#cover.is-writing .cover-outline { display: none; }
+@keyframes cover-write {
+  from { opacity: 1; stroke-dashoffset: var(--distance); }
+  to { opacity: 1; stroke-dashoffset: 0; }
+}
+#cover.is-writing .cover-mark {
+  opacity: 0;
+  animation: cover-mark-in .12s ease-out var(--delay) both;
+}
+@keyframes cover-mark-in {
+  from { opacity: 0; transform: translate(-2px, -2px); }
+  to { opacity: 1; transform: translate(0, 0); }
+}
+#cover .cover-translation {
+  margin: 0;
+  color: #524b3e;
+  font: italic clamp(15px, 1.65vw, 23px)/1.45 var(--serif);
+  transition: opacity .48s ease, transform .48s ease;
+}
+#cover .cover-translation::before {
+  content: "";
+  display: block;
+  width: clamp(24px, 3vw, 44px);
+  height: 1px;
+  margin: clamp(15px, 2.5vw, 34px) auto clamp(12px, 1.5vw, 20px);
+  background: var(--seal);
+  opacity: .64;
+}
+#cover.is-writing .cover-translation { opacity: 0; transform: translateY(7px); }
+
+#cover .cover-enter {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--frame) + clamp(20px, 3vw, 40px) + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-height: 44px;
+  padding: 8px 19px 8px 22px;
+  border: 1px solid rgba(75, 60, 42, .34);
+  border-radius: 999px;
+  background: rgba(249, 244, 230, .81);
+  color: #3c3428;
+  font: 13px/1.3 var(--sans);
+  letter-spacing: .16em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease;
+}
+#cover .cover-enter:hover {
+  background: #fcf8ed;
+  border-color: var(--seal);
+}
+#cover .cover-enter:focus-visible { outline: 1px solid var(--seal); outline-offset: 3px; }
+#cover .cover-enter-arrow { color: var(--seal); font-size: 16px; letter-spacing: 0; }
+
+@media (max-width: 560px) {
+  #cover { --glyph: clamp(42px, 13vw, 68px); }
+  #cover .cover-landscape { object-position: 70% bottom; }
+  #cover .cover-quote { flex-direction: column; align-items: center; gap: .13em; }
+  #cover .cover-translation { font-size: clamp(11.5px, 3.6vw, 17px); }
+}
+@media (max-height: 430px) {
+  #cover { --frame: 10px; --glyph: clamp(29px, 6vw, 56px); }
+  #cover .cover-imprint { top: 23px; }
+  #cover .cover-quote { flex-direction: row; }
+  #cover .cover-enter { bottom: calc(var(--frame) + 10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #cover, #cover .cover-enter, #cover .cover-translation { transition: none; }
+}
+</style>
+</head>
+<body data-page-node-id="5XifCSfkDlRIEssKDRmDYM">
+
+<!-- ================= Navigation ================= -->
+<nav class="nav" id="top" data-page-node-id="GtGDvUOaZ3hV7JWNl1Vqmr">
+  <div class="nav-inner" data-page-node-id="zTXXYdtkcWOhrp94PzB9RD">
+    <a class="brand" href="index.html" data-page-node-id="PQlG5z03hyDgmY3YWZTSlE"><img class="brand-ico" src="favicon.svg" alt="" data-page-node-id="DpTPsAG6pqmmD7NlfDfWKZ">Qi Wang</a>
+    <div class="nav-links" data-page-node-id="n3tx2okFmk3t4HzmXTKHrP">
+      <a href="index.html#about" class="active" data-page-node-id="DUL0av0HXcWkCwG1FbdF3H">About</a>
+      <a href="publications.html" data-page-node-id="CuKvI6M34UJqZ49lRuDGWZ">Publications</a>
+      <a href="books.html" data-page-node-id="BnTkmQPJ60JY15jUkwQ9v6">Books</a>
+      <a href="teaching.html" data-page-node-id="sR0hzyjix05ERFF3uYBKH1">Teaching</a>
+      <a href="students.html" data-page-node-id="mCFlSe2MKQyfiiqE3ANe6h">Students</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= Hero ================= -->
+<header class="hero" data-page-node-id="1Hmbu8pm1RsV9RjyRk3hzj">
+  <div class="hero-inner" data-page-node-id="GkwuUphsSEU1Bm7k9k9mul">
+    <div class="avatar" id="avatar" data-page-node-id="BE0JTECSQMiBA4B4FzGTRc">
+      <img src="avatar.jpg" alt="Qi Wang"
+           onerror="this.remove();document.getElementById('avatar').classList.add('noimg')" data-page-node-id="jZRyC6tc9hrxQSW3rqzVrQ">
+      <span class="mono" data-page-node-id="8jyl6loiDQariIuqeTM1DT">WQ</span>
+    </div>
+    <div data-page-node-id="U0DS0OLM0phQ4nCik0aSud">
+      <h1 data-page-node-id="BfvIue9PTOsBxbYzB0wrT4">Qi Wang</h1>
+      <div class="hero-role" data-page-node-id="naoLwqzKninzmxGYnZGF7A">Associate Professor</div>
+      <div class="contact" data-page-node-id="pxtdTIuZ2U6alJf24RDkWl">
+        <strong data-page-node-id="oc9NgMsH1tWDIcWqTeDQru">Email:</strong> <a href="mailto:qiwangphd@scu.edu.cn" data-page-node-id="t5lYWlnNkWmGGEH2xlxbmd">qiwangphd@scu.edu.cn</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="main" data-page-node-id="9ylgYHaZ6FOp5nRBPpgqJ7">
+
+  <!-- ================= About ================= -->
+  <section id="about" data-page-node-id="T4T8PxwYtmAHNS5gmMeVG4">
+    <div class="sec-title" data-page-node-id="Zu02XiaqyC6SS8XsD4TSTz">
+      <h2 data-page-node-id="BvPi5xmC7KvSSqO5FtUC76">About</h2>
+      <span class="num" data-page-node-id="PsnpUilEqRzHHzo0xgXICR">01</span>
+    </div>
+    <div class="about-text" data-page-node-id="dSWg5kCz0GGU8VrxxcC3Zz">
+      <p data-page-node-id="rDLX7DZGfiifuQVhdKratt">
+        <strong class="lead" data-page-node-id="VywEQHqRAqKe9cHVt0QY1G">研究领域聚焦：AI Agent（智能体）与中国经济结构转型。</strong>
+        研究人工智能等科技创新对中国经济结构转型的影响。具体微观层面而言：<span class="hl">基于多源微观大数据，使用简约估计和结构估计的实证方法，研究Agent智能体对公司金融行为和家庭金融行为的影响。</span>
+      </p>
+      <p class="en" lang="en" data-page-node-id="olp7w5pMqAJny54xBngDuK">
+        <strong class="lead" data-page-node-id="eVv8H5ZArAgxvJJ2FMoVBY">Research Focus: AI Agents and China's Structural Transformation.</strong>
+        At the micro level, <span class="hl">drawing on multi-source micro-level big data and empirical methods including reduced-form
+        and structural estimation, my research examines the impact of AI agents on corporate financial behavior and household
+        financial behavior.</span>
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<!-- ================= Footer ================= -->
+<footer data-page-node-id="LHjoIhXgbuSjJ4r7cZLKaf">
+  <div class="footer-wave" aria-hidden="true"><i style="height:8px;background:#1b3a5f"></i><i style="height:14px;background:#2d5a8e"></i><i style="height:20px;background:#b08d4f"></i><i style="height:11px;background:#c8d4e0"></i><i style="height:24px;background:#1b3a5f"></i><i style="height:16px;background:#2d5a8e"></i><i style="height:6px;background:#b08d4f"></i><i style="height:18px;background:#c8d4e0"></i><i style="height:10px;background:#1b3a5f"></i><i style="height:22px;background:#2d5a8e"></i><i style="height:13px;background:#c8d4e0"></i><i style="height:7px;background:#c8d4e0"></i><i style="height:19px;background:#1b3a5f"></i><i style="height:9px;background:#2d5a8e"></i><i style="height:8px;background:#b08d4f"></i><i style="height:14px;background:#c8d4e0"></i><i style="height:20px;background:#1b3a5f"></i><i style="height:11px;background:#c8d4e0"></i><i style="height:24px;background:#b08d4f"></i><i style="height:16px;background:#c8d4e0"></i><i style="height:6px;background:#1b3a5f"></i><i style="height:18px;background:#2d5a8e"></i><i style="height:10px;background:#b08d4f"></i><i style="height:22px;background:#c8d4e0"></i><i style="height:13px;background:#c8d4e0"></i><i style="height:7px;background:#2d5a8e"></i></div>
+  <div class="footer-slogan"><span class="slog">Focusing on Agent Economy, Building Framework</span></div>
+    <span class="vcr">Q I<br>W A N G</span>
+</footer>
+
+<dialog id="cover" aria-label="静以修身，俭以养德。" aria-describedby="cover-translation">
+  <img class="cover-landscape" src="assets/cover-ink-landscape.webp" alt="" fetchpriority="high">
+  <div class="cover-frame" aria-hidden="true"></div>
+  <div class="cover-imprint" aria-hidden="true">
+    <span class="cover-seal">
+      <span class="cover-seal-column">王奇</span><span class="cover-seal-column">印信</span>
+    </span>
+    <span class="cover-name" lang="en">Qi Wang</span>
+  </div>
+  <div class="cover-content">
+    <blockquote class="cover-quote" aria-hidden="true">
+      <span class="cover-clause">
+        <span class="cover-glyph">静</span><span class="cover-glyph">以</span><span class="cover-glyph">修</span><span class="cover-glyph">身</span><span class="cover-glyph cover-punctuation">，</span>
+      </span>
+      <span class="cover-clause">
+        <span class="cover-glyph">俭</span><span class="cover-glyph">以</span><span class="cover-glyph">养</span><span class="cover-glyph">德</span><span class="cover-glyph cover-punctuation">。</span>
+      </span>
+    </blockquote>
+    <p class="cover-translation" id="cover-translation" lang="en">Cultivate the self in stillness and virtue in frugality.</p>
+  </div>
+  <button class="cover-enter" type="button">进入主页 <span class="cover-enter-arrow" aria-hidden="true">→</span></button>
+</dialog>
+<script src="assets/cover-strokes.js"></script>
+<script>
+(() => {
+  const cover = document.getElementById('cover');
+  if (location.hash || typeof cover.showModal !== 'function') return;
+
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const root = document.documentElement;
+  const enterButton = cover.querySelector('.cover-enter');
+  let writingTimer;
+
+  function finishWriting() {
+    clearTimeout(writingTimer);
+    cover.classList.remove('is-writing');
+  }
+
+  function enterHomepage() {
+    if (cover.classList.contains('is-closing')) return;
+    cover.classList.add('is-closing');
+    finishWriting();
+    setTimeout(() => {
+      cover.close();
+      root.classList.remove('cover-on');
+    }, motion.matches ? 0 : 550);
+  }
+
+  enterButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    enterHomepage();
+  });
+  cover.addEventListener('click', () => {
+    if (cover.classList.contains('is-writing')) {
+      finishWriting();
+      enterButton.focus({preventScroll: true});
+    } else {
+      enterHomepage();
+    }
+  });
+  cover.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    enterHomepage();
+  });
+  motion.addEventListener('change', (event) => {
+    if (event.matches) finishWriting();
+  });
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+
+  function svgNode(tag, attributes) {
+    const node = document.createElementNS(svgNS, tag);
+    for (const [name, value] of Object.entries(attributes)) node.setAttribute(name, value);
+    return node;
+  }
+
+  function drawQuote() {
+    // 依次沿每笔的中线运笔，并用笔画轮廓裁切，保留提按形成的粗细。
+    let delay = 360;
+    cover.querySelectorAll('.cover-glyph').forEach((glyph, glyphIndex) => {
+      const strokes = coverStrokes[glyph.textContent];
+      if (!strokes) {
+        const mark = document.createElement('span');
+        mark.className = 'cover-mark';
+        mark.textContent = glyph.textContent;
+        mark.style.setProperty('--delay', delay + 'ms');
+        glyph.replaceChildren(mark);
+        delay += 245;
+        return;
+      }
+
+      const svg = svgNode('svg', { viewBox: '0 0 1024 1024', 'aria-hidden': 'true' });
+      const defs = svgNode('defs', {});
+      const ink = svgNode('g', { transform: 'translate(0 900) scale(1 -1)' });
+      svg.append(defs, ink);
+
+      strokes.forEach(([outline, median], strokeIndex) => {
+        const id = 'cover-' + glyphIndex + '-stroke-' + strokeIndex;
+        const clip = svgNode('clipPath', { id });
+        clip.append(svgNode('path', { d: outline }));
+        defs.append(clip);
+        ink.append(svgNode('path', { class: 'cover-outline', d: outline, fill: 'currentColor' }));
+
+        let length = 0;
+        for (let i = 1; i < median.length; i++) {
+          length += Math.hypot(median[i][0] - median[i - 1][0], median[i][1] - median[i - 1][1]);
+        }
+        const pen = 'M' + median.map((point) => point.join(',')).join('L');
+        const trace = svgNode('path', {
+          class: 'cover-stroke',
+          d: pen,
+          fill: 'none',
+          stroke: 'currentColor',
+          'stroke-width': 210,
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-dasharray': length + ' ' + (length + 210),
+          'clip-path': 'url(#' + id + ')'
+        });
+        const duration = Math.min(155, 46 + length * .095);
+        trace.style.setProperty('--delay', delay + 'ms');
+        trace.style.setProperty('--duration', duration + 'ms');
+        trace.style.setProperty('--distance', length + 'px');
+        ink.append(trace);
+        delay += duration + 14;
+      });
+
+      glyph.replaceChildren(svg);
+      delay += 144;
+    });
+    return delay;
+  }
+
+  root.classList.add('cover-on');
+  if (typeof coverStrokes !== 'undefined') {
+    const duration = drawQuote();
+    if (!motion.matches) {
+      cover.classList.add('is-writing');
+      writingTimer = setTimeout(finishWriting, duration);
+    }
+  }
+  cover.showModal();
+})();
+</script>
+
+</body>
+</html>

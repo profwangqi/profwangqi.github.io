@@ -1,0 +1,739 @@
+{
+  "files": [
+    {
+      "path": ".DS_Store",
+      "bytes": 6148,
+      "sha256": "2a56066f32eb988ae0b4a7f55c40f00be39b25a4a987e916485e335ba4911a7e"
+    },
+    {
+      "path": "30条语句修改核验.json",
+      "bytes": 297,
+      "sha256": "9b0969967da510c0f731526a71b7878d70cefa99c8af2d9bc5f25240c014057b"
+    },
+    {
+      "path": "GitHub上线核验记录.json",
+      "bytes": 944,
+      "sha256": "964b392450532acd3e7f6a04d1e3eb6118f0eb00a112fb723e18264b732bde9c"
+    },
+    {
+      "path": "GitHub二维码链接.json",
+      "bytes": 1616,
+      "sha256": "a02e41c10cae73b6a41c985e53fbc6e181c27048decdda98e99cf1e0dadcac8f"
+    },
+    {
+      "path": "GitHub发布信息.json",
+      "bytes": 782,
+      "sha256": "a8db60e474e077437dcd05d5981e24f86b3e6189edecbea3fa9496353f6b55ee"
+    },
+    {
+      "path": "Imagegen提示词与图片说明.txt",
+      "bytes": 5143,
+      "sha256": "c1fd0b9e1c6277c6457d34f2080f9155c668c73ff09ce2d74a5bfbb5866443f8"
+    },
+    {
+      "path": "二维码核验记录.json",
+      "bytes": 768,
+      "sha256": "dace56542bfc927141cdcc11b1fb69c1dff5ae17188dfd872ef5c1f7e93e1601"
+    },
+    {
+      "path": "互动网页/index.html",
+      "bytes": 4284542,
+      "sha256": "4a23fa79165ddeefc8c90fe2982a1011c717e6a248af923ea911bcedd8287cf9"
+    },
+    {
+      "path": "互动网页/课堂内容源.html",
+      "bytes": 3204014,
+      "sha256": "3e701d52b7d6984e67d28e11194ae0b171ec6270bcfe288097459a51dfabbbf2"
+    },
+    {
+      "path": "使用说明_GitHub版.txt",
+      "bytes": 2818,
+      "sha256": "f2b1f3bdb540dbad5b73b59b9d5afaef17932406b813461d1c979587529e1223"
+    },
+    {
+      "path": "四项文字修订核验记录.json",
+      "bytes": 409,
+      "sha256": "b4b31d867e82a69fb142a7f06256e086807844d2653d13c3c200744e8131e490"
+    },
+    {
+      "path": "图表与教学内容/品牌标识/qi-wang-icon.svg",
+      "bytes": 512,
+      "sha256": "aafb2bcb328e057e7fb50ccb1fb3b9b75d0c7e4c95449043b50e90e2698bed5e"
+    },
+    {
+      "path": "图表与教学内容/品牌标识/qi-wang-logo.pdf",
+      "bytes": 6850,
+      "sha256": "f8ad945996a626d3704d82175b5c7c41080a71bf2c8a27e285beca1352479d66"
+    },
+    {
+      "path": "图表与教学内容/品牌标识/qi-wang-logo.png",
+      "bytes": 119744,
+      "sha256": "f51f55b9e42e1e34749e7f78d7374ef130ed2275f225ee21800a776a2cbbc97c"
+    },
+    {
+      "path": "图表与教学内容/品牌标识/qi-wang-logo.svg",
+      "bytes": 5242,
+      "sha256": "afe856a50f656493d0b64c3a6640d72fb26b59a2c1b45490e8de252d2bac32aa"
+    },
+    {
+      "path": "图表与教学内容/图表/00_封面背景.png",
+      "bytes": 217473,
+      "sha256": "d60618271088c6639fff236af7d3d516e42acdcb0d0d30e0ae36105191ab29b4"
+    },
+    {
+      "path": "图表与教学内容/图表/00_封面背景.svg",
+      "bytes": 1198,
+      "sha256": "cf120ba37892d32ad0928258d9da8d53a36bb200bef1ea6e8008ea1ceb20de9c"
+    },
+    {
+      "path": "图表与教学内容/图表/01_订单时间线.png",
+      "bytes": 109767,
+      "sha256": "f0a02a3567e94ccd3f67dbb0510613a70e0fb6c151fac66bd43f9782b62fdbed"
+    },
+    {
+      "path": "图表与教学内容/图表/01_订单时间线.svg",
+      "bytes": 2931,
+      "sha256": "9204b6755521d1b3dfa2b955af392cf41a3f36da5930e4ed8c4568543d6516f7"
+    },
+    {
+      "path": "图表与教学内容/图表/02_风险分类.png",
+      "bytes": 146302,
+      "sha256": "e559f70d62d390b0c1b272ddb685515d4ed08011cfa582dfa7083982e6aff3bb"
+    },
+    {
+      "path": "图表与教学内容/图表/02_风险分类.svg",
+      "bytes": 3742,
+      "sha256": "8118786172ad9d3b849c785bbbb5fc6a975650b71ed5505204430ac324df4890"
+    },
+    {
+      "path": "图表与教学内容/图表/03_净敞口.png",
+      "bytes": 87847,
+      "sha256": "e8816461956c7d9ea8f5cbc1ceff1c3455c5b58c6ef73624a0fd9cfd8d37bf1d"
+    },
+    {
+      "path": "图表与教学内容/图表/03_净敞口.svg",
+      "bytes": 1989,
+      "sha256": "804473df4385e17408049910b22e9007d5b9cf1cba3f88fd37ce47d0fb667607"
+    },
+    {
+      "path": "图表与教学内容/图表/04_远期机制.png",
+      "bytes": 118467,
+      "sha256": "85cd9447877403ce1a98fffba2cd36cd919d841036f421372e27b0bd63738ac5"
+    },
+    {
+      "path": "图表与教学内容/图表/04_远期机制.svg",
+      "bytes": 2651,
+      "sha256": "706930ad2ae8ff1bd451d4fc98a9ec51f92d534958326823a60e7bfeaef574d3"
+    },
+    {
+      "path": "图表与教学内容/图表/05_收入情景曲线.png",
+      "bytes": 105027,
+      "sha256": "e53ffe013bcd10ea6b72e573c2b0252c1eec38c346dc749afe2df6984bcae976"
+    },
+    {
+      "path": "图表与教学内容/图表/05_收入情景曲线.svg",
+      "bytes": 12736,
+      "sha256": "a586dd5ae0731b45d1ff5d6e3a0d627246dc01c6c3b0ebef159086c35b1ef352"
+    },
+    {
+      "path": "图表与教学内容/图表/06_AI核验路径.png",
+      "bytes": 137963,
+      "sha256": "91b15d6ad5cd7254f02ff1400742aaa25b8a8d1efefe0f31489ee08ea5a4d578"
+    },
+    {
+      "path": "图表与教学内容/图表/06_AI核验路径.svg",
+      "bytes": 3786,
+      "sha256": "caeb764faa1e71e76fc08ed43285ba441314b40ad40dcb4611e6c6fb1cd4fce4"
+    },
+    {
+      "path": "图表与教学内容/图表/07_教学路径.png",
+      "bytes": 113580,
+      "sha256": "7c273cf72edb4981262c784186f7851cf302114bcfe3c9e8b3a500603c55d656"
+    },
+    {
+      "path": "图表与教学内容/图表/07_教学路径.svg",
+      "bytes": 4839,
+      "sha256": "5b75ee424208b14a2d42f0d0b3dd0f0549b32ff17f65e4ec2176c954e7da77e8"
+    },
+    {
+      "path": "图表与教学内容/图表/08_预算约束.png",
+      "bytes": 105228,
+      "sha256": "981eb9ed422b192f4f0c348a225f03d5fc51cfc8fe1a9cf3999550c0ffd089c5"
+    },
+    {
+      "path": "图表与教学内容/图表/08_预算约束.svg",
+      "bytes": 3255,
+      "sha256": "34b71d888ccea45905a8f2028cb63a51ff660e5aee6a058114f4f8af7fc4b6eb"
+    },
+    {
+      "path": "图表与教学内容/图表/09_日期错配.png",
+      "bytes": 90016,
+      "sha256": "07fca45b7d224a94de3a08f100ca42d55bd34a65a682f267e1da08014b64348a"
+    },
+    {
+      "path": "图表与教学内容/图表/09_日期错配.svg",
+      "bytes": 2015,
+      "sha256": "1d73c385b4fed46a1ad7e0bab7aae905931cd90c3858f532027062eafcebc9f2"
+    },
+    {
+      "path": "图表与教学内容/图表/10_目标评价.png",
+      "bytes": 124177,
+      "sha256": "64ebe4cfa53db61d332db4f665e1e09abad658a483f06e458362e1351d2e5abe"
+    },
+    {
+      "path": "图表与教学内容/图表/10_目标评价.svg",
+      "bytes": 2596,
+      "sha256": "b92c46fd7ee94e821c61296c566388414017e0a83ec00864153dc4b8b667ffb7"
+    },
+    {
+      "path": "图表与教学内容/图表/11_进口迁移曲线.png",
+      "bytes": 105133,
+      "sha256": "785dc1d31a5c23e55568cfb816585f4a10923b8353d003d86a2f4db0343cc449"
+    },
+    {
+      "path": "图表与教学内容/图表/11_进口迁移曲线.svg",
+      "bytes": 14808,
+      "sha256": "75b6a62be42387ce6a00f605570bf4bae7151b682265695c53a5fd507f08e772"
+    },
+    {
+      "path": "图表与教学内容/图表/12_方法内容目标.png",
+      "bytes": 224811,
+      "sha256": "91d96d645cfc7508873c76d3e39cb0c4779dfa68d5dc3ae0f7080ade9d91c3b3"
+    },
+    {
+      "path": "图表与教学内容/图表/12_方法内容目标.svg",
+      "bytes": 6131,
+      "sha256": "f634bc3c7b4910f99fbb7e230875be177b78fa2fe1500f0b62ba6a007ca2254e"
+    },
+    {
+      "path": "图表与教学内容/图表/13_配套课件展示.png",
+      "bytes": 192080,
+      "sha256": "6be714e1e9a1d82d0e1e9250e359880383d80623e98169e67dba68dabb46a069"
+    },
+    {
+      "path": "图表与教学内容/图表/14_风险管理逻辑_Imagegen.png",
+      "bytes": 1635157,
+      "sha256": "eb835a4b5cf74ad5ed77b9f1231b6d8a70b5d12148e100ba0a1078fb1eaed63f"
+    },
+    {
+      "path": "图表与教学内容/图表/15_AI核验逻辑_Imagegen.png",
+      "bytes": 1364011,
+      "sha256": "ef8886a9838593eb363d4bfd2caf4ef983e09f6ab7112c1a921a6993cc6382bb"
+    },
+    {
+      "path": "图表与教学内容/图表/16_HTML情景曲线.png",
+      "bytes": 74033,
+      "sha256": "ecf9675ce86202d957a50b15bb5f78638b176638e62ec96880fff1476e416f7e"
+    },
+    {
+      "path": "图表与教学内容/图表/17_HTML核验单.png",
+      "bytes": 78887,
+      "sha256": "527b3d647f06cebf11108577ad2c0e44cd5dd8e8d9680753b06f80d2ac68d6ff"
+    },
+    {
+      "path": "图表与教学内容/图表/teacher-web.jpg",
+      "bytes": 28194,
+      "sha256": "dacc8be0a0cf0009e9daec163699df9ab5bd2495fae0789a0dc7d0a1c29cd20b"
+    },
+    {
+      "path": "图表与教学内容/教学内容.json",
+      "bytes": 55362,
+      "sha256": "c9cc94e03441fa3b8b7aeba32eeafb772a132ae6b24b11b67a3af2c20257098e"
+    },
+    {
+      "path": "图表与教学内容/教案完整教学内容.md",
+      "bytes": 31425,
+      "sha256": "ec78d10b70a47588e23c18344e30d4666f7145634e388dbc577c62f356760c0d"
+    },
+    {
+      "path": "图表与教学内容/版式素材/封面底纹_ElegantBook.png",
+      "bytes": 36320,
+      "sha256": "a7d36bea2a4d84b41f7575db1e651ddf886e92571c09fe3b21bceacd80458f9a"
+    },
+    {
+      "path": "图表与教学内容/版式素材/封面底纹_ElegantBook.svg",
+      "bytes": 542,
+      "sha256": "90bc18f8bec2dbe280aeb8b8cc2c770562b8bf2caa77aa1f2726b8f5fb15b39f"
+    },
+    {
+      "path": "图表与教学内容/版式素材/统一页面底纹_ElegantBook.png",
+      "bytes": 30548,
+      "sha256": "540ecb607137bd072e48cfc09aaee94d01c857d5a150f6eb8a12f3807231a978"
+    },
+    {
+      "path": "图表与教学内容/版式素材/统一页面底纹_ElegantBook.svg",
+      "bytes": 394,
+      "sha256": "bbec5445aed7966c421b2be8a3c73be5109e51efc3269d09ad9057b91eaf1694"
+    },
+    {
+      "path": "图表与教学内容/版式素材/视觉规范_ElegantBook.json",
+      "bytes": 479,
+      "sha256": "e318fd376a4b40c05a17c98c9b1e0ecbd1b5f1e810aa166c13faf91564412976"
+    },
+    {
+      "path": "图表与教学内容/第三方组件许可.txt",
+      "bytes": 1163,
+      "sha256": "76753604af2d409761493711a3e4f1c484fbcf44359ca7a31262246c7e99f034"
+    },
+    {
+      "path": "图表与教学内容/统一教学数据.json",
+      "bytes": 8261,
+      "sha256": "b14b05cb0c194bb8069adc7ebf000d12bfaa4ea93d3c76909dba73a8e9566976"
+    },
+    {
+      "path": "教师简介资料.json",
+      "bytes": 1130,
+      "sha256": "c4d3e02fc98f8bb01f7a9d0fed73939518579a2ae493236a0aeac152a231e7e5"
+    },
+    {
+      "path": "教案源码/assets/00_封面背景.png",
+      "bytes": 217473,
+      "sha256": "d60618271088c6639fff236af7d3d516e42acdcb0d0d30e0ae36105191ab29b4"
+    },
+    {
+      "path": "教案源码/assets/01_订单时间线.png",
+      "bytes": 109767,
+      "sha256": "f0a02a3567e94ccd3f67dbb0510613a70e0fb6c151fac66bd43f9782b62fdbed"
+    },
+    {
+      "path": "教案源码/assets/02_风险分类.png",
+      "bytes": 146302,
+      "sha256": "e559f70d62d390b0c1b272ddb685515d4ed08011cfa582dfa7083982e6aff3bb"
+    },
+    {
+      "path": "教案源码/assets/03_净敞口.png",
+      "bytes": 87847,
+      "sha256": "e8816461956c7d9ea8f5cbc1ceff1c3455c5b58c6ef73624a0fd9cfd8d37bf1d"
+    },
+    {
+      "path": "教案源码/assets/04_远期机制.png",
+      "bytes": 118467,
+      "sha256": "85cd9447877403ce1a98fffba2cd36cd919d841036f421372e27b0bd63738ac5"
+    },
+    {
+      "path": "教案源码/assets/05_收入情景曲线.png",
+      "bytes": 105027,
+      "sha256": "e53ffe013bcd10ea6b72e573c2b0252c1eec38c346dc749afe2df6984bcae976"
+    },
+    {
+      "path": "教案源码/assets/06_AI核验路径.png",
+      "bytes": 137963,
+      "sha256": "91b15d6ad5cd7254f02ff1400742aaa25b8a8d1efefe0f31489ee08ea5a4d578"
+    },
+    {
+      "path": "教案源码/assets/06_AI核验路径_ElegantBook.pdf",
+      "bytes": 95496,
+      "sha256": "4925f4afff86f3e4f591a208fd6a73f016e7738d1d3bba4e49a5e68d9998d46c"
+    },
+    {
+      "path": "教案源码/assets/06_AI核验路径_ElegantBook.svg",
+      "bytes": 3787,
+      "sha256": "cf092b20b00b836e42738b3efdec33ecb6ebae0f0476c80754ec0bc023d0b7dd"
+    },
+    {
+      "path": "教案源码/assets/07_教学路径.png",
+      "bytes": 113580,
+      "sha256": "7c273cf72edb4981262c784186f7851cf302114bcfe3c9e8b3a500603c55d656"
+    },
+    {
+      "path": "教案源码/assets/08_预算约束.png",
+      "bytes": 105228,
+      "sha256": "981eb9ed422b192f4f0c348a225f03d5fc51cfc8fe1a9cf3999550c0ffd089c5"
+    },
+    {
+      "path": "教案源码/assets/09_日期错配.png",
+      "bytes": 90016,
+      "sha256": "07fca45b7d224a94de3a08f100ca42d55bd34a65a682f267e1da08014b64348a"
+    },
+    {
+      "path": "教案源码/assets/10_目标评价.png",
+      "bytes": 124177,
+      "sha256": "64ebe4cfa53db61d332db4f665e1e09abad658a483f06e458362e1351d2e5abe"
+    },
+    {
+      "path": "教案源码/assets/11_进口迁移曲线.png",
+      "bytes": 105133,
+      "sha256": "785dc1d31a5c23e55568cfb816585f4a10923b8353d003d86a2f4db0343cc449"
+    },
+    {
+      "path": "教案源码/assets/12_方法内容目标.png",
+      "bytes": 224811,
+      "sha256": "91d96d645cfc7508873c76d3e39cb0c4779dfa68d5dc3ae0f7080ade9d91c3b3"
+    },
+    {
+      "path": "教案源码/assets/13_配套课件展示.png",
+      "bytes": 192080,
+      "sha256": "6be714e1e9a1d82d0e1e9250e359880383d80623e98169e67dba68dabb46a069"
+    },
+    {
+      "path": "教案源码/assets/14_风险管理逻辑_Imagegen.png",
+      "bytes": 1635157,
+      "sha256": "eb835a4b5cf74ad5ed77b9f1231b6d8a70b5d12148e100ba0a1078fb1eaed63f"
+    },
+    {
+      "path": "教案源码/assets/14_风险管理逻辑_Imagegen_web.webp",
+      "bytes": 958808,
+      "sha256": "83e020491a3906bcd0c6acc081fb93bd8c72c73a1c0bc50894bb552b35b20d3f"
+    },
+    {
+      "path": "教案源码/assets/15_AI核验逻辑_Imagegen.png",
+      "bytes": 1364011,
+      "sha256": "ef8886a9838593eb363d4bfd2caf4ef983e09f6ab7112c1a921a6993cc6382bb"
+    },
+    {
+      "path": "教案源码/assets/15_AI核验逻辑_Imagegen_web.webp",
+      "bytes": 788206,
+      "sha256": "a3cdb24795721fe1c059fd4de8facf96bea0d696920b1239b51c22b8f7411425"
+    },
+    {
+      "path": "教案源码/assets/16_HTML情景曲线.png",
+      "bytes": 74033,
+      "sha256": "ecf9675ce86202d957a50b15bb5f78638b176638e62ec96880fff1476e416f7e"
+    },
+    {
+      "path": "教案源码/assets/17_HTML核验单.png",
+      "bytes": 78887,
+      "sha256": "527b3d647f06cebf11108577ad2c0e44cd5dd8e8d9680753b06f80d2ac68d6ff"
+    },
+    {
+      "path": "教案源码/assets/qi-wang-logo.pdf",
+      "bytes": 6850,
+      "sha256": "f8ad945996a626d3704d82175b5c7c41080a71bf2c8a27e285beca1352479d66"
+    },
+    {
+      "path": "教案源码/assets/qr_placeholders/QR-01.pdf",
+      "bytes": 23155,
+      "sha256": "393729a9d896415c226f3beda2dafc17f7e5977b8a336685d3d6cf24c4ad1341"
+    },
+    {
+      "path": "教案源码/assets/qr_placeholders/QR-01.svg",
+      "bytes": 484,
+      "sha256": "b144dc56b51129bf6009ed88a55819e716b8d55b51d591151f7f98c104220699"
+    },
+    {
+      "path": "教案源码/assets/qr_placeholders/QR-02.pdf",
+      "bytes": 23431,
+      "sha256": "362a6019e1f66047e8ac63ea1b7b3857e06997f7e859f7388a52ebbadc0ed53b"
+    },
+    {
+      "path": "教案源码/assets/qr_placeholders/QR-02.svg",
+      "bytes": 484,
+      "sha256": "154ae7b2d8bd666b01427adc8b40e72d66c4e61fda15586277a6af5b104a2640"
+    },
+    {
+      "path": "教案源码/assets/qr_placeholders/QR-03.pdf",
+      "bytes": 23370,
+      "sha256": "b4e8ef149663f2be90c5ce3e2ca3f7079cc544d6206a018821ea1fb01038888a"
+    },
+    {
+      "path": "教案源码/assets/qr_placeholders/QR-03.svg",
+      "bytes": 484,
+      "sha256": "686589dba054e7f1c1a0ea442ec58e883a1bb99ad0b58b5be7a59d85ee9f94ae"
+    },
+    {
+      "path": "教案源码/assets/qr_placeholders/QR-04.pdf",
+      "bytes": 23305,
+      "sha256": "9c783068fb037302e7900ad005f0be8f0ec512917cb176532262dc046acac8f1"
+    },
+    {
+      "path": "教案源码/assets/qr_placeholders/QR-04.svg",
+      "bytes": 484,
+      "sha256": "6b9ac8fe5e2390c152a5ef6c196b75709ac63788174befbaba123ad3a00cfd38"
+    },
+    {
+      "path": "教案源码/assets/qrcodes/qr_ai_review.png",
+      "bytes": 8637,
+      "sha256": "fa3ad5b00e652ea4f2f8bd79e3389d3453691236d03f1a36fba06ae4e1333308"
+    },
+    {
+      "path": "教案源码/assets/qrcodes/qr_ai_review.svg",
+      "bytes": 19660,
+      "sha256": "959568421558b3862631ae3aa40f1c55e118152adacd4ef66a7e309020c19c46"
+    },
+    {
+      "path": "教案源码/assets/qrcodes/qr_course_entry.png",
+      "bytes": 8658,
+      "sha256": "a3b5143e7f9910359d3300d7be466b3030ab8e2e67155ba1142e71977479cea2"
+    },
+    {
+      "path": "教案源码/assets/qrcodes/qr_course_entry.svg",
+      "bytes": 20023,
+      "sha256": "f0a3273bf9960462e3235f2df3a3db563026e46f1f0f291a3c89f7ae5543dc65"
+    },
+    {
+      "path": "教案源码/assets/qrcodes/qr_quiz_transfer.png",
+      "bytes": 8679,
+      "sha256": "c8393e7403c9f75dadf44b1f615ed7e5a841d106c1e027d2b961218ef41a1909"
+    },
+    {
+      "path": "教案源码/assets/qrcodes/qr_quiz_transfer.svg",
+      "bytes": 19783,
+      "sha256": "d5a144649e13c83d8cd62f5f5fc08fbbeacc20a1bb30e81badb94b6d64ae8916"
+    },
+    {
+      "path": "教案源码/assets/qrcodes/qr_risk_lab.png",
+      "bytes": 8677,
+      "sha256": "195184edd4215cc25f69db5b8b539ba7a319bbdd5dcd554a974975fa37270c75"
+    },
+    {
+      "path": "教案源码/assets/qrcodes/qr_risk_lab.svg",
+      "bytes": 19972,
+      "sha256": "b2110d07a1a75eb4ab0a010599c8fcf7fe263f1ceba2ed987a87cc90fb757f2a"
+    },
+    {
+      "path": "教案源码/assets/qrcodes/二维码文件放置说明.txt",
+      "bytes": 169,
+      "sha256": "329d3f9dc5fea099bdb39caae56c3db69b72371346d0247e122bd5ef83ac02ff"
+    },
+    {
+      "path": "教案源码/assets/teacher-web.jpg",
+      "bytes": 28194,
+      "sha256": "dacc8be0a0cf0009e9daec163699df9ab5bd2495fae0789a0dc7d0a1c29cd20b"
+    },
+    {
+      "path": "教案源码/assets/教师资料原图.png",
+      "bytes": 610867,
+      "sha256": "54f63f75b8a91f898c7274573bd403186a52a38bcfe1347202fcc52a12cdf44f"
+    },
+    {
+      "path": "教案源码/elegantbook.cls",
+      "bytes": 50671,
+      "sha256": "d2cdb802b3de46b1d659d1a8eb36979aecd761402d3e95296936f433f97549eb"
+    },
+    {
+      "path": "教案源码/licenses/ElegantBook-License.txt",
+      "bytes": 19106,
+      "sha256": "5f05fcf6ef25a6c31bccd2df7c0c46b23107bbeb2ce5cdba74efb5cc357f4dbb"
+    },
+    {
+      "path": "教案源码/licenses/ElegantBook-README.md",
+      "bytes": 3800,
+      "sha256": "1787f8f3147e2f020a66be7462d9f19b3e15e501f2d29849faafcdc023e6d97c"
+    },
+    {
+      "path": "教案源码/二维码配置_ElegantBook.tex",
+      "bytes": 1221,
+      "sha256": "abf0e820d7bfb3b0ef4fc30621e6051e098ad18035c63a7749e817b0f7eab9bf"
+    },
+    {
+      "path": "教案源码/国际金融_示范教案_ElegantBook.pdf",
+      "bytes": 4310671,
+      "sha256": "41dc9af1b8a98f29768d78341c04801b79dc87b8a581eb54ea0281d14d06fe29"
+    },
+    {
+      "path": "教案源码/国际金融_示范教案_ElegantBook.tex",
+      "bytes": 64254,
+      "sha256": "8fc69b76bfc0d01a539ac5736167cc40e1e60465e1ff67d8bdf5035118e1a295"
+    },
+    {
+      "path": "最终提交版核验记录.json",
+      "bytes": 2051,
+      "sha256": "bd61fa77b6fb84309e7d3b6b818b00a05433182daa26cbdee1ee1939112163ec"
+    },
+    {
+      "path": "自动化工具/requirements.txt",
+      "bytes": 24,
+      "sha256": "020592820a80ee8c4e2942d93098722641bbcc5177156c0121d45cb2bf4b79e2"
+    },
+    {
+      "path": "自动化工具/加密互动网页.cjs",
+      "bytes": 6570,
+      "sha256": "a0f6a8a70a5e142424af01170b618766e203d5a5d0480b0d3f3ac5695bef53bd"
+    },
+    {
+      "path": "自动化工具/更新二维码与教案.py",
+      "bytes": 1885,
+      "sha256": "35562add3ebffea46f043e8868923f06801173d2d7d30392936eaface42c47e3"
+    },
+    {
+      "path": "设计参考/用户指定的学术流程图风格.png",
+      "bytes": 1576651,
+      "sha256": "0f39643cfc3de3a1d214eb815ad75772b54b2adb920676e472a6e63b60c96447"
+    },
+    {
+      "path": "语句修改建议落实记录.json",
+      "bytes": 711,
+      "sha256": "db6f5bad0bc9d10152a15490cc451a2ad78893e6f8952aae6cd8683e5f467bdb"
+    },
+    {
+      "path": "配套课件/.DS_Store",
+      "bytes": 6148,
+      "sha256": "3e8d1d16a82a38dc393652835e82c7b40a385416f321ca0dd203fdba7388a069"
+    },
+    {
+      "path": "配套课件/brand/qi-wang-icon.svg",
+      "bytes": 512,
+      "sha256": "aafb2bcb328e057e7fb50ccb1fb3b9b75d0c7e4c95449043b50e90e2698bed5e"
+    },
+    {
+      "path": "配套课件/brand/qi-wang-logo.pdf",
+      "bytes": 6850,
+      "sha256": "f8ad945996a626d3704d82175b5c7c41080a71bf2c8a27e285beca1352479d66"
+    },
+    {
+      "path": "配套课件/brand/qi-wang-logo.png",
+      "bytes": 119744,
+      "sha256": "f51f55b9e42e1e34749e7f78d7374ef130ed2275f225ee21800a776a2cbbc97c"
+    },
+    {
+      "path": "配套课件/brand/qi-wang-logo.svg",
+      "bytes": 5242,
+      "sha256": "afe856a50f656493d0b64c3a6640d72fb26b59a2c1b45490e8de252d2bac32aa"
+    },
+    {
+      "path": "配套课件/figures/00_封面背景.png",
+      "bytes": 217473,
+      "sha256": "d60618271088c6639fff236af7d3d516e42acdcb0d0d30e0ae36105191ab29b4"
+    },
+    {
+      "path": "配套课件/figures/00_封面背景.svg",
+      "bytes": 1198,
+      "sha256": "cf120ba37892d32ad0928258d9da8d53a36bb200bef1ea6e8008ea1ceb20de9c"
+    },
+    {
+      "path": "配套课件/figures/01_订单时间线.png",
+      "bytes": 109767,
+      "sha256": "f0a02a3567e94ccd3f67dbb0510613a70e0fb6c151fac66bd43f9782b62fdbed"
+    },
+    {
+      "path": "配套课件/figures/01_订单时间线.svg",
+      "bytes": 2931,
+      "sha256": "9204b6755521d1b3dfa2b955af392cf41a3f36da5930e4ed8c4568543d6516f7"
+    },
+    {
+      "path": "配套课件/figures/02_风险分类.png",
+      "bytes": 146302,
+      "sha256": "e559f70d62d390b0c1b272ddb685515d4ed08011cfa582dfa7083982e6aff3bb"
+    },
+    {
+      "path": "配套课件/figures/02_风险分类.svg",
+      "bytes": 3742,
+      "sha256": "8118786172ad9d3b849c785bbbb5fc6a975650b71ed5505204430ac324df4890"
+    },
+    {
+      "path": "配套课件/figures/03_净敞口.png",
+      "bytes": 87847,
+      "sha256": "e8816461956c7d9ea8f5cbc1ceff1c3455c5b58c6ef73624a0fd9cfd8d37bf1d"
+    },
+    {
+      "path": "配套课件/figures/03_净敞口.svg",
+      "bytes": 1989,
+      "sha256": "804473df4385e17408049910b22e9007d5b9cf1cba3f88fd37ce47d0fb667607"
+    },
+    {
+      "path": "配套课件/figures/04_远期机制.png",
+      "bytes": 118467,
+      "sha256": "85cd9447877403ce1a98fffba2cd36cd919d841036f421372e27b0bd63738ac5"
+    },
+    {
+      "path": "配套课件/figures/04_远期机制.svg",
+      "bytes": 2651,
+      "sha256": "706930ad2ae8ff1bd451d4fc98a9ec51f92d534958326823a60e7bfeaef574d3"
+    },
+    {
+      "path": "配套课件/figures/05_收入情景曲线.png",
+      "bytes": 105027,
+      "sha256": "e53ffe013bcd10ea6b72e573c2b0252c1eec38c346dc749afe2df6984bcae976"
+    },
+    {
+      "path": "配套课件/figures/05_收入情景曲线.svg",
+      "bytes": 12736,
+      "sha256": "a586dd5ae0731b45d1ff5d6e3a0d627246dc01c6c3b0ebef159086c35b1ef352"
+    },
+    {
+      "path": "配套课件/figures/06_AI核验路径.png",
+      "bytes": 137963,
+      "sha256": "91b15d6ad5cd7254f02ff1400742aaa25b8a8d1efefe0f31489ee08ea5a4d578"
+    },
+    {
+      "path": "配套课件/figures/06_AI核验路径.svg",
+      "bytes": 3786,
+      "sha256": "caeb764faa1e71e76fc08ed43285ba441314b40ad40dcb4611e6c6fb1cd4fce4"
+    },
+    {
+      "path": "配套课件/figures/07_教学路径.png",
+      "bytes": 113580,
+      "sha256": "7c273cf72edb4981262c784186f7851cf302114bcfe3c9e8b3a500603c55d656"
+    },
+    {
+      "path": "配套课件/figures/07_教学路径.svg",
+      "bytes": 4839,
+      "sha256": "5b75ee424208b14a2d42f0d0b3dd0f0549b32ff17f65e4ec2176c954e7da77e8"
+    },
+    {
+      "path": "配套课件/figures/08_预算约束.png",
+      "bytes": 105228,
+      "sha256": "981eb9ed422b192f4f0c348a225f03d5fc51cfc8fe1a9cf3999550c0ffd089c5"
+    },
+    {
+      "path": "配套课件/figures/08_预算约束.svg",
+      "bytes": 3255,
+      "sha256": "34b71d888ccea45905a8f2028cb63a51ff660e5aee6a058114f4f8af7fc4b6eb"
+    },
+    {
+      "path": "配套课件/figures/09_日期错配.png",
+      "bytes": 90016,
+      "sha256": "07fca45b7d224a94de3a08f100ca42d55bd34a65a682f267e1da08014b64348a"
+    },
+    {
+      "path": "配套课件/figures/09_日期错配.svg",
+      "bytes": 2015,
+      "sha256": "1d73c385b4fed46a1ad7e0bab7aae905931cd90c3858f532027062eafcebc9f2"
+    },
+    {
+      "path": "配套课件/figures/10_目标评价.png",
+      "bytes": 124177,
+      "sha256": "64ebe4cfa53db61d332db4f665e1e09abad658a483f06e458362e1351d2e5abe"
+    },
+    {
+      "path": "配套课件/figures/10_目标评价.svg",
+      "bytes": 2596,
+      "sha256": "b92c46fd7ee94e821c61296c566388414017e0a83ec00864153dc4b8b667ffb7"
+    },
+    {
+      "path": "配套课件/figures/11_进口迁移曲线.png",
+      "bytes": 105133,
+      "sha256": "785dc1d31a5c23e55568cfb816585f4a10923b8353d003d86a2f4db0343cc449"
+    },
+    {
+      "path": "配套课件/figures/11_进口迁移曲线.svg",
+      "bytes": 14808,
+      "sha256": "75b6a62be42387ce6a00f605570bf4bae7151b682265695c53a5fd507f08e772"
+    },
+    {
+      "path": "配套课件/figures/12_方法内容目标.png",
+      "bytes": 224811,
+      "sha256": "91d96d645cfc7508873c76d3e39cb0c4779dfa68d5dc3ae0f7080ade9d91c3b3"
+    },
+    {
+      "path": "配套课件/figures/12_方法内容目标.svg",
+      "bytes": 6131,
+      "sha256": "f634bc3c7b4910f99fbb7e230875be177b78fa2fe1500f0b62ba6a007ca2254e"
+    },
+    {
+      "path": "配套课件/figures/13_配套课件展示.png",
+      "bytes": 192080,
+      "sha256": "6be714e1e9a1d82d0e1e9250e359880383d80623e98169e67dba68dabb46a069"
+    },
+    {
+      "path": "配套课件/参评主课件.pdf",
+      "bytes": 1533436,
+      "sha256": "421f206fab22af3c80f1e51779df783ec5a741935e257cf39fa033326aa1553c"
+    },
+    {
+      "path": "配套课件/参评主课件.tex",
+      "bytes": 25326,
+      "sha256": "964e0539575fe4c7b17e6e2dc8ddbefd6e46c1b7eeeefb4d7e0226a0ba153bab"
+    },
+    {
+      "path": "配套课件/独立单选题.pdf",
+      "bytes": 144579,
+      "sha256": "01fae0c9e46c6d935b510e558de637dfc3c865b7a5f83e8b35a2c7009f698f28"
+    },
+    {
+      "path": "配套课件/独立单选题.tex",
+      "bytes": 13941,
+      "sha256": "0bea9539aa83cd04ed05a44c060a095f0af8c81198eedbb4cc7cdd579cb4e1c9"
+    }
+  ]
+}

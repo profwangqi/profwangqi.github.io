@@ -1,0 +1,26 @@
+{
+  "repository": "profwangqi/profwangqi.github.io",
+  "commit": "806d09b2aa6a8ee57ddf752d5168ce348585dcb7",
+  "build_status": "built",
+  "publicChecks": [
+    {
+      "url": "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/",
+      "status": 200,
+      "bytes": "4284542"
+    },
+    {
+      "url": "https://profwangqi.github.io/%E8%AF%BE%E4%BB%B6/%E6%9C%AC%E7%A7%91%E6%95%99%E5%AD%A6/%E5%9B%BD%E9%99%85%E9%87%91%E8%9E%8D/%E7%A4%BA%E8%8C%83%E6%95%99%E5%AD%A6/",
+      "status": 200,
+      "bytes": "4310671"
+    }
+  ],
+  "publishedHTMLMatchesLocal": true,
+  "interactivePasswordRequired": true,
+  "interactivePassword": "scu1896",
+  "pdfPasswordRequired": false,
+  "pdfPages": 23,
+  "fourTextEditsVerified": true,
+  "publishedPDFMatchesLocal": true,
+  "thirtyLanguageEditsVerified": true,
+  "latestPaginationAndWordingEdits": true
+}

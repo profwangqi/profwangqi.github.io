@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第4周：线性回归分析 | 商业数据分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --bg-primary: #F5F0E8;
+            --bg-secondary: #E8D5C4;
+            --bg-formula: #FFF8E7;
+            --accent: #C49A6C;
+            --accent-dark: #8B6F4E;
+            --text-primary: #3D3D3D;
+            --text-secondary: #666;
+            --code-bg: #2D2D2D;
+            --code-text: #F8F8F2;
+            --white: #FFFFFF;
+            --shadow: rgba(139,111,78,0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+        header {
+            background-color: var(--accent-dark);
+            color: var(--white);
+            padding: 48px 0;
+            text-align: center;
+        }
+        header h1 { font-size: 2.2rem; font-weight: 500; margin-bottom: 12px; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; font-family: Georgia, serif; }
+        header .week-badge {
+            display: inline-block; background: var(--accent); color: var(--white);
+            padding: 4px 16px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 16px;
+        }
+        .week-overview {
+            background: var(--white); margin: 32px 0; padding: 32px;
+            border-radius: 12px; box-shadow: 0 4px 20px var(--shadow);
+        }
+        .week-overview h2 { color: var(--accent-dark); margin-bottom: 16px; font-size: 1.4rem; }
+        .week-overview ul { margin-left: 24px; }
+        .week-overview li { margin: 8px 0; color: var(--text-secondary); }
+        .lesson {
+            background: var(--white); margin: 32px 0; border-radius: 12px;
+            overflow: hidden; box-shadow: 0 4px 20px var(--shadow);
+        }
+        .lesson-header {
+            background: var(--bg-secondary); padding: 24px 32px;
+            border-left: 5px solid var(--accent);
+        }
+        .lesson-header h3 { color: var(--accent-dark); font-size: 1.3rem; }
+        .lesson-header .lesson-num { color: var(--accent); font-weight: 600; }
+        .lesson-body { padding: 32px; }
+        .lesson-body h4 { color: var(--accent-dark); margin: 28px 0 12px; font-size: 1.15rem; }
+        .lesson-body p { margin: 12px 0; color: var(--text-secondary); }
+        .formula-box {
+            background: var(--bg-formula); border-left: 4px solid var(--accent);
+            padding: 24px 28px; margin: 20px 0; border-radius: 0 8px 8px 0;
+        }
+        .formula-box .formula-title {
+            color: var(--accent-dark); font-weight: 600; margin-bottom: 12px; font-size: 0.95rem;
+        }
+        .example-box {
+            background: #FAFAFA; border: 1px solid var(--bg-secondary);
+            padding: 24px; margin: 20px 0; border-radius: 8px;
+        }
+        .example-box .example-title { color: var(--accent); font-weight: 600; margin-bottom: 12px; }
+        pre {
+            background: var(--code-bg); color: var(--code-text); padding: 20px;
+            border-radius: 8px; overflow-x: auto;
+            font-family: "Consolas", "Monaco", monospace; font-size: 0.9rem;
+            line-height: 1.6; margin: 16px 0;
+        }
+        code {
+            font-family: "Consolas", "Monaco", monospace; background: var(--code-bg);
+            color: var(--code-text); padding: 2px 6px; border-radius: 4px; font-size: 0.9em;
+        }
+        pre code { background: none; padding: 0; }
+        .btn-notebook {
+            display: inline-block; background: var(--accent); color: var(--white);
+            padding: 12px 28px; border-radius: 8px; text-decoration: none;
+            font-weight: 500; margin-top: 16px; transition: background 0.3s;
+        }
+        .btn-notebook:hover { background: var(--accent-dark); }
+        .lesson-footer { padding: 0 32px 32px; }
+        .summary {
+            background: #F0F7EE; border-left: 4px solid #7BAE7F;
+            padding: 20px 24px; margin: 20px 0; border-radius: 0 8px 8px 0;
+        }
+        .summary strong { color: #5A8F5E; }
+        mjx-container { font-size: 1.05em !important; }
+        .step-box {
+            background: #FFF; border: 1px dashed var(--accent); padding: 16px 20px;
+            margin: 12px 0; border-radius: 6px;
+        }
+        .step-box .step-num { color: var(--accent); font-weight: bold; }
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.6rem; }
+            .container { padding: 0 16px; }
+            .lesson-body, .week-overview { padding: 20px; }
+            pre { padding: 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="week-badge">Week 4</div>
+        <h1>线性回归分析</h1>
+        <p class="subtitle">Linear Regression Analysis</p>
+    </div>
+</header>
+
+<div class="container">
+
+<!-- Week Overview -->
+<div class="week-overview">
+    <h2>本周学习目标</h2>
+    <ul>
+        <li>深入理解最小二乘法的数学原理和推导过程</li>
+        <li>掌握回归系数 \( a \) 和 \( b \) 的两种等价计算公式</li>
+        <li>理解相关系数 \( r \) 和决定系数 \( R^2 \) 的含义与计算</li>
+        <li>能够用多种 Python 工具（numpy/scipy/sklearn）完成回归分析</li>
+        <li>学会用回归模型进行预测，并进行残差分析检验模型合理性</li>
+    </ul>
+</div>
+
+<!-- Lesson 1 -->
+<div class="lesson" id="lesson1">
+    <div class="lesson-header">
+        <h3><span class="lesson-num">第1节课</span> 最小二乘法原理与回归系数推导</h3>
+    </div>
+    <div class="lesson-body">
+        <h4>学习目标</h4>
+        <p>完整理解最小二乘法的推导过程，能够手动计算回归系数，了解正规方程的来龙去脉。</p>
+
+        <h4>回归分析的目的</h4>
+        <p>我们有一组数据 \((x_1, y_1), (x_2, y_2), ..., (x_n, y_n)\)，想找到一条直线：</p>
+        $$ \hat{y} = a + bx $$
+        <p>使得这条直线能最好地"代表"所有数据点，从而可以用 \( x \) 来<strong>预测</strong> \( y \)。</p>
+
+        <h4>模型设定</h4>
+        <p>真实的 \( y \) 不仅受 \( x \) 影响，还受其他随机因素干扰：</p>
+        $$ y_i = a + bx_i + \varepsilon_i $$
+        <p>其中 \(\varepsilon_i\) 是<strong>误差项</strong>（随机干扰），代表模型无法解释的部分。</p>
+
+        <h4>最小二乘法的直观思想</h4>
+        <p>对于每个数据点，预测值 \(\hat{y}_i = a + bx_i\) 和实际值 \(y_i\) 之间存在差距，称为<strong>残差</strong>（Residual）：</p>
+        $$ e_i = y_i - \hat{y}_i = y_i - a - bx_i $$
+        <p>最小二乘法的目标：<strong>让所有这些残差的平方和最小</strong>。为什么用平方？因为平方可以消除正负号的影响，同时放大较大误差。</p>
+
+        <div class="formula-box">
+            <div class="formula-title">残差平方和（SSE - Sum of Squared Errors）</div>
+            $$ SSE = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \sum_{i=1}^{n} (y_i - a - bx_i)^2 $$
+        </div>
+
+        <h4>核心推导：从正规方程到最终公式（一步都不能跳！）</h4>
+        <p>要最小化 \( SSE \)，我们对 \( a \) 和 \( b \) 分别求偏导数，并令它们等于零。</p>
+
+        <div class="formula-box">
+            <div class="formula-title">第1步：对 \( a \) 求偏导</div>
+            $$ SSE = \sum_{i=1}^{n} (y_i - a - bx_i)^2 $$
+            <p>把 \( SSE \) 看作 \( a \) 的函数，对 \( a \) 求导：</p>
+            $$ \frac{\partial SSE}{\partial a} = \sum_{i=1}^{n} 2(y_i - a - bx_i) \cdot (-1) = -2\sum_{i=1}^{n}(y_i - a - bx_i) $$
+            <p>令偏导等于零：</p>
+            $$ -2\sum_{i=1}^{n}(y_i - a - bx_i) = 0 $$
+            $$ \sum_{i=1}^{n}(y_i - a - bx_i) = 0 $$
+            <p>展开求和：</p>
+            $$ \sum_{i=1}^{n} y_i - \sum_{i=1}^{n} a - \sum_{i=1}^{n} bx_i = 0 $$
+            <p>注意 \( a \) 是常数，所以 \(\sum a = na\)；\( b \) 也是常数：</p>
+            $$ \sum_{i=1}^{n} y_i - na - b\sum_{i=1}^{n} x_i = 0 $$
+            <p>整理得到<strong>正规方程1</strong>：</p>
+            $$ na + b\sum x_i = \sum y_i \tag{1} $$
+        </div>
+
+        <div class="formula-box">
+            <div class="formula-title">第2步：对 \( b \) 求偏导</div>
+            $$ \frac{\partial SSE}{\partial b} = \sum_{i=1}^{n} 2(y_i - a - bx_i) \cdot (-x_i) = -2\sum_{i=1}^{n} x_i(y_i - a - bx_i) $$
+            <p>令偏导等于零：</p>
+            $$ \sum_{i=1}^{n} x_i(y_i - a - bx_i) = 0 $$
+            <p>展开：</p>
+            $$ \sum x_i y_i - a\sum x_i - b\sum x_i^2 = 0 $$
+            <p>整理得到<strong>正规方程2</strong>：</p>
+            $$ a\sum x_i + b\sum x_i^2 = \sum x_i y_i \tag{2} $$
+        </div>
+
+        <div class="formula-box">
+            <div class="formula-title">第3步：联立求解 \( a \) 和 \( b \)</div>
+            <p>从方程 (1)：</p>
+            $$ a = \frac{\sum y_i - b\sum x_i}{n} = \bar{y} - b\bar{x} $$
+            <p>其中 \(\bar{x} = \frac{\sum x_i}{n}\)，\(\bar{y} = \frac{\sum y_i}{n}\) 是样本均值。</p>
+            <p>将 \( a = \bar{y} - b\bar{x} \) 代入方程 (2)：</p>
+            $$ (\bar{y} - b\bar{x})\sum x_i + b\sum x_i^2 = \sum x_i y_i $$
+            <p>展开：</p>
+            $$ \bar{y}\sum x_i - b\bar{x}\sum x_i + b\sum x_i^2 = \sum x_i y_i $$
+            <p>把含 \( b \) 的项移到一边：</p>
+            $$ b\left(\sum x_i^2 - \bar{x}\sum x_i\right) = \sum x_i y_i - \bar{y}\sum x_i $$
+            <p>注意 \(\bar{x}\sum x_i = \frac{(\sum x_i)^2}{n}\)，\(\bar{y}\sum x_i = \frac{\sum x_i \sum y_i}{n}\)：</p>
+            $$ b\left(\sum x_i^2 - \frac{(\sum x_i)^2}{n}\right) = \sum x_i y_i - \frac{\sum x_i \sum y_i}{n} $$
+            <p>两边同乘 \( n \)：</p>
+            $$ b\left(n\sum x_i^2 - (\sum x_i)^2\right) = n\sum x_i y_i - \sum x_i \sum y_i $$
+            <p>最终得到 \( b \) 的计算公式：</p>
+            $$ b = \frac{n\sum x_i y_i - \sum x_i \sum y_i}{n\sum x_i^2 - (\sum x_i)^2} $$
+        </div>
+
+        <div class="formula-box">
+            <div class="formula-title">第4步：等价形式（离差形式）</div>
+            <p>上面的公式可以改写为更直观的形式：</p>
+            $$ b = \frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{\sum(x_i - \bar{x})^2} $$
+            <p>而 \( a \) 就是：</p>
+            $$ a = \bar{y} - b\bar{x} $$
+            <p><strong>验证等价性：</strong></p>
+            <p>分子展开：\(\sum(x_i - \bar{x})(y_i - \bar{y}) = \sum x_i y_i - \bar{x}\sum y_i - \bar{y}\sum x_i + n\bar{x}\bar{y} = \sum x_i y_i - \frac{\sum x_i \sum y_i}{n}\)</p>
+            <p>分母展开：\(\sum(x_i - \bar{x})^2 = \sum x_i^2 - 2\bar{x}\sum x_i + n\bar{x}^2 = \sum x_i^2 - \frac{(\sum x_i)^2}{n}\)</p>
+            <p>所以离差形式和求和形式完全等价。</p>
+        </div>
+
+        <div class="example-box">
+            <div class="example-title">例题演示</div>
+            <p>数据：\(n = 5\)</p>
+            <table style="width:100%;border-collapse:collapse;margin:12px 0;">
+                <tr style="background:var(--bg-secondary);">
+                    <th style="padding:6px;border:1px solid #ccc;">\(i\)</th>
+                    <th style="padding:6px;border:1px solid #ccc;">\(x_i\)</th>
+                    <th style="padding:6px;border:1px solid #ccc;">\(y_i\)</th>
+                    <th style="padding:6px;border:1px solid #ccc;">\(x_i y_i\)</th>
+                    <th style="padding:6px;border:1px solid #ccc;">\(x_i^2\)</th>
+                </tr>
+                <tr><td style="padding:6px;border:1px solid #ddd;text-align:center;">1</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">1</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">2</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">2</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">1</td></tr>
+                <tr><td style="padding:6px;border:1px solid #ddd;text-align:center;">2</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">2</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">3</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">6</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">4</td></tr>
+                <tr><td style="padding:6px;border:1px solid #ddd;text-align:center;">3</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">3</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">5</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">15</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">9</td></tr>
+                <tr><td style="padding:6px;border:1px solid #ddd;text-align:center;">4</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">4</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">4</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">16</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">16</td></tr>
+                <tr><td style="padding:6px;border:1px solid #ddd;text-align:center;">5</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">5</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">6</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">30</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">25</td></tr>
+                <tr style="background:var(--bg-formula);font-weight:bold;">
+                    <td style="padding:6px;border:1px solid #ddd;text-align:center;">合计</td>
+                    <td style="padding:6px;border:1px solid #ddd;text-align:center;">15</td>
+                    <td style="padding:6px;border:1px solid #ddd;text-align:center;">20</td>
+                    <td style="padding:6px;border:1px solid #ddd;text-align:center;">69</td>
+                    <td style="padding:6px;border:1px solid #ddd;text-align:center;">55</td>
+                </tr>
+            </table>
+            <p>计算 \( b \)：</p>
+            $$ b = \frac{5 \times 69 - 15 \times 20}{5 \times 55 - 15^2} = \frac{345 - 300}{275 - 225} = \frac{45}{50} = 0.9 $$
+            <p>计算 \( a \)：</p>
+            $$ \bar{x} = 3, \quad \bar{y} = 4 $$
+            $$ a = 4 - 0.9 \times 3 = 4 - 2.7 = 1.3 $$
+            <p><strong>回归方程</strong>：\(\hat{y} = 1.3 + 0.9x\)</p>
+        </div>
+
+        <h4>Python 手动实现最小二乘法</h4>
+        <pre><code>import numpy as np
+
+# 数据
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2, 3, 5, 4, 6])
+n = len(x)
+
+# 手动计算所有求和项
+sum_x = np.sum(x)
+sum_y = np.sum(y)
+sum_xy = np.sum(x * y)
+sum_x2 = np.sum(x ** 2)
+
+print(f"n = {n}")
+print(f"sum_x = {sum_x}, sum_y = {sum_y}")
+print(f"sum_xy = {sum_xy}, sum_x2 = {sum_x2}")
+
+# 计算 b 和 a
+b = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x ** 2)
+a = np.mean(y) - b * np.mean(x)
+
+print(f"\\nb = {b:.4f}")
+print(f"a = {a:.4f}")
+print(f"回归方程: y = {a:.4f} + {b:.4f}x")
+
+# 用离差形式验证
+x_mean = np.mean(x)
+y_mean = np.mean(y)
+b_check = np.sum((x - x_mean) * (y - y_mean)) / np.sum((x - x_mean) ** 2)
+a_check = y_mean - b_check * x_mean
+print(f"\\n离差形式验证: b = {b_check:.4f}, a = {a_check:.4f}")</code></pre>
+
+        <div class="summary">
+            <strong>本节课小结</strong><br>
+            - 最小二乘法目标：最小化 \( SSE = \sum(y_i - a - bx_i)^2 \)<br>
+            - 对 \( a, b \) 求偏导 → 正规方程 → 解出 \( b = \frac{n\sum xy - \sum x \sum y}{n\sum x^2 - (\sum x)^2} \)，\( a = \bar{y} - b\bar{x} \)<br>
+            - 离差形式 \( b = \frac{\sum(x-\bar{x})(y-\bar{y})}{\sum(x-\bar{x})^2} \) 与求和形式等价
+        </div>
+    </div>
+    <div class="lesson-footer">
+        <a href="../03-Notebook代码/week4-线性回归分析.html" class="btn-notebook">前往 Notebook 练习 →</a>
+    </div>
+</div>
+
+<!-- Lesson 2 -->
+<div class="lesson" id="lesson2">
+    <div class="lesson-header">
+        <h3><span class="lesson-num">第2节课</span> 相关系数 \( r \) 与决定系数 \( R^2 \)</h3>
+    </div>
+    <div class="lesson-body">
+        <h4>学习目标</h4>
+        <p>理解相关系数和决定系数的含义、公式和计算方法，能够判断回归模型的拟合优度。</p>
+
+        <h4>相关系数 \( r \) 的定义</h4>
+        <p>回归方程给出了"最佳"直线，但这条直线有多"好"？我们需要一个指标来衡量 \( x \) 和 \( y \) 线性关系的<strong>强度和方向</strong>。</p>
+
+        <div class="formula-box">
+            <div class="formula-title">Pearson 相关系数</div>
+            $$ r = \frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum(x_i - \bar{x})^2 \sum(y_i - \bar{y})^2}} $$
+            <p>也可以写成：</p>
+            $$ r = \frac{n\sum x_i y_i - \sum x_i \sum y_i}{\sqrt{[n\sum x_i^2 - (\sum x_i)^2][n\sum y_i^2 - (\sum y_i)^2]}} $$
+        </div>
+
+        <h4> \( r \) 的直观理解</h4>
+        <p>\( r \) 的取值范围是 \([-1, 1]\)：</p>
+        <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+            <tr style="background:var(--accent-dark);color:white;">
+                <th style="padding:10px;border:1px solid #ccc;">\( r \) 的值</th>
+                <th style="padding:10px;border:1px solid #ccc;">含义</th>
+            </tr>
+            <tr><td style="padding:10px;border:1px solid #ddd;">\( r = 1 \)</td><td style="padding:10px;border:1px solid #ddd;">完全正线性相关，所有点都在一条上升直线上</td></tr>
+            <tr><td style="padding:10px;border:1px solid #ddd;">\( 0 < r < 1 \)</td><td style="padding:10px;border:1px solid #ddd;">正相关，\( r \) 越接近1关系越强</td></tr>
+            <tr><td style="padding:10px;border:1px solid #ddd;">\( r = 0 \)</td><td style="padding:10px;border:1px solid #ddd;">无线性相关</td></tr>
+            <tr><td style="padding:10px;border:1px solid #ddd;">\( -1 < r < 0 \)</td><td style="padding:10px;border:1px solid #ddd;">负相关，\( r \) 越接近-1关系越强</td></tr>
+            <tr><td style="padding:10px;border:1px solid #ddd;">\( r = -1 \)</td><td style="padding:10px;border:1px solid #ddd;">完全负线性相关，所有点都在一条下降直线上</td></tr>
+        </table>
+
+        <h4> \( r \) 取值范围的直观解释</h4>
+        <p>为什么 \( |r| \leq 1 \)？这可以用<strong>柯西-施瓦茨不等式</strong>证明：</p>
+        <p>令 \( u_i = x_i - \bar{x} \)，\( v_i = y_i - \bar{y} \)，则：</p>
+        $$ r = \frac{\sum u_i v_i}{\sqrt{\sum u_i^2 \sum v_i^2}} $$
+        <p>柯西-施瓦茨不等式告诉我们：</p>
+        $$ \left(\sum u_i v_i\right)^2 \leq \left(\sum u_i^2\right)\left(\sum v_i^2\right) $$
+        <p>因此 \( r^2 \leq 1 \)，即 \( |r| \leq 1 \)。等号成立当且仅当 \( u \) 和 \( v \) 成比例，即所有点恰好在一条直线上。</p>
+
+        <h4>决定系数 \( R^2 \)</h4>
+        <p>\( R^2 \)（也叫判定系数）衡量的是：<strong>回归模型能够解释多少比例的数据变异</strong>。</p>
+
+        <div class="formula-box">
+            <div class="formula-title">决定系数的三种等价定义</div>
+            <p><strong>定义1（与 \( r \) 的关系）：</strong></p>
+            $$ R^2 = r^2 $$
+            <p><strong>定义2（变异分解）：</strong></p>
+            $$ R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST} $$
+            <p>其中：</p>
+            <p>\( SST = \sum(y_i - \bar{y})^2 \) —— 总变异（Total）<br>
+            \( SSR = \sum(\hat{y}_i - \bar{y})^2 \) —— 回归解释的变异（Regression）<br>
+            \( SSE = \sum(y_i - \hat{y}_i)^2 \) —— 残差变异（Error）</p>
+            <p><strong>恒等式</strong>：\( SST = SSR + SSE \)</p>
+        </div>
+
+        <h4> \( R^2 \) 的直观含义</h4>
+        <p>如果 \( R^2 = 0.85 \)，表示：<strong>85% 的 \( y \) 的变异可以由 \( x \) 通过线性关系解释</strong>，剩下 15% 是模型无法解释的随机因素。</p>
+
+        <div class="example-box">
+            <div class="example-title">例题演示</div>
+            <p>继续上节课的数据：\( x = [1,2,3,4,5], y = [2,3,5,4,6] \)</p>
+            <p>回归方程：\(\hat{y} = 1.3 + 0.9x\)</p>
+            <p><strong>步骤1：计算 \( \bar{y} = 4 \)，各分量</strong></p>
+            <table style="width:100%;border-collapse:collapse;margin:12px 0;">
+                <tr style="background:var(--bg-secondary);">
+                    <th style="padding:6px;border:1px solid #ccc;">\(i\)</th>
+                    <th style="padding:6px;border:1px solid #ccc;">\(y_i\)</th>
+                    <th style="padding:6px;border:1px solid #ccc;">\(\hat{y}_i\)</th>
+                    <th style="padding:6px;border:1px solid #ccc;">\(y_i - \bar{y}\)</th>
+                    <th style="padding:6px;border:1px solid #ccc;">\(\hat{y}_i - \bar{y}\)</th>
+                    <th style="padding:6px;border:1px solid #ccc;">\(y_i - \hat{y}_i\)</th>
+                </tr>
+                <tr><td style="padding:6px;border:1px solid #ddd;text-align:center;">1</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">2</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">2.2</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">-2</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">-1.8</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">-0.2</td></tr>
+                <tr><td style="padding:6px;border:1px solid #ddd;text-align:center;">2</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">3</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">3.1</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">-1</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">-0.9</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">-0.1</td></tr>
+                <tr><td style="padding:6px;border:1px solid #ddd;text-align:center;">3</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">5</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">4.0</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">1</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">0</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">1.0</td></tr>
+                <tr><td style="padding:6px;border:1px solid #ddd;text-align:center;">4</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">4</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">4.9</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">0</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">0.9</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">-0.9</td></tr>
+                <tr><td style="padding:6px;border:1px solid #ddd;text-align:center;">5</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">6</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">5.8</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">2</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">1.8</td><td style="padding:6px;border:1px solid #ddd;text-align:center;">0.2</td></tr>
+            </table>
+            <p>\( SST = (-2)^2 + (-1)^2 + 1^2 + 0^2 + 2^2 = 10 \)</p>
+            <p>\( SSR = (-1.8)^2 + (-0.9)^2 + 0^2 + 0.9^2 + 1.8^2 = 8.1 \)</p>
+            <p>\( SSE = (-0.2)^2 + (-0.1)^2 + 1^2 + (-0.9)^2 + 0.2^2 = 1.9 \)</p>
+            <p>验证：\( SST = SSR + SSE = 8.1 + 1.9 = 10 \) ✓</p>
+            <p>\( R^2 = SSR/SST = 8.1/10 = 0.81 \)</p>
+            <p>\( r = \sqrt{0.81} = 0.9 \)（正相关）</p>
+            <p>结论：\( x \) 能解释 \( y \) 变异的 81%，拟合效果良好。</p>
+        </div>
+
+        <h4>Python 计算 \( r \) 和 \( R^2 \)</h4>
+        <pre><code>import numpy as np
+
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2, 3, 5, 4, 6])
+
+# 手动计算 r
+x_mean, y_mean = np.mean(x), np.mean(y)
+numerator = np.sum((x - x_mean) * (y - y_mean))
+denominator = np.sqrt(np.sum((x - x_mean)**2) * np.sum((y - y_mean)**2))
+r = numerator / denominator
+
+# 手动计算 R^2
+y_pred = 1.3 + 0.9 * x  # 上节课的回归方程
+SST = np.sum((y - y_mean)**2)
+SSR = np.sum((y_pred - y_mean)**2)
+SSE = np.sum((y - y_pred)**2)
+R2 = SSR / SST
+
+print(f"r = {r:.4f}")
+print(f"R^2 = {R2:.4f}")
+print(f"验证: r^2 = {r**2:.4f}")
+print(f"验证: SSE + SSR = {SSE + SSR:.4f}, SST = {SST:.4f}")
+
+# 与 numpy.corrcoef 对比
+r_np = np.corrcoef(x, y)[0, 1]
+print(f"numpy.corrcoef: r = {r_np:.4f}")</code></pre>
+
+        <div class="summary">
+            <strong>本节课小结</strong><br>
+            - \( r \) 衡量线性关系的<strong>方向和强度</strong>，范围 \([-1, 1]\)<br>
+            - \( R^2 = r^2 \) 衡量模型解释变异的比例，范围 \([0, 1]\)<br>
+            - \( R^2 = SSR/SST = 1 - SSE/SST \)，恒有 \( SST = SSR + SSE \)
+        </div>
+    </div>
+    <div class="lesson-footer">
+        <a href="../03-Notebook代码/week4-线性回归分析.html" class="btn-notebook">前往 Notebook 练习 →</a>
+    </div>
+</div>
+
+<!-- Lesson 3 -->
+<div class="lesson" id="lesson3">
+    <div class="lesson-header">
+        <h3><span class="lesson-num">第3节课</span> Python 回归分析与预测实践</h3>
+    </div>
+    <div class="lesson-body">
+        <h4>学习目标</h4>
+        <p>综合运用多种 Python 工具进行回归分析，学会成本预测、销售额预测，并能通过残差分析检验模型。</p>
+
+        <h4>方法1：numpy 手动实现（复习）</h4>
+        <pre><code>import numpy as np
+
+x = np.array([100, 150, 200, 250, 300, 350, 400])
+y = np.array([12000, 14500, 17000, 19000, 21500, 24000, 26500])
+
+n = len(x)
+sum_x, sum_y = np.sum(x), np.sum(y)
+sum_xy = np.sum(x * y)
+sum_x2 = np.sum(x ** 2)
+
+b = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x ** 2)
+a = np.mean(y) - b * np.mean(x)
+
+print(f"手动计算: y = {a:.2f} + {b:.2f}x")</code></pre>
+
+        <h4>方法2：scipy.stats.linregress（验证）</h4>
+        <pre><code>from scipy import stats
+
+result = stats.linregress(x, y)
+print(f"scipy: a = {result.intercept:.2f}, b = {result.slope:.2f}")
+print(f"scipy: r = {result.rvalue:.4f}, R^2 = {result.rvalue**2:.4f}")
+print(f"scipy: p值 = {result.pvalue:.4f}")</code></pre>
+
+        <h4>方法3：sklearn.linear_model.LinearRegression</h4>
+        <pre><code>from sklearn.linear_model import LinearRegression
+
+# sklearn 需要二维数组作为输入
+X = x.reshape(-1, 1)
+model = LinearRegression()
+model.fit(X, y)
+
+print(f"sklearn: a = {model.intercept_:.2f}, b = {model.coef_[0]:.2f}")
+print(f"sklearn R^2: {model.score(X, y):.4f}")
+
+# 预测
+x_new = np.array([[450], [500]])
+predictions = model.predict(x_new)
+print(f"产量450时预测成本: {predictions[0]:.0f}")
+print(f"产量500时预测成本: {predictions[1]:.0f}")</code></pre>
+
+        <h4>预测应用：成本预测</h4>
+        <p>假设我们的回归方程是 \( y = 9500 + 42.5x \)，现在要预测产量为 450 和 500 时的成本：</p>
+        $$ \hat{y}(450) = 9500 + 42.5 \times 450 = 9500 + 19125 = 28625 $$
+        $$ \hat{y}(500) = 9500 + 42.5 \times 500 = 9500 + 21250 = 30750 $$
+
+        <h4>可视化：散点图 + 回归线 + 置信区间</h4>
+        <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.array([100, 150, 200, 250, 300, 350, 400])
+y = np.array([12000, 14500, 17000, 19000, 21500, 24000, 26500])
+
+# 回归
+b, a = np.polyfit(x, y, 1)
+x_line = np.linspace(50, 500, 100)
+y_line = a + b * x_line
+
+plt.figure(figsize=(10, 6))
+plt.scatter(x, y, color='#C49A6C', s=80, zorder=3, label='历史数据')
+plt.plot(x_line, y_line, color='#8B6F4E', linewidth=2, label=f'y={a:.0f}+{b:.2f}x')
+
+# 标注预测点
+x_pred = [450, 500]
+y_pred = [a + b * xp for xp in x_pred]
+plt.scatter(x_pred, y_pred, color='red', s=100, marker='*', zorder=4, label='预测点')
+
+plt.xlabel('产量（件）')
+plt.ylabel('总成本（元）')
+plt.title('成本回归分析与预测')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()</code></pre>
+
+        <h4>残差分析：检验模型合理性</h4>
+        <p>残差 \( e_i = y_i - \hat{y}_i \) 应该随机分布在零线附近，没有明显模式。</p>
+        <pre><code># 残差分析
+y_pred = a + b * x
+residuals = y - y_pred
+
+plt.figure(figsize=(10, 4))
+plt.scatter(x, residuals, color='#C49A6C', s=60)
+plt.axhline(y=0, color='#8B6F4E', linestyle='--')
+plt.xlabel('产量 x')
+plt.ylabel('残差')
+plt.title('残差图（检验随机性）')
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# 残差统计
+print(f"残差均值: {np.mean(residuals):.4f}（应接近0）")
+print(f"残差标准差: {np.std(residuals):.2f}")</code></pre>
+
+        <div class="summary">
+            <strong>本节课小结</strong><br>
+            - numpy 手动计算：理解原理<br>
+            - scipy linregress：快速验证，输出 \( r \) 和 \( p \) 值<br>
+            - sklearn LinearRegression：标准机器学习接口<br>
+            - 预测时注意：外推预测（超出数据范围的 \( x \)）风险更大<br>
+            - 残差分析是检验模型合理性的重要工具
+        </div>
+    </div>
+    <div class="lesson-footer">
+        <a href="../03-Notebook代码/week4-线性回归分析.html" class="btn-notebook">前往 Notebook 练习 →</a>
+    </div>
+</div>
+
+</div>
+
+<footer style="background:var(--accent-dark);color:var(--white);text-align:center;padding:24px;margin-top:48px;">
+    <p>商业数据分析 · 第4周</p>
+    <p style="font-size:0.9rem;opacity:0.7;">ACCA F3 Decision Making with Data</p>
+</footer>
+
+
+<div style="position:fixed;left:18px;bottom:18px;z-index:999;">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;background:#1b3a5f;color:#fff;text-decoration:none;font-size:13px;padding:8px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(27,58,95,0.3);font-family:-apple-system,'PingFang SC',sans-serif;">← 课件目录</a>
+</div>
+
+</body>
+</html>

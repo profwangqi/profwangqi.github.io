@@ -1,0 +1,1124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>随机森林进阶与业务落地 · 金融科技第 9 周</title>
+<style>:root {
+  color-scheme: light;
+  --navy: #13283a; --night: #0c2030; --ink: #172d38; --muted: #4f666e;
+  --teal: #096653; --mint: #adf2cb; --paper: #f4f6f2; --line: #d7e1d9; --white: #fff;
+  --sand: #faefd2; --radius: 16px;
+  font: 16px/1.65 "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+* {box-sizing:border-box}
+html {scroll-padding-top:5rem}
+body {margin:0;background:var(--paper);color:var(--ink)}
+h1,h2,h3,p {margin:0}
+h1,h2,h3 {line-height:1.24}
+a {color:inherit}
+button,input,select,output {font:inherit}
+button,select,input[type=range],summary {cursor:pointer}
+button {color:inherit}
+button:disabled {opacity:.44;cursor:default}
+input[type=range],input[type=checkbox] {accent-color:var(--teal)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,canvas:focus-visible {outline:3px solid #00816b;outline-offset:4px}
+[hidden] {display:none!important}
+.frame {width:min(1160px,calc(100% - 72px));margin-inline:auto}
+.skip {position:fixed;top:12px;left:12px;transform:translateY(-170%);background:white;padding:8px 14px;z-index:5}
+.skip:focus {transform:none}
+.top {background:var(--night);color:#d7e6ec;border-bottom:1px solid #294050}
+.masthead {height:62px;display:flex;justify-content:space-between;align-items:center}
+.brand {display:inline-flex;align-items:center;gap:11px;text-decoration:none;font-weight:750}
+.mark {display:flex;align-items:flex-end;gap:3px;width:24px;height:19px}
+.mark i {width:5px;background:#a5e8c5;display:block;border-radius:1px;height:9px}
+.mark i:nth-child(2) {height:14px}.mark i:nth-child(3) {height:19px}
+.week {font-size:.75rem;font-weight:550;color:#9db8c3;border-left:1px solid #49616c;padding-left:12px}
+.projection {padding:5px 12px;border:1px solid #64818c;border-radius:7px;color:#e3f0f2;background:transparent}
+.projection[aria-pressed=true] {background:var(--mint);color:var(--night)}
+.hero {color:#f7fff9;background:radial-gradient(ellipse at 76% 70%,#1b4149 0%,#142b3c 46%,#102435 78%);}
+.hero-layout {display:grid;grid-template-columns:1.06fr 1fr;gap:clamp(28px,6vw,90px);align-items:center;min-height:490px;padding:58px 0 64px}
+.eyebrow {color:var(--mint);font-size:.87rem;letter-spacing:.16em;font-weight:750;margin-bottom:17px}
+h1 {font-size:clamp(2.5rem,5.1vw,5rem);line-height:1.13;letter-spacing:-.048em;font-weight:780}
+h1 span {color:var(--mint)}
+.lede {margin:22px 0;color:#d3e2e6;max-width:34em;font-size:1.04rem}
+.start {display:inline-flex;align-items:center;gap:1.05em;text-decoration:none;color:#13342e;background:var(--mint);border-radius:8px;padding:10px 16px;font-weight:760}
+.start:hover {background:#cdffdf}
+.teacher {margin-top:23px;font-size:.79rem;color:#b5cbd3}
+.teacher a {text-decoration-color:#71979c;text-underline-offset:3px}
+.hero-visual {border:1px solid #47606b;background:#102736;border-radius:17px;overflow:hidden}
+.visual-heading,.visual-foot {display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 17px;font-size:.76rem;color:#bbd2d8}
+.visual-heading {border-bottom:1px solid #364e5d}.visual-foot {border-top:1px solid #364e5d}
+.visual-heading b {display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mint);margin-right:4px}
+#heroArt {width:100%;height:clamp(190px,24vw,325px);display:block}
+.nav-shell {position:sticky;top:0;z-index:3;background:#fbfdf9;border-bottom:1px solid var(--line)}
+.nav {display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin;padding-block:5px}
+.nav a {text-decoration:none;padding:9px 15px;font-size:.92rem;font-weight:680;white-space:nowrap;border-radius:7px;color:#36545a}
+.nav a:hover,.nav a[aria-current=true] {color:#09563f;background:#e4f4e9}
+.orientation {margin:28px 0 0;font-size:.91rem;border-left:3px solid #6ba389;padding:4px 0 4px 14px;color:var(--muted)}
+.orientation strong {color:var(--teal)}
+.lesson {padding:42px 0;border-bottom:1px solid var(--line)}
+.lesson:last-child {border-bottom:0;padding-bottom:62px}
+.section-title {display:flex;align-items:flex-start;gap:16px;margin-bottom:21px}
+.section-no {font:700 .85rem/1.3 "IBM Plex Mono",ui-monospace,monospace;color:#16644f;padding:8px 9px;background:#e1ede4;border-radius:7px}
+.section-title h2 {font-size:clamp(1.55rem,3vw,2.3rem);letter-spacing:-.025em}
+.section-title p {color:var(--muted);margin-top:6px}
+.lab {background:var(--white);border:1px solid var(--line);padding:23px;border-radius:var(--radius);box-shadow:0 3px 13px #112d1b06}
+.toolbar {display:flex;flex-wrap:wrap;gap:13px;align-items:flex-end;margin-bottom:17px}
+label {display:flex;flex-direction:column;gap:4px;font-size:.82rem;font-weight:700;color:#314f56}
+select {width:100%;min-height:42px;border:1px solid #b9cbc2;border-radius:7px;background:white;padding:7px 32px 7px 10px;color:var(--ink)}
+.primary,.text-button {min-height:42px;border-radius:7px;font-size:.85rem;font-weight:750;padding:7px 12px}
+.primary {border:1px solid var(--teal);background:var(--teal);color:white}
+.primary:hover:not(:disabled) {background:#084e40}
+.text-button {border:1px solid #c4d7cc;background:#f4f8f4;color:#125b4a}
+.text-button:hover:not(:disabled) {background:#e4f2e8}
+.small {font-size:.85rem;color:var(--muted)}.micro {font-size:.76rem;color:var(--muted);margin-top:10px}
+.facts {margin-top:7px;display:flex;flex-wrap:wrap;gap:10px 20px;background:#edf5ef;padding:10px 13px;border-radius:8px;font-size:.84rem}
+.facts span {color:var(--muted)}.facts b {color:var(--ink);margin-left:4px}
+.forest-grid,.two-cols,.policy-grid {display:grid;grid-template-columns:1.65fr 1fr;gap:20px;margin-top:18px}
+.panel-heading {display:flex;align-items:baseline;flex-wrap:wrap;gap:3px 12px;margin-bottom:11px}
+.panel-heading span {color:var(--muted);font-size:.76rem}
+h3 {font-size:1rem}
+.tree-list {display:flex;flex-wrap:wrap;gap:6px}
+.tree-chip {background:#f5f8f5;border:1px solid #d1ddd4;border-radius:7px;padding:5px 8px;min-width:58px}
+.tree-chip span {display:block;font-size:.7rem;color:var(--muted)}
+.tree-chip strong {display:block;font-size:.98rem;font-variant-numeric:tabular-nums}
+.tree-chip[aria-pressed=true] {background:#def3e7;border-color:#267961;color:#104c3c}
+.trace {margin-top:14px}.trace ol {padding:0;list-style:none;margin:0;display:grid;gap:7px}
+.trace li {border-left:3px solid #7ba690;background:#f3f7f4;border-radius:4px;padding:8px 11px;font-size:.85rem}
+.trace li:last-child {border-color:#0b6c52;background:#e3f2e9}
+.trace li small {display:block;color:var(--muted)}
+.branch {display:inline-block;background:white;padding:0 6px;margin-left:.3em;border-radius:4px;font-size:.78rem;font-weight:700}
+.forest-aside {padding:15px;background:#f4f7f4;border:1px solid #e2eae2;border-radius:11px}
+.score-block {display:grid;gap:2px;background:var(--navy);color:#eef9f4;padding:12px 14px;border-radius:8px;margin-bottom:14px}
+.score-block span,.score-block small {font-size:.76rem;color:#c3d8dd}
+.score-block strong,.surface-score strong {font-size:2rem;color:var(--mint);line-height:1.19;font-variant-numeric:tabular-nums}
+.sample-grid {display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin-top:8px}
+.sample-grid span {min-width:0;font-size:clamp(.55rem,1vw,.76rem);text-align:center;background:#fff;border:1px solid #d7e2d9;border-radius:4px}
+.sample-grid .repeat {background:#d0eedb;border-color:#7db997;color:#164e3c;font-weight:750}
+.oob {font-size:.8rem;margin-top:11px;padding-top:8px;border-top:1px solid var(--line)}
+.teaching {margin-top:15px;border-top:1px solid var(--line);padding-top:10px}
+.teaching summary {font-weight:700;font-size:.91rem;color:var(--teal);padding:3px 0}
+.teaching p {color:#38545c;font-size:.9rem;margin:8px 0}
+.tabs {display:flex;flex-wrap:wrap;gap:9px;border-bottom:1px solid var(--line);margin-bottom:17px}
+.tabs button {border:0;border-bottom:3px solid transparent;background:none;padding:8px 12px;color:#48646a;font-weight:700}
+.tabs button[aria-selected=true] {border-color:var(--teal);color:var(--teal)}
+.two-cols {grid-template-columns:1fr 1fr}
+.chart-block {min-width:0;padding:15px;border:1px solid #dce5de;border-radius:10px;background:#fcfdfa}
+.bar-row {display:grid;grid-template-columns:6.4em 1fr 4.2em;gap:6px;align-items:center;font-size:.81rem;margin-top:9px}
+.bar-row b {text-align:right;font-variant-numeric:tabular-nums}
+.track {height:11px;position:relative;background:#e7eee7;border-radius:3px}
+.track.signed:before {content:"";position:absolute;left:50%;height:100%;width:1px;background:#879e96}
+.track i {background:#217f64;position:absolute;top:0;height:100%;border-radius:3px}
+.track i.negative {background:#ac683d}
+.perm-result,.readout {background:#edf5ef;border-radius:8px;padding:10px 13px;margin-top:13px;font-size:.87rem}
+.perm-result .table-wrap {margin-top:9px}
+.range-control {min-width:145px;flex:1}
+.range-control span {display:flex;justify-content:space-between;gap:7px}
+.range-control output {color:var(--teal);white-space:nowrap;font-variant-numeric:tabular-nums}
+.range-control input {width:100%;min-height:29px;margin:0}
+.checkbox {flex-direction:row;align-items:center;min-height:41px;gap:5px}
+.plot-legend {display:flex;gap:8px 15px;flex-wrap:wrap;font-size:.79rem;color:#32525a}
+.plot-legend i {display:inline-block;width:12px;height:4px;vertical-align:middle;margin-right:5px;border-radius:2px}
+.plot {display:block;width:100%;height:280px;margin-top:4px}
+.surface-lab {display:grid;grid-template-columns:minmax(0,2.4fr) minmax(220px,1fr);background:var(--night);color:#e1eff1;border:1px solid #345060;border-radius:var(--radius);overflow:hidden}
+.surface-main {min-width:0;padding:12px 12px 10px}
+.surface-caption {display:flex;justify-content:space-between;gap:6px;color:#b7d2d9;font-size:.79rem;padding:0 6px}
+#surfaceChart {display:block;width:100%;height:clamp(285px,34vw,405px);cursor:grab;touch-action:none}
+#surfaceChart:active {cursor:grabbing}
+#surfaceChart:focus-visible {outline-color:var(--mint);outline-offset:-2px}
+.surface-legend {display:flex;justify-content:center;gap:7px;align-items:center;font-size:.76rem;color:#c1d8db}
+.surface-legend i {width:100px;height:7px;border-radius:3px;background:linear-gradient(90deg,#277f84,#69c1ab,#efbe64)}
+.surface-controls {display:grid;align-content:center;gap:12px;border-left:1px solid #345060;padding:20px;background:#142e3e}
+.surface-controls label,.surface-controls p {color:#d7eaed}
+.surface-controls output {color:var(--mint)}
+.surface-controls input {accent-color:var(--mint)}
+.surface-score {border-top:1px solid #456472;padding-top:9px;display:grid;font-size:.84rem}
+.surface-controls button {justify-self:start}
+.after-note {font-size:.86rem;color:var(--muted);margin-top:10px}
+.table-wrap {overflow:auto}
+table {border-collapse:collapse;width:100%;font-size:.84rem;white-space:nowrap;text-align:left}
+caption {text-align:left;font-weight:700;padding-bottom:7px}
+td,th {padding:8px 10px;border:1px solid #e0e8e1}
+thead th,tbody th {background:#f0f5f0;color:#264a4e}
+td.best {background:#d8f1e1;color:#0c503e;font-weight:750}
+td.waiting {background:#f3f5f3;color:#5a706e}
+#searchStatus {min-height:1.5em;margin:0 0 9px}
+.metrics {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:13px}
+.metric {background:#edf5ef;border:1px solid #dce9e0;border-radius:8px;padding:9px 12px}
+.metric span {display:block;font-size:.78rem;color:#3b5d59}
+.metric b {font-size:clamp(1.13rem,2.3vw,1.7rem);font-variant-numeric:tabular-nums;line-height:1.25;word-break:break-word}
+.metrics .over {background:var(--sand);border-color:#ecdbac}
+.policy-grid {grid-template-columns:1.2fr 1fr}
+.decision {border:1px solid var(--line);border-radius:8px;padding:12px}
+.decision select {max-width:100%}
+#caseDecision {margin-top:7px;font-size:.86rem}
+.disposition {display:inline-block;background:#e1f2e8;color:#145440;font-weight:760;padding:1px 7px;border-radius:4px}
+.disposition.review {background:var(--sand);color:#684e18}
+.disposition.reject {background:#f8e8e4;color:#802f2a}
+.quiz-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.question {border:1px solid var(--line);border-radius:11px;padding:15px;background:white}
+.question h3 {margin-bottom:9px;line-height:1.55}
+.choices {display:grid;gap:5px}
+.choices button {text-align:left;background:#f5f8f5;border:1px solid #dce5de;padding:6px 10px;border-radius:6px;font-size:.87rem}
+.choices button:hover {border-color:#58947f}
+.choices button[aria-pressed=true] {background:#faefd2;border-color:#c7a953}
+.choices button.correct[aria-pressed=true] {background:#def2e6;border-color:#5e9d81}
+.feedback {margin-top:7px;font-size:.84rem;color:#35585e;min-height:1em}
+.transfer {background:#edf3ed;border:1px solid var(--line);border-radius:9px;padding:9px 13px}
+.site-footer {background:var(--night);color:#cfdee4;font-size:.83rem}
+.footer-row {display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding-block:18px}
+.footer-row details a {display:block;margin-top:5px}
+body.projecting {font-size:1.18rem}
+body.projecting .lab :is(.small,.micro,.bar-row,button,label,table,.readout,.facts,.trace li,.oob,.panel-heading span,.teaching p),
+body.projecting .section-title p {font-size:1.02rem}
+body.projecting .plot {height:340px}
+@media(max-width:850px) {
+  .frame {width:calc(100% - 40px)}
+  .hero-layout {gap:28px;min-height:0;padding:36px 0}
+  .forest-grid {grid-template-columns:minmax(0,1.5fr) minmax(200px,1fr);gap:12px}
+}
+@media(max-width:650px) {
+  .frame {width:calc(100% - 28px)}
+  .hero-layout,.forest-grid,.two-cols,.policy-grid,.surface-lab,.quiz-grid {grid-template-columns:minmax(0,1fr)}
+  .hero-layout {gap:18px;padding:32px 0 23px}
+  .hero-copy h1 {font-size:clamp(2.1rem,10vw,3.8rem)}
+  #heroArt {height:180px}
+  .lede {margin:14px 0}
+  .teacher {margin-top:12px}
+  .nav a {padding-inline:9px}
+  .lesson {padding:29px 0}
+  .lab {padding:13px}
+  .section-title {gap:9px}
+  .metrics {grid-template-columns:1fr 1fr}
+  .surface-controls {border-left:0;border-top:1px solid #345060;padding:14px}
+  .bar-row {grid-template-columns:5.6em 1fr 3.5em}
+  .sample-grid span {font-size:.72rem}
+}
+@media(prefers-reduced-motion:no-preference) {html {scroll-behavior:smooth}}
+
+.tree-figure {background:#f7faf6;border:1px solid #e0e9e1;border-radius:8px;margin-top:12px;padding:5px 8px}
+.tree-figure .micro {margin:2px 4px}
+#treeDiagram {display:block;width:100%;height:132px}
+@media(max-width:420px) {.nav {gap:1px}.nav a {font-size:.8rem;padding-inline:7px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#forest">跳到课堂实验</a>
+<div class="top">
+  <div class="frame masthead">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>金融科技 <span class="week">第 09 周</span></a>
+    <button id="project" class="projection" type="button" aria-pressed="false">投影模式</button>
+  </div>
+</div>
+<header id="top" class="hero">
+  <div class="frame hero-layout">
+    <div class="hero-copy">
+      <p class="eyebrow">金融科技本科课程</p>
+      <h1>随机森林进阶<br>与业务落地<span>。</span></h1>
+      <p class="lede">从一棵树的分裂，到一笔贷款的审批。用同一组模拟信贷数据，观察模型怎样学习、怎样给申请人打分，以及业务阈值怎样改变审批结果。</p>
+      <a class="start" href="#forest">开始课堂演示 <span aria-hidden="true">↓</span></a>
+      <p class="teacher">王奇 · 四川大学商学院 · 副教授、硕士生导师<br><a href="mailto:qiwangphd@scu.edu.cn">qiwangphd@scu.edu.cn</a> · 研究方向：人工智能金融</p>
+    </div>
+    <div class="hero-visual">
+      <div class="visual-heading"><span><b></b> 贷前风险评分</span><span>随机森林</span></div>
+      <canvas id="heroArt" aria-hidden="true"></canvas>
+      <div class="visual-foot"><span>有放回抽样</span><span>随机选特征</span><span>汇总树的输出</span></div>
+    </div>
+  </div>
+</header>
+<div class="nav-shell">
+  <nav class="frame nav" aria-label="章节导航">
+    <a href="#forest">建森林</a><a href="#explain">读模型</a><a href="#surface">看 3D</a><a href="#tuning">做调参</a><a href="#policy">定策略</a><a href="#quiz">随堂练习</a>
+  </nav>
+</div>
+<main class="frame">
+  <p class="orientation"><strong>课堂数据</strong>　480 笔合成消费贷申请，包含月收入、负债率、历史逾期和近期征信查询。用 320 笔训练、160 笔留出观察。标签为放款后 12 个月内是否发生违约（模拟）。负债率采用每月债务还款额占月收入的比例。</p>
+  <section id="forest" class="lesson" aria-labelledby="forest-title">
+    <div class="section-title"><span class="section-no">01</span><div><h2 id="forest-title">从一棵树到一片森林</h2><p>切换树和申请人，看看同一笔申请为什么会到达不同的叶节点。</p></div></div>
+    <div class="lab">
+      <div class="toolbar forest-tools">
+        <label>树的数量 <select id="treeCount"><option>1</option><option>3</option><option selected>7</option><option>15</option></select></label>
+        <label>最大深度 <select id="depth"><option>1</option><option selected>3</option><option>5</option><option>7</option></select></label>
+        <label>每节点候选特征数 <select id="features"><option>1</option><option selected>2</option><option>4</option></select></label>
+        <label>申请人 <select id="forestCase" class="case-select"></select></label>
+        <button id="resetModel" type="button" class="text-button">恢复初始设置</button>
+      </div>
+      <div id="caseFacts" class="facts"></div>
+      <div class="forest-grid">
+        <div>
+          <div class="panel-heading"><h3>逐树查看</h3><span>卡片数值为叶节点违约样本占比</span></div>
+          <div id="treeList" class="tree-list" aria-label="选择一棵树"></div>
+          <div class="tree-figure">
+            <p class="micro"><strong>树的前三层</strong> · 深色边框和连线标出申请人的路径</p>
+            <canvas id="treeDiagram" role="img" aria-label="当前决策树的前三层，申请人经过的分支已高亮。完整路径在图下提供。"></canvas>
+          </div>
+          <div id="trace" class="trace"></div>
+        </div>
+        <aside class="forest-aside">
+          <div class="score-block">
+            <span>森林风险分</span><strong id="forestScore"></strong><small id="scoreMath"></small>
+          </div>
+          <h3>这棵树抽到了谁？</h3>
+          <p id="sampleSummary" class="small"></p>
+          <div id="sampleGrid" class="sample-grid" aria-label="前二十次抽到的训练样本编号"></div>
+          <p class="micro">显示前 20 次抽取。深色表示该编号在整袋中被抽到多次。</p>
+          <div id="oobScore" class="oob"></div>
+        </aside>
+      </div>
+      <details class="teaching"><summary>讲解提示与 Gini 公式</summary><p>先选 1 棵树并切换申请人，再把树数改为 7。每棵树独立、有放回地抽取 320 笔记录。模型在每个节点随机抽取指定数量的候选特征，再用这些特征寻找最能降低不纯度的切分。</p><p><strong>节点 Gini</strong> = 1 − p² − (1 − p)²，其中 p 是节点内违约样本占比。一次分裂带来的下降是父节点 Gini 减去两个子节点按样本量加权的 Gini。</p><p><strong>叶节点与森林</strong>　叶节点用样本中违约的比例给出风险分。这里用各树输出的平均值汇总。课堂也可讨论硬投票，它先让每棵树输出类别，再按票数决策。袋外评估对每笔训练样本只使用没抽中它的树，树少时覆盖率较低。</p></details>
+    </div>
+  </section>
+
+  <section id="explain" class="lesson" aria-labelledby="explain-title">
+    <div class="section-title"><span class="section-no">02</span><div><h2 id="explain-title">模型用到了什么？分数怎样变？</h2><p>用同一个模型对照全局特征重要性、平均响应和个体轨迹。</p></div></div>
+    <div class="lab">
+      <div class="tabs" role="tablist" aria-label="模型解释工具">
+        <button id="imp-tab" role="tab" type="button" aria-selected="true" aria-controls="importance">Gini 与置换重要性</button>
+        <button id="pdp-tab" role="tab" type="button" aria-selected="false" aria-controls="pdp" tabindex="-1">PDP 与 ICE</button>
+      </div>
+      <div id="importance" role="tabpanel" aria-labelledby="imp-tab">
+        <div class="toolbar">
+          <label>选择要打乱的特征 <select id="permFeature"></select></label>
+          <button id="shuffleFeature" class="primary" type="button">打乱一列并重新预测</button>
+          <span id="permStatus" class="small" role="status"></span>
+        </div>
+        <div class="two-cols">
+          <div class="chart-block"><h3>Gini 重要性</h3><p class="small">训练时的加权不纯度下降占比</p><div id="giniBars"></div></div>
+          <div class="chart-block"><h3>置换重要性</h3><p class="small">留出集基准 AUC − 置换后 AUC（5 次平均）</p><div id="permBars"></div></div>
+        </div>
+        <div id="permResult" class="perm-result"></div>
+        <details class="teaching"><summary>两种排名为何可能不同？</summary><p>Gini 重要性累加特征在树中造成的不纯度下降，每个节点按覆盖样本数加权，并对树内贡献做归一化后汇总。可尝试的切分越多，获得高 Gini 重要性的机会可能越多。置换实验固定模型与标签，只重排留出集中的一列，观察 AUC 的变化。相关特征可能互相补充，单列置换也可能得到接近零或负的结果。</p><p>AUC 衡量排序能力，可理解为随机抽取一笔违约和一笔未违约记录，违约记录被排得更高的概率，并列按半次计。两种重要性都属于全局诊断，不能直接给出单笔申请的拒绝原因。</p></details>
+      </div>
+      <div id="pdp" role="tabpanel" aria-labelledby="pdp-tab" hidden>
+        <div class="toolbar">
+          <label>统一替换的特征 <select id="pdpFeature"><option value="0">月收入</option><option value="1">负债率</option></select></label>
+          <label class="range-control"><span>替换值 <output id="pdpValue"></output></span><input id="pdpSlider" type="range" min="3" max="28" value="12"></label>
+          <label class="checkbox"><input id="showIce" type="checkbox" checked> 显示 3 条 ICE</label>
+        </div>
+        <div id="pdpLegend" class="plot-legend"></div>
+        <canvas id="pdpChart" class="plot" role="img" aria-label="部分依赖图和三位申请人的个体条件期望曲线，选中值的结果在图下提供"></canvas>
+        <div id="pdpReadout" class="readout"></div>
+        <details class="teaching"><summary>如何从一列替换值算出 PDP？</summary><p>例如把 160 笔留出记录的月收入都替换为 12 千元，保留各笔记录的其他特征，重算风险分并取平均。逐点重复就是 PDP。只追踪某一笔申请的分数就是 ICE。比较曲线形状，可以观察模型对不同申请人是否有不同响应。</p><p>替换特征可能产生少见的组合。在图上读到的是模型对输入的响应，不能据此判断提高收入会使现实中的违约率降低多少。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="surface" class="lesson" aria-labelledby="surface-title">
+    <div class="section-title"><span class="section-no">03</span><div><h2 id="surface-title">把风险分放到 3D 里看</h2><p>固定所选申请人的逾期和查询次数，同时改变收入与负债率，读出模型的联合响应。</p></div></div>
+    <div class="surface-lab">
+      <div class="surface-main">
+        <div class="surface-caption"><span>收入 × 负债率</span><span>拖动旋转 · 方向键旋转</span></div>
+        <canvas id="surfaceChart" tabindex="0" aria-label="可旋转的三维风险曲面。横向两轴为月收入和负债率，高度为森林风险分。方向键旋转视图。"></canvas>
+        <div class="surface-legend"><span>低风险分</span><i></i><span>高风险分</span></div>
+      </div>
+      <div class="surface-controls">
+        <label>固定画像 <select id="surfaceCase" class="case-select"></select></label>
+        <p id="surfaceFixed" class="small"></p>
+        <label class="range-control"><span>月收入 <output id="surfaceIncomeValue"></output></span><input id="surfaceIncome" type="range" min="3" max="28" value="12"></label>
+        <label class="range-control"><span>负债率 <output id="surfaceDebtValue"></output></span><input id="surfaceDebt" type="range" min="10" max="90" value="55"></label>
+        <div class="surface-score"><span>光标位置的风险分</span><strong id="surfaceScore"></strong></div>
+        <button id="resetCamera" class="text-button" type="button">重置视角</button>
+      </div>
+    </div>
+    <p class="after-note">先把负债率调到 30%，再调到 75%，分别增加收入。比较两次分数变化。这里固定的是负债率，收入变化时对应的月还款额也会变化。</p>
+  </section>
+
+  <section id="tuning" class="lesson" aria-labelledby="tuning-title">
+    <div class="section-title"><span class="section-no">04</span><div><h2 id="tuning-title">给调参设一个预算</h2><p>先跑随机搜索，再跑网格搜索，比较验证结果和训练次数。</p></div></div>
+    <div class="lab">
+      <div class="toolbar">
+        <label>搜索方法 <select id="searchMethod"><option value="random">随机搜索</option><option value="grid">网格搜索</option></select></label>
+        <label id="budgetControl">随机组合数 <select id="searchBudget"><option>3</option><option selected>6</option><option>9</option></select></label>
+        <button id="runSearch" class="primary" type="button">运行 3 折交叉验证</button>
+        <button id="applyBest" class="text-button" type="button" disabled>应用最佳组合</button>
+      </div>
+      <p id="searchStatus" class="small" role="status"></p>
+      <div id="searchMatrix" class="table-wrap"></div>
+      <details class="teaching"><summary>部署前怎样验证调参结果？</summary><p>上表只在 320 笔训练记录中做交叉验证。每次用两折训练，另一折算 AUC，三折 AUC 取平均。网格穷举表内 12 个组合，随机搜索从同一候选表中无放回地抽取有限个组合。应用最佳组合时才用完整训练集重训。</p><p>生产中可同时搜索每节点候选特征数和最小叶节点样本数。真实信贷项目宜按时间切分，预留较新的样本做最终评估，并比较概率校准、分群表现、稳定性和线上延迟。</p></details>
+    </div>
+  </section>
+
+  <section id="policy" class="lesson" aria-labelledby="policy-title">
+    <div class="section-title"><span class="section-no">05</span><div><h2 id="policy-title">用风险分决定审批动作</h2><p>你是消费贷策略经理。调整通过阈值和拒绝阈值，观察留出样本上的业务取舍。</p></div></div>
+    <div class="lab">
+      <div class="toolbar policies">
+        <label class="range-control"><span>通过阈值 <output id="approveValue"></output></span><input id="approve" type="range" min="0" max="100" value="25"></label>
+        <label class="range-control"><span>拒绝阈值 <output id="rejectValue"></output></span><input id="reject" type="range" min="0" max="100" value="55"></label>
+        <label>每笔通过后违约损失 <select id="badCost"><option value="3000">3,000 元</option><option value="6000" selected>6,000 元</option><option value="12000">12,000 元</option></select></label>
+        <button id="resetPolicy" class="text-button" type="button">恢复阈值</button>
+      </div>
+      <p class="small">低于通过阈值 → 通过。达到拒绝阈值 → 拒绝。两者之间 → 人工复核。</p>
+      <div id="policyMetrics" class="metrics"></div>
+      <div class="policy-grid">
+        <div class="table-wrap"><table>
+          <caption>历史回测 · 160 笔合成记录</caption>
+          <thead><tr><th scope="col">策略动作</th><th scope="col">未违约</th><th scope="col">违约</th><th scope="col">总计</th></tr></thead>
+          <tbody id="policyTable"></tbody>
+        </table></div>
+        <div class="decision">
+          <label>查看申请人 <select id="policyCase" class="case-select"></select></label>
+          <div id="caseDecision"></div>
+          <p class="micro">可回到建森林查看路径，并将实际触发的规则、阈值和模型版本纳入审批记录。</p>
+        </div>
+      </div>
+      <p class="micro">课堂成本 = 通过组违约笔数 × 选定损失 + 拒绝组未违约笔数 × 500 元机会成本 + 复核笔数 × 60 元。模拟账本未计入复核后的损益。风险分是树输出的平均值，实际使用前需检验概率校准。</p>
+      <details class="teaching"><summary>课堂任务 · 在复核容量内选阈值</summary><p>假设每天最多能复核 30 笔。记录两套满足上限的阈值，比较通过率、通过后观察违约率、误拒笔数和成本。选出一套方案，填写一句话：“我选择这组阈值，因为……；我愿意承担的代价是……”。再把违约损失加倍，观点会变吗？</p></details>
+      <details class="teaching"><summary>从离线回测到上线监控</summary><p>上线前先确认特征在审批当时可用，检查历史拒贷客户缺少贷后标签带来的选择偏差，用时间留出样本验证并检查各群体表现。上线后跟踪通过率、复核队列、特征分布和延迟；违约标签到期后再检查校准与坏账表现。针对单笔决策，核查输入、实际触发的规则和局部解释，留存决策记录。</p></details>
+    </div>
+  </section>
+
+  <section id="quiz" class="lesson" aria-labelledby="quiz-title">
+    <div class="section-title"><span class="section-no">06</span><div><h2 id="quiz-title">随堂练习</h2><p>选一项查看反馈。可用上面的实验验证你的判断。</p></div></div>
+    <div id="questions" class="quiz-grid"></div>
+    <details class="teaching transfer"><summary>迁移练习 · 把贷前评分改成支付反欺诈</summary><p>假设支付团队只能复核极少数交易。请用“放行、二次验证、拦截”重写审批动作，分别给出一项误放和误拦成本。写下两项交易当时可取得的特征，以及上线前需要测试的延迟指标。</p><p><strong>参考思路</strong>　可用交易金额偏离该用户近期水平、短时间交易频次；误放造成欺诈损失，误拦增加支付失败和用户流失。除验证召回率及误拦率，还要在目标并发量下压测端到端 P95 延迟，并检查大量拦截是否使验证队列超负荷。</p></details>
+  </section>
+</main>
+<footer class="site-footer"><div class="frame footer-row"><span>《金融科技》 · 第 9 周</span><details><summary>延伸阅读</summary><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">随机森林</a><a href="https://scikit-learn.org/stable/modules/permutation_importance.html">置换重要性</a><a href="https://scikit-learn.org/stable/modules/partial_dependence.html">PDP 与 ICE</a><a href="https://scikit-learn.org/stable/modules/grid_search.html">超参数搜索</a></details><a href="#top">回到顶部 ↑</a></div></footer>
+<script>"use strict";
+const byId = id => document.getElementById(id);
+const limit = (value, low, high) => Math.min(high, Math.max(low, value));
+const average = xs => xs.reduce((a, b) => a + b, 0) / xs.length;
+const pct = value => (100 * value).toFixed(1) + "%";
+const fixed = value => value.toFixed(3);
+const money = value => value.toLocaleString("zh-CN") + " 元";
+const palette = ["#096653", "#24699a", "#a84d33", "#7552a0"];
+const featureNames = ["月收入", "负债率", "历史逾期", "近期征信查询"];
+const featureValue = (f, v) => Number(v.toFixed(2)) + [" 千元", "%", " 次", " 次"][f];
+const applicants = [
+  {name:"A · 负债适中", x:[12, 47, 0, 2]},
+  {name:"B · 高收入高负债", x:[24, 78, 1, 3]},
+  {name:"C · 有多次逾期", x:[8, 68, 3, 5]}
+];
+
+function randomSource(seed) {
+  return () => {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+}
+function shuffle(array, random) {
+  const copy = array.slice();
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+const simRandom = randomSource(419);
+function simulate(index) {
+  const income = 3 + Math.floor(26 * simRandom());
+  const debt = 10 + Math.floor(81 * simRandom());
+  const delinq = Math.min(3, Math.floor(-Math.log(1 - simRandom()) * 0.77));
+  const queries = Math.floor(7 * simRandom());
+  const logOdds = -2.03 + (debt - 48) / 23 - (income - 14) / 14 +
+    delinq * .85 + (queries - 2) * .19 + (debt > 62 && income < 11 ? .9 : 0);
+  return {id:index + 1, x:[income, debt, delinq, queries], y:Number(simRandom() < 1 / (1 + Math.exp(-logOdds)))};
+}
+const records = Array.from({length:480}, (_, index) => simulate(index));
+const training = records.slice(0, 320);
+const holdout = records.slice(320);
+const gini = (positives, total) => 2 * (positives / total) * (1 - positives / total);
+const minLeaf = 5;
+const baseConfig = {count:7, depth:3, features:2};
+const modelCache = new Map();
+const state = {caseIndex:0, treeIndex:0, modelVersion:0, permRound:0};
+
+function growTree(rows, config, seed) {
+  const random = randomSource(seed);
+  const bag = Array.from({length:rows.length}, () => rows[Math.floor(random() * rows.length)]);
+  const counts = new Map();
+  bag.forEach(row => counts.set(row.id, (counts.get(row.id) ?? 0) + 1));
+  const gains = [0, 0, 0, 0];
+  function grow(samples, depth) {
+    const n = samples.length;
+    const positives = samples.reduce((sum, row) => sum + row.y, 0);
+    const impurity = gini(positives, n);
+    const node = {n, positives, score:positives / n, impurity};
+    if (depth >= config.depth || n < 2 * minLeaf || impurity === 0) return node;
+
+    const candidates = shuffle([0, 1, 2, 3], random).slice(0, config.features);
+    let best = {gain:0};
+    for (const f of candidates) {
+      const sorted = samples.slice().sort((a, b) => a.x[f] - b.x[f]);
+      let leftPositive = 0;
+      for (let split = 1; split <= n - minLeaf; split++) {
+        leftPositive += sorted[split - 1].y;
+        const lower = sorted[split - 1].x[f];
+        const upper = sorted[split].x[f];
+        if (split < minLeaf || lower === upper) continue;
+        const gain = impurity - (split * gini(leftPositive, split) +
+          (n - split) * gini(positives - leftPositive, n - split)) / n;
+        if (gain > best.gain + 1e-10) best = {gain, f, threshold:(lower + upper) / 2, split, sorted};
+      }
+    }
+    if (!best.gain) return node;
+    gains[best.f] += (n / rows.length) * best.gain;
+    return {
+      ...node, f:best.f, threshold:best.threshold, gain:best.gain, candidates,
+      left:grow(best.sorted.slice(0, best.split), depth + 1),
+      right:grow(best.sorted.slice(best.split), depth + 1)
+    };
+  }
+  const root = grow(bag, 0);
+  const gainTotal = gains.reduce((a, b) => a + b, 0);
+  return {root, bag:bag.slice(0, 20), counts, gains:gains.map(gain => gainTotal ? gain / gainTotal : 0)};
+}
+function fit(rows, config) {
+  return Array.from({length:config.count}, (_, i) => growTree(rows, config, 84751 + 38977 * i));
+}
+function treeScore(node, x) {
+  while (node.left) node = x[node.f] <= node.threshold ? node.left : node.right;
+  return node.score;
+}
+function predict(forest, x) {
+  let total = 0;
+  for (const tree of forest) total += treeScore(tree.root, x);
+  return total / forest.length;
+}
+function auc(scored) {
+  const sorted = scored.slice().sort((a, b) => a.score - b.score);
+  let positiveRanks = 0;
+  let positives = 0;
+  for (let start = 0; start < sorted.length;) {
+    let end = start + 1;
+    while (end < sorted.length && sorted[start].score === sorted[end].score) end++;
+    for (let i = start; i < end; i++) {
+      positives += sorted[i].y;
+      positiveRanks += sorted[i].y * (start + end + 1) / 2;
+    }
+    start = end;
+  }
+  return (positiveRanks - positives * (positives + 1) / 2) / (positives * (sorted.length - positives));
+}
+function scoreRows(forest, rows) {
+  return rows.map(row => ({...row, score:predict(forest, row.x)}));
+}
+function withFeature(x, f, value) {
+  const replaced = x.slice();
+  replaced[f] = value;
+  return replaced;
+}
+
+function setConfig(config) {
+  byId("treeCount").value = config.count;
+  byId("depth").value = config.depth;
+  byId("features").value = config.features;
+  const key = [config.count, config.depth, config.features].join("/");
+  if (!modelCache.has(key)) modelCache.set(key, fit(training, config));
+  state.forest = modelCache.get(key);
+  state.config = config;
+  state.modelVersion++;
+  state.treeIndex = Math.min(state.treeIndex, config.count - 1);
+  state.permRound = 0;
+  state.holdout = scoreRows(state.forest, holdout);
+  state.baseline = auc(state.holdout);
+  renderForest();
+  renderImportance();
+  renderPdp();
+  refreshSurface();
+  renderPolicy();
+}
+function setCase(index) {
+  state.caseIndex = index;
+  document.querySelectorAll(".case-select").forEach(select => select.value = index);
+  const {x} = applicants[index];
+  byId("surfaceIncome").value = x[0];
+  byId("surfaceDebt").value = x[1];
+  renderForest();
+  renderPdp();
+  refreshSurface();
+  renderPolicy();
+}
+function renderForest() {
+  const {x} = applicants[state.caseIndex];
+  const scores = state.forest.map(tree => treeScore(tree.root, x));
+  byId("caseFacts").innerHTML = x.map((value, f) => `<span>${featureNames[f]}<b>${featureValue(f, value)}</b></span>`).join("");
+  byId("treeList").innerHTML = scores.map((score, i) =>
+    `<button type="button" class="tree-chip" data-tree="${i}" aria-pressed="${i === state.treeIndex}"><span>树 ${i + 1}</span><strong>${pct(score)}</strong></button>`
+  ).join("");
+  renderTreeDetails();
+  byId("forestScore").textContent = pct(average(scores));
+  byId("scoreMath").textContent = "各树叶节点风险分之和 ÷ " + scores.length;
+  const oob = training.flatMap(row => {
+    const eligible = state.forest.filter(tree => !tree.counts.has(row.id));
+    return eligible.length ? [{y:row.y, score:predict(eligible, row.x)}] : [];
+  });
+  const canScore = oob.some(row => row.y === 1) && oob.some(row => row.y === 0);
+  byId("oobScore").innerHTML = `<b>森林袋外覆盖</b>　${oob.length} / ${training.length}<br><b>袋外 AUC</b>　${canScore ? fixed(auc(oob)) : "—"}`;
+}
+function renderTreeDetails() {
+  const {x} = applicants[state.caseIndex];
+  const selected = state.forest[state.treeIndex];
+  const unique = selected.counts.size;
+  byId("sampleSummary").textContent = `抽取 320 次，覆盖 ${unique} 笔不同记录，${320 - unique} 笔未被抽中。`;
+  byId("sampleGrid").innerHTML = selected.bag.map(row => {
+    const count = selected.counts.get(row.id);
+    return `<span class="${count > 1 ? "repeat" : ""}" title="样本 #${row.id} 在整袋中被抽到 ${count} 次">${row.id}</span>`;
+  }).join("");
+  const path = [];
+  let node = selected.root;
+  while (node.left) {
+    const left = x[node.f] <= node.threshold;
+    const fields = node.candidates.map(f => featureNames[f]).join("、");
+    path.push(`<li><b>${featureNames[node.f]} ≤ ${featureValue(node.f, node.threshold)}？</b> 该申请为 ${featureValue(node.f, x[node.f])}<span class="branch">${left ? "是 · 走左支" : "否 · 走右支"}</span><small>候选特征 ${fields} ｜ 节点样本 ${node.n} ｜ Gini ${fixed(node.impurity)} → ${fixed(node.impurity - node.gain)}（子节点加权）</small></li>`);
+    node = left ? node.left : node.right;
+  }
+  path.push(`<li><b>到达叶节点</b>　${node.positives} 笔违约 ÷ ${node.n} 笔 = <b>${pct(node.score)}</b><small>每次抽中的记录都计入样本量。</small></li>`);
+  byId("trace").innerHTML = "<ol>" + path.join("") + "</ol>";
+  drawTreeDiagram();
+}
+byId("treeList").addEventListener("click", event => {
+  const button = event.target.closest("[data-tree]");
+  if (!button) return;
+  state.treeIndex = Number(button.dataset.tree);
+  byId("treeList").querySelectorAll("button").forEach(chip => chip.setAttribute("aria-pressed", chip === button));
+  renderTreeDetails();
+});
+for (const id of ["treeCount", "depth", "features"]) {
+  byId(id).addEventListener("change", () => setConfig({
+    count:Number(byId("treeCount").value), depth:Number(byId("depth").value), features:Number(byId("features").value)
+  }));
+}
+document.querySelectorAll(".case-select").forEach(select => {
+  select.innerHTML = applicants.map((person, i) => `<option value="${i}">${person.name}</option>`).join("");
+  select.addEventListener("change", () => setCase(Number(select.value)));
+});
+byId("resetModel").addEventListener("click", () => {
+  state.treeIndex = 0;
+  setConfig(baseConfig);
+  setCase(0);
+});
+
+function permuteFeature(f, seed) {
+  const values = shuffle(holdout.map(row => row.x[f]), randomSource(seed));
+  const scores = holdout.map((row, i) => ({
+    y:row.y, score:predict(state.forest, withFeature(row.x, f, values[i]))
+  }));
+  return {auc:auc(scores), values};
+}
+function drawBars(id, fValues, signed = false) {
+  const max = signed ? Math.max(.02, ...fValues.map(Math.abs)) : 1;
+  const rows = fValues.map((value, f) => ({value, f})).sort((a, b) => b.value - a.value);
+  byId(id).innerHTML = rows.map(({value, f}) => {
+    const width = (signed ? 50 : 100) * Math.abs(value) / max;
+    const left = signed ? (value < 0 ? 50 - width : 50) : 0;
+    const display = signed ? (value > 0 ? "+" : "") + fixed(value) : pct(value);
+    return `<div class="bar-row"><span>${featureNames[f]}</span><span class="track ${signed ? "signed" : ""}" aria-hidden="true"><i class="${value < 0 ? "negative" : ""}" style="left:${left}%;width:${width}%"></i></span><b>${display}</b></div>`;
+  }).join("");
+}
+function renderImportance() {
+  const giniValues = featureNames.map((_, f) => average(state.forest.map(tree => tree.gains[f])));
+  const totalGini = giniValues.reduce((a, b) => a + b, 0);
+  drawBars("giniBars", giniValues.map(gain => totalGini ? gain / totalGini : 0));
+  const permValues = featureNames.map((_, f) => average(
+    Array.from({length:5}, (_, i) => state.baseline - permuteFeature(f, 9371 + 277 * i).auc)
+  ));
+  drawBars("permBars", permValues, true);
+  resetPermutation();
+}
+function resetPermutation() {
+  byId("permStatus").textContent = "留出集基准 AUC " + fixed(state.baseline);
+  byId("permResult").textContent = "点「打乱一列并重新预测」，查看前 4 笔记录的置换值和本次 AUC。";
+}
+byId("permFeature").innerHTML = featureNames.map((name, i) => `<option value="${i}">${name}</option>`).join("");
+byId("permFeature").addEventListener("change", resetPermutation);
+byId("shuffleFeature").addEventListener("click", () => {
+  const f = Number(byId("permFeature").value);
+  const {auc:after, values} = permuteFeature(f, 1871 + 2971 * state.permRound++);
+  const rows = holdout.slice(0, 4).map((row, i) => `<tr><th scope="row">#${row.id}</th><td>${featureValue(f, row.x[f])}</td><td>${featureValue(f, values[i])}</td><td>${row.y ? "违约" : "未违约"}</td></tr>`).join("");
+  byId("permStatus").textContent = `第 ${state.permRound} 次演示 · ${featureNames[f]}已打乱`;
+  byId("permResult").innerHTML = `<b>基准 AUC ${fixed(state.baseline)} → 本次 AUC ${fixed(after)}</b>　差值（基准 − 本次）${fixed(state.baseline - after)}
+    <div class="table-wrap"><table><thead><tr><th scope="col">留出记录</th><th scope="col">打乱前</th><th scope="col">打乱后</th><th scope="col">标签保持原样</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+});
+
+function canvasSetup(canvas) {
+  const {width, height} = canvas.getBoundingClientRect();
+  if (!width || !height) return null;
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  const pixelWidth = Math.round(width * ratio), pixelHeight = Math.round(height * ratio);
+  if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+    canvas.width = pixelWidth;
+    canvas.height = pixelHeight;
+  }
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+  return {ctx, width, height};
+}
+const graphFont = '"Inter", "PingFang SC", system-ui, sans-serif';
+function segment(ctx, points, color, width = 1) {
+  ctx.beginPath();
+  points.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.stroke();
+}
+function dot(ctx, x, y, radius, fill) {
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.fillStyle = fill;
+  ctx.fill();
+}
+function drawTreeDiagram() {
+  const tree = state.forest?.[state.treeIndex];
+  const canvas = canvasSetup(byId("treeDiagram"));
+  if (!tree || !canvas) return;
+  const {x} = applicants[state.caseIndex];
+  const {ctx, width} = canvas;
+  const nodes = [];
+  const boxWidth = Math.min(130, width / 4 - 4);
+  function layout(node, depth, index, onPath, parent) {
+    const layerSize = 2 ** depth;
+    const cx = width * (index + .5) / layerSize, cy = 20 + 44 * depth;
+    if (parent) {
+      segment(ctx, [[parent[0],parent[1]+15],[parent[0],parent[1]+22],[cx,parent[1]+22],[cx,cy-15]],
+        onPath ? "#127258" : "#b2c4bc", onPath ? 2.4 : 1);
+    }
+    nodes.push({node, cx, cy, onPath, depth});
+    if (!node.left || depth === 2) return;
+    const goLeft = x[node.f] <= node.threshold;
+    layout(node.left, depth + 1, 2 * index, onPath && goLeft, [cx,cy]);
+    layout(node.right, depth + 1, 2 * index + 1, onPath && !goLeft, [cx,cy]);
+  }
+  layout(tree.root, 0, 0, true, null);
+  const shortNames = ["收入", "负债率", "逾期", "查询"];
+  ctx.textAlign = "center";
+  for (const {node,cx,cy,onPath,depth} of nodes) {
+    ctx.beginPath();
+    ctx.roundRect(cx - boxWidth / 2, cy - 15, boxWidth, 30, 6);
+    ctx.fillStyle = onPath ? "#dbf2e2" : "#ffffff";
+    ctx.fill();
+    ctx.strokeStyle = onPath ? "#127258" : "#cad9d0";
+    ctx.lineWidth = onPath ? 2 : 1;
+    ctx.stroke();
+    ctx.fillStyle = onPath ? "#124638" : "#38555a";
+    ctx.font = "600 " + (boxWidth < 83 ? 10 : 12) + "px " + graphFont;
+    const name = !node.left ? "叶 · " + pct(node.score) :
+      depth === 2 ? shortNames[node.f] + "分裂 ↓" :
+      shortNames[node.f] + " ≤ " + node.threshold + (node.f === 1 ? "%" : "");
+    ctx.fillText(name, cx, cy + 4, boxWidth - 4);
+  }
+}
+function drawHero() {
+  const canvas = canvasSetup(byId("heroArt"));
+  if (!canvas) return;
+  const {ctx, width, height} = canvas;
+  const w = width / 488, h = height / 280;
+  ctx.save();
+  ctx.scale(w, h);
+  for (let y = 14; y < 280; y += 17) {
+    for (let x = 15; x < 488; x += 17) dot(ctx, x, y, 1, "#2b4c5a");
+  }
+  const colors = ["#8bdfab", "#c3f3d1", "#ecc171"];
+  const stems = [105, 244, 383];
+  stems.forEach((x, i) => {
+    const root = [x, 48], left = [x - 27, 99], right = [x + 27, 99];
+    const leaves = [-43,-16,16,43].map(dx => [x + dx, 149]);
+    [left,right].forEach(child => {
+      segment(ctx, [root,[root[0],72],[child[0],72],child], colors[i], 1.4);
+      dot(ctx, ...child, 4.5, colors[i]);
+    });
+    leaves.forEach((leaf, j) => {
+      const parent = j < 2 ? left : right;
+      segment(ctx, [parent,[parent[0],124],[leaf[0],124],leaf], colors[i], 1.2);
+      dot(ctx, ...leaf, 4, colors[i]);
+      segment(ctx, [[leaf[0],154],[leaf[0],167],[x,167],[x,186]], "#587883");
+    });
+    dot(ctx, ...root, 8, "#305b5a");
+    dot(ctx, ...root, 4.4, colors[i]);
+    dot(ctx, x, 188, 3.5, colors[i]);
+    segment(ctx, [[x,192],[x,213],[244,213],[244,233]], "#6f9c9f", 1.3);
+  });
+  ctx.fillStyle = "#1e4b47";
+  ctx.beginPath();
+  ctx.roundRect(181, 229, 126, 32, 7);
+  ctx.fill();
+  ctx.fillStyle = "#bbf5d1";
+  ctx.textAlign = "center";
+  ctx.font = "600 14px " + graphFont;
+  ctx.fillText("平均风险分", 244, 250);
+  ctx.restore();
+}
+let pdpCache;
+function calculatePdp(group, value) {
+  const replace = x => withFeature(x, group, value);
+  return [
+    average(holdout.map(row => predict(state.forest, replace(row.x)))),
+    ...applicants.map(person => predict(state.forest, replace(person.x)))
+  ];
+}
+function renderPdp() {
+  if (byId("pdp").hidden) return;
+  const f = Number(byId("pdpFeature").value);
+  const slider = byId("pdpSlider");
+  const min = Number(slider.min), max = Number(slider.max), current = Number(slider.value);
+  const showIce = byId("showIce").checked;
+  const names = ["PDP · 160 笔平均", ...applicants.map(person => person.name)];
+  const key = state.modelVersion + ":" + f;
+  if (pdpCache?.key !== key) {
+    const positions = Array.from({length:101}, (_, i) => min + (max - min) * i / 100);
+    pdpCache = {key, points:positions.map(x => [x, calculatePdp(f, x)])};
+  }
+  const selected = calculatePdp(f, current);
+  byId("pdpValue").textContent = featureValue(f, current);
+  byId("pdpLegend").innerHTML = names.slice(0, showIce ? 4 : 1).map((name, i) => `<span><i style="background:${palette[i]}"></i>${name}</span>`).join("");
+  byId("pdpReadout").innerHTML = `替换为 <b>${featureValue(f, current)}</b>　PDP <b>${pct(selected[0])}</b>` +
+    (showIce ? applicants.map((person, i) => `　${person.name[0]} 的 ICE <b>${pct(selected[i + 1])}</b>`).join("") : "");
+  const canvas = canvasSetup(byId("pdpChart"));
+  if (!canvas) return;
+  const {ctx, width, height} = canvas;
+  const plotLeft = 46, plotRight = width - 18, plotTop = 24, plotBottom = height - 49;
+  const px = value => plotLeft + (value - min) / (max - min) * (plotRight - plotLeft);
+  const py = score => plotBottom - score * (plotBottom - plotTop);
+  ctx.font = "12px " + graphFont;
+  ctx.fillStyle = "#4f666e";
+  ctx.fillText("森林风险分", 3, 13);
+  for (let i = 0; i <= 4; i++) {
+    const y = py(i / 4);
+    segment(ctx, [[plotLeft, y], [plotRight, y]], "#dce7e0");
+    ctx.textAlign = "right";
+    ctx.fillText(25 * i + "%", plotLeft - 5, y + 4);
+  }
+  ctx.textAlign = "center";
+  for (const value of f === 0 ? [3,8,13,18,23,28] : [10,30,50,70,90]) ctx.fillText(value, px(value), plotBottom + 18);
+  ctx.fillText(featureNames[f] + (f === 0 ? "（千元）" : "（%）"), (plotRight + plotLeft) / 2, height - 6);
+  for (let i = showIce ? 3 : 0; i >= 0; i--) {
+    const points = [];
+    pdpCache.points.forEach(([v, scores], index) => {
+      if (index) points.push([px(v), py(pdpCache.points[index - 1][1][i])]);
+      points.push([px(v), py(scores[i])]);
+    });
+    segment(ctx, points, palette[i], i === 0 ? 3 : 1.5);
+  }
+  ctx.setLineDash([5,4]);
+  segment(ctx, [[px(current), plotTop], [px(current), plotBottom]], "#546d72");
+  ctx.setLineDash([]);
+  selected.slice(0, showIce ? 4 : 1).forEach((score, i) => {
+    dot(ctx, px(current), py(score), 5, "#fff");
+    dot(ctx, px(current), py(score), 3.5, palette[i]);
+  });
+}
+byId("pdpFeature").addEventListener("change", () => {
+  const slider = byId("pdpSlider");
+  const debt = byId("pdpFeature").value === "1";
+  [slider.min, slider.max, slider.value] = debt ? [10,90,50] : [3,28,12];
+  renderPdp();
+});
+byId("pdpSlider").addEventListener("input", renderPdp);
+byId("showIce").addEventListener("change", renderPdp);
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+function pickTab(active) {
+  tabs.forEach(tab => {
+    const selected = tab === active;
+    tab.setAttribute("aria-selected", selected);
+    tab.tabIndex = selected ? 0 : -1;
+    byId(tab.getAttribute("aria-controls")).hidden = !selected;
+  });
+  renderPdp();
+}
+tabs.forEach((tab, i) => {
+  tab.addEventListener("click", () => pickTab(tab));
+  tab.addEventListener("keydown", event => {
+    const keys = {ArrowLeft:tabs[1 - i], ArrowRight:tabs[1 - i], Home:tabs[0], End:tabs[1]};
+    const next = keys[event.key];
+    if (!next) return;
+    event.preventDefault();
+    pickTab(next);
+    next.focus();
+  });
+});
+
+const defaultCamera = {yaw:.64, tilt:.60};
+const camera = {...defaultCamera};
+const meshSteps = 24;
+let mesh;
+function refreshSurface() {
+  const {x} = applicants[state.caseIndex];
+  mesh = Array.from({length:meshSteps + 1}, (_, i) =>
+    Array.from({length:meshSteps + 1}, (_, j) =>
+      predict(state.forest, [3 + 25 * i / meshSteps, 10 + 80 * j / meshSteps, x[2], x[3]])
+    )
+  );
+  byId("surfaceFixed").textContent = "历史逾期 " + x[2] + " 次 · 近期征信查询 " + x[3] + " 次";
+  renderSurface();
+}
+function surfaceColor(score) {
+  const low = [43,132,139], mid = [94,186,164], high = [245,190,98];
+  const [a, b, weight] = score < .5 ? [low, mid, 2 * score] : [mid, high, 2 * score - 1];
+  return "rgb(" + a.map((v, i) => Math.round(v + (b[i] - v) * weight)).join(",") + ")";
+}
+function renderSurface() {
+  const canvas = canvasSetup(byId("surfaceChart"));
+  if (!canvas || !mesh) return;
+  const {ctx, width, height} = canvas;
+  const income = Number(byId("surfaceIncome").value);
+  const debt = Number(byId("surfaceDebt").value);
+  const {x:person} = applicants[state.caseIndex];
+  const score = predict(state.forest, [income, debt, person[2], person[3]]);
+  const cursorX = (income - 3) / 25, cursorY = (debt - 10) / 80;
+  byId("surfaceIncomeValue").textContent = featureValue(0, income);
+  byId("surfaceDebtValue").textContent = featureValue(1, debt);
+  byId("surfaceScore").textContent = pct(score);
+  const scale = Math.min((width - 50) / 1.6, (height - 54) / 1.3);
+  const cosYaw = Math.cos(camera.yaw), sinYaw = Math.sin(camera.yaw);
+  const cosTilt = Math.cos(camera.tilt), sinTilt = Math.sin(camera.tilt);
+  function project(x, y, z) {
+    const u = x - .5, v = y - .5;
+    const horizontal = u * cosYaw + v * sinYaw;
+    const depth = u * -sinYaw + v * cosYaw;
+    const h = z * .76;
+    return [width / 2 + horizontal * scale, height * .62 + (depth * sinTilt - h * cosTilt) * scale,
+      depth * cosTilt + h * sinTilt];
+  }
+  for (let i = 0; i <= 8; i++) {
+    const p = i / 8;
+    segment(ctx, [project(p,0,0), project(p,1,0)], "#2a4958");
+    segment(ctx, [project(0,p,0), project(1,p,0)], "#2a4958");
+  }
+  const leftCorner = [[0,0], [1,0], [1,1], [0,1]].sort((a,b) => project(...a,0)[0] - project(...b,0)[0])[0];
+  const base = project(...leftCorner,0), apex = project(...leftCorner,1);
+  segment(ctx, [base, apex], "#88a9b1", 1);
+  ctx.font = "11px " + graphFont;
+  ctx.textAlign = "right";
+  ctx.fillStyle = "#c2dce1";
+  for (const level of [0, .5, 1]) {
+    const [x, y] = project(...leftCorner, level);
+    ctx.fillText(Math.round(level * 100) + "%", x - 5, y + 4);
+  }
+  ctx.textAlign = "center";
+  ctx.font = "600 12px " + graphFont;
+  ctx.fillText("风险分", limit(apex[0], 26, width - 26), Math.max(13, apex[1] - 13));
+  const vertices = mesh.map((row,i) => row.map((z,j) => project(i / meshSteps, j / meshSteps, z)));
+  const tiles = [];
+  for (let i = 0; i < meshSteps; i++) {
+    for (let j = 0; j < meshSteps; j++) {
+      const pts = [vertices[i][j], vertices[i+1][j], vertices[i+1][j+1], vertices[i][j+1]];
+      tiles.push({pts, color:surfaceColor(average([mesh[i][j], mesh[i+1][j], mesh[i+1][j+1], mesh[i][j+1]])),
+        depth:average(pts.map(p => p[2]))});
+    }
+  }
+  tiles.sort((a, b) => a.depth - b.depth).forEach(tile => {
+    ctx.beginPath();
+    tile.pts.forEach(([x,y], i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
+    ctx.closePath();
+    ctx.fillStyle = tile.color;
+    ctx.fill();
+    ctx.lineWidth = .66;
+    ctx.strokeStyle = "#183c45a8";
+    ctx.stroke();
+  });
+  const start = project(cursorX,cursorY,0), end = project(cursorX,cursorY,score);
+  ctx.setLineDash([3,4]);
+  segment(ctx, [start,end], "#f6fbe6", 1.4);
+  ctx.setLineDash([]);
+  dot(ctx, end[0], end[1], 6, "#0e2531");
+  dot(ctx, end[0], end[1], 4, "#fff2a6");
+
+  const axes = [
+    {from:[0, Number(cosYaw >= 0)], to:[1, Number(cosYaw >= 0)], name:"月收入（千元）", values:[3,28]},
+    {from:[Number(sinYaw < 0), 0], to:[Number(sinYaw < 0), 1], name:"负债率（%）", values:[10,90]}
+  ];
+  for (const [axisIndex, {from, to, name, values}] of axes.entries()) {
+    const a = project(...from,0), b = project(...to,0);
+    segment(ctx, [a,b], "#9bbec1");
+    const outward = Math.sign((a[0] + b[0]) / 2 - width / 2) || 1;
+    ctx.fillStyle = "#d8ebec";
+    ctx.font = "600 11px " + graphFont;
+    ctx.fillText(name, limit((a[0] + b[0]) / 2 + outward * 18, 50, width - 50),
+      Math.min(height - 4, (a[1] + b[1]) / 2 + 25));
+    ctx.font = "11px " + graphFont;
+    [a,b].forEach(([x, y], i) => {
+      const point = i === 0 ? from : to;
+      const other = axes[1 - axisIndex];
+      const common = [other.from, other.to].some(endpoint => endpoint.every((v, index) => point[index] === v));
+      const nudge = common ? outward * 13 : outward * 5;
+      ctx.fillText(values[i], limit(x + nudge, 10, width - 10), Math.min(height - 12, y + 12));
+    });
+  }
+}
+const surfaceCanvas = byId("surfaceChart");
+let drag;
+surfaceCanvas.addEventListener("pointerdown", event => {
+  if (!event.isPrimary || event.button !== 0) return;
+  surfaceCanvas.setPointerCapture(event.pointerId);
+  drag = {id:event.pointerId, x:event.clientX, y:event.clientY};
+});
+surfaceCanvas.addEventListener("pointermove", event => {
+  if (drag?.id !== event.pointerId) return;
+  camera.yaw += (event.clientX - drag.x) * .012;
+  camera.tilt = limit(camera.tilt + (event.clientY - drag.y) * .009, .19, 1.22);
+  [drag.x, drag.y] = [event.clientX, event.clientY];
+  renderSurface();
+});
+surfaceCanvas.addEventListener("lostpointercapture", () => { drag = null; });
+surfaceCanvas.addEventListener("keydown", event => {
+  const shifts = {ArrowLeft:[-.17,0], ArrowRight:[.17,0], ArrowUp:[0,.12], ArrowDown:[0,-.12]};
+  const shift = shifts[event.key];
+  if (!shift) return;
+  event.preventDefault();
+  camera.yaw += shift[0];
+  camera.tilt = limit(camera.tilt + shift[1], .19, 1.22);
+  renderSurface();
+});
+byId("resetCamera").addEventListener("click", () => {
+  Object.assign(camera, defaultCamera);
+  renderSurface();
+});
+for (const id of ["surfaceIncome", "surfaceDebt"]) byId(id).addEventListener("input", renderSurface);
+
+const treeCounts = [1,3,7,15], depths = [1,3,5];
+const configurations = depths.flatMap(depth => treeCounts.map(count => ({count, depth, features:2})));
+const folds = Array.from({length:3}, (_, fold) => ({
+  train:training.filter((_, i) => i % 3 !== fold),
+  validate:training.filter((_, i) => i % 3 === fold)
+}));
+let bestConfig;
+function renderSearch(results = new Map(), candidates = [], bestIndex = -1) {
+  const columns = treeCounts.map(count => `<th scope="col">${count} 棵树</th>`).join("");
+  const rows = depths.map((depth,i) => {
+    const cells = treeCounts.map((_,j) => {
+      const index = i * treeCounts.length + j;
+      if (results.has(index)) return `<td class="${index === bestIndex ? "best" : ""}">${fixed(results.get(index))}${index === bestIndex ? " · 最佳" : ""}</td>`;
+      return candidates.includes(index) ? '<td class="waiting">待评估</td>' : '<td class="waiting">—</td>';
+    }).join("");
+    return `<tr><th scope="row">深度 ${depth}</th>${cells}</tr>`;
+  }).join("");
+  byId("searchMatrix").innerHTML = `<table><caption>验证 AUC（三折均值）· 每节点 2 个候选特征 · 最小叶节点 5 笔</caption><thead><tr><th scope="col">最大深度</th>${columns}</tr></thead><tbody>${rows}</tbody></table>`;
+}
+function resetSearch() {
+  const grid = byId("searchMethod").value === "grid";
+  byId("budgetControl").hidden = grid;
+  byId("applyBest").disabled = true;
+  bestConfig = null;
+  renderSearch();
+  const count = grid ? configurations.length : Number(byId("searchBudget").value);
+  byId("searchStatus").textContent = `计划评估 ${count} 个组合，交叉验证需训练 ${count * folds.length} 次。`;
+}
+byId("searchMethod").addEventListener("change", resetSearch);
+byId("searchBudget").addEventListener("change", resetSearch);
+let searchRound = 0;
+byId("runSearch").addEventListener("click", async () => {
+  const controls = ["runSearch", "searchMethod", "searchBudget"];
+  controls.forEach(id => byId(id).disabled = true);
+  byId("applyBest").disabled = true;
+  const grid = byId("searchMethod").value === "grid";
+  const indices = configurations.map((_,i) => i);
+  const candidates = grid ? indices : shuffle(indices, randomSource(4781 + 8377 * searchRound++)).slice(0, Number(byId("searchBudget").value));
+  const results = new Map();
+  renderSearch(results, candidates);
+  byId("searchStatus").textContent = "正在交叉验证…";
+  let winner = candidates[0];
+  for (const index of candidates) {
+    await new Promise(resolve => setTimeout(resolve, 20));
+    const config = configurations[index];
+    const value = average(folds.map(({train, validate}) => auc(scoreRows(fit(train, config), validate))));
+    results.set(index, value);
+    if (value > results.get(winner)) winner = index;
+    renderSearch(results, candidates);
+    byId("searchStatus").textContent = `已评估 ${results.size} / ${candidates.length} 个组合。`;
+  }
+  bestConfig = configurations[winner];
+  renderSearch(results, candidates, winner);
+  byId("searchStatus").textContent = `共评估 ${results.size} 个组合，训练 ${results.size * folds.length} 次。最佳平均 AUC ${fixed(results.get(winner))}。`;
+  controls.forEach(id => byId(id).disabled = false);
+  byId("applyBest").disabled = false;
+});
+byId("applyBest").addEventListener("click", () => {
+  if (!bestConfig) return;
+  setConfig(bestConfig);
+  const status = byId("searchStatus");
+  status.textContent = `已用完整训练集重训并更新各实验：${bestConfig.count} 棵树，最大深度 ${bestConfig.depth}，每节点 2 个候选特征。`;
+});
+
+const approval = byId("approve");
+const rejection = byId("reject");
+const actionNames = ["通过","人工复核","拒绝"];
+function action(score, low, high) {
+  if (score + 1e-12 >= high) return 2;
+  if (score + 1e-12 < low) return 0;
+  return 1;
+}
+function renderPolicy() {
+  const low = Number(approval.value) / 100, high = Number(rejection.value) / 100;
+  byId("approveValue").textContent = approval.value + "%";
+  byId("rejectValue").textContent = rejection.value + "%";
+  const groups = [[0,0],[0,0],[0,0]];
+  state.holdout.forEach(row => groups[action(row.score,low,high)][row.y]++);
+  const approved = groups[0][0] + groups[0][1], reviewed = groups[1][0] + groups[1][1];
+  const cost = groups[0][1] * Number(byId("badCost").value) + groups[2][0] * 500 + reviewed * 60;
+  const metrics = [
+    ["通过率", pct(approved / holdout.length)],
+    ["通过组观察违约率", approved ? pct(groups[0][1] / approved) : "—"],
+    [reviewed > 30 ? "复核笔数 · 超出容量" : "复核笔数 · 容量 30", reviewed + " 笔", reviewed > 30],
+    ["模拟总成本", money(cost)]
+  ];
+  byId("policyMetrics").innerHTML = metrics.map(([label,value,over]) => `<div class="metric ${over ? "over" : ""}"><span>${label}</span><b>${value}</b></div>`).join("");
+  byId("policyTable").innerHTML = groups.map(([good, bad],i) =>
+    `<tr><th scope="row">${actionNames[i]}</th><td>${good}</td><td>${bad}</td><td>${good + bad}</td></tr>`
+  ).join("");
+  const score = predict(state.forest, applicants[state.caseIndex].x);
+  const i = action(score, low, high);
+  const reason = [`低于 ${approval.value}% 的通过阈值`, "达到通过阈值且低于拒绝阈值", `达到或超过 ${rejection.value}% 的拒绝阈值`][i];
+  byId("caseDecision").innerHTML = `模型风险分 <b>${(100 * score).toFixed(2)}%</b>　<span class="disposition ${["approve","review","reject"][i]}">${actionNames[i]}</span><br>${reason}。`;
+}
+approval.addEventListener("input", () => {
+  if (Number(approval.value) > Number(rejection.value)) rejection.value = approval.value;
+  renderPolicy();
+});
+rejection.addEventListener("input", () => {
+  if (Number(rejection.value) < Number(approval.value)) approval.value = rejection.value;
+  renderPolicy();
+});
+byId("badCost").addEventListener("change", renderPolicy);
+byId("resetPolicy").addEventListener("click", () => {
+  [approval.value, rejection.value, byId("badCost").value] = [25,55,6000];
+  renderPolicy();
+});
+
+const questions = [
+  {title:"有放回抽样 320 次，为什么可能只覆盖约 200 笔记录？", choices:["有些记录被反复抽到", "森林在分裂后删掉了记录", "其余记录都被放入验证集"], answer:0, feedback:"每次抽取后记录都放回。未抽到的记录可作为这棵树的袋外样本。"},
+  {title:"整体 PDP 下降，但某位申请人的 ICE 几乎不变。你如何解读？", choices:["申请人的标签录错了", "总体均值掩盖了个体响应的差异", "提高收入会让所有人的风险下降同样多"], answer:1, feedback:"PDP 对各样本的模型输出取平均。ICE 保留个体路径，可用来观察不同画像的响应差异。"},
+  {title:"网格有 12 个组合，做 3 折交叉验证。选出配置前需拟合几次？", choices:["12 次", "15 次", "36 次"], answer:2, feedback:"每个组合训练 3 次，一共 12 × 3 = 36 次。用全部训练数据重训最佳组合另计。"},
+  {title:"固定拒绝阈值、提高通过阈值，哪些申请会改变动作？", choices:["一部分人工复核转为通过", "一部分拒绝转为人工复核", "一部分通过转为拒绝"], answer:0, feedback:"在通过阈值仍不高于拒绝阈值时，原复核区间的低分端会划入通过区间。成本变化还取决于这些申请的违约标签。"}
+];
+byId("questions").innerHTML = questions.map((q,i) => `<article class="question"><h3>${i+1}. ${q.title}</h3><div class="choices">${q.choices.map((choice,j) =>
+  `<button type="button" data-choice="${j}" class="${j === q.answer ? "correct" : ""}" aria-pressed="false">${String.fromCharCode(65 + j)}. ${choice}</button>`
+).join("")}</div><p class="feedback" role="status"></p></article>`).join("");
+byId("questions").querySelectorAll(".question").forEach((card, i) => {
+  card.addEventListener("click", event => {
+    const choice = event.target.closest("[data-choice]");
+    if (!choice) return;
+    card.querySelectorAll("button").forEach(button => button.setAttribute("aria-pressed", button === choice));
+    const correct = Number(choice.dataset.choice) === questions[i].answer;
+    card.querySelector(".feedback").textContent = (correct ? "答对了。" : "再想一想。") + questions[i].feedback;
+  });
+});
+const navLinks = [...document.querySelectorAll(".nav a")];
+function markSection() {
+  let index = 0;
+  for (const [i, link] of navLinks.entries()) {
+    if (document.querySelector(link.getAttribute("href")).getBoundingClientRect().top <= 110) index = i;
+  }
+  navLinks.forEach((link, i) => i === index ? link.setAttribute("aria-current", "true") : link.removeAttribute("aria-current"));
+}
+window.addEventListener("scroll", markSection, {passive:true});
+byId("project").addEventListener("click", () => {
+  const on = document.body.classList.toggle("projecting");
+  byId("project").setAttribute("aria-pressed", on);
+  byId("project").textContent = on ? "退出投影模式" : "投影模式";
+});
+const resize = new ResizeObserver(() => {
+  drawHero();
+  drawTreeDiagram();
+  renderSurface();
+  renderPdp();
+});
+["heroArt", "treeDiagram", "surfaceChart", "pdpChart"].forEach(id => resize.observe(byId(id)));
+setConfig(baseConfig);
+setCase(0);
+resetSearch();
+markSection();
+</script>
+</body>
+</html>
